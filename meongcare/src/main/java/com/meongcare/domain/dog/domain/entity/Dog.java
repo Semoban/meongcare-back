@@ -1,13 +1,13 @@
-package com.meongcare.dog.domain.entity;
+package com.meongcare.domain.dog.domain.entity;
 
-import com.meongcare.auth.domain.entity.Member;
+import com.meongcare.domain.auth.domain.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -26,27 +26,27 @@ public class Dog {
 
     private String type;
 
+    private String profileImage;
+
     private String sex;
 
     private boolean castrate;
 
-    private Date birthDate;
-
-    private Date adoptDate;
+    private LocalDateTime birthDate;
 
     private double neckRound;
 
     private double chestRound;
 
     @Builder
-    public Dog(Member member, String name, String type, String sex, boolean castrate, Date birthDate, Date adoptDate, double neckRound, double chestRound) {
+    public Dog(Member member, String name, String type, String profileImage, String sex, boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound) {
         this.member = member;
         this.name = name;
         this.type = type;
+        this.profileImage = profileImage;
         this.sex = sex;
         this.castrate = castrate;
         this.birthDate = birthDate;
-        this.adoptDate = adoptDate;
         this.neckRound = neckRound;
         this.chestRound = chestRound;
     }
