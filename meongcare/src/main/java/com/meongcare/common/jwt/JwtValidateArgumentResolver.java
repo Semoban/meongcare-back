@@ -29,7 +29,7 @@ public class JwtValidateArgumentResolver implements HandlerMethodArgumentResolve
         String accessToken = request.getHeader("AccessToken");
 
         if (accessToken == null){
-            return null;
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
         Long userIdx = jwtService.parseJwtToken(accessToken);

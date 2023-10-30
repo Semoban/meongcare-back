@@ -62,11 +62,14 @@ public class JwtService {
     }
 
     public Long parseJwtToken(String token) {
-        token = BearerRemove(token); // Bearer 제거
+        token = BearerRemove(token);
         Claims claims = Jwts.parser()
                 .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .parseClaimsJws(token)
                 .getBody();
+        if (new Date().getTime() > (long) claims.get(EXP_CLAIM)) {
+            new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
         return Long.valueOf((Integer)claims.get(ID_CLAIM));
     }
 
