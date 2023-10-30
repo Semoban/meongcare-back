@@ -20,26 +20,34 @@ public class Member {
 
     private String email;
 
+    private String providerId;
+
     private String provider;
 
     private String profileImage;
+
 
     private boolean pushAgreement;
 
     @Column(length = 500)
     private String fcmToken;
 
-    @Column(length = 500)
-    private String refreshToken;
+//    @Column(length = 500)
+//    private String refreshToken;
 
     @Builder
-    public Member(String name, String email, String provider, String profileImage, boolean pushAgreement, String fcmToken, String refreshToken) {
+    public Member(Long id, String name, String email, String providerId, String provider, String profileImage, boolean pushAgreement, String fcmToken) {
+        this.id = id;
         this.name = name;
         this.email = email;
+        this.providerId = providerId;
         this.provider = provider;
         this.profileImage = profileImage;
         this.pushAgreement = pushAgreement;
         this.fcmToken = fcmToken;
-        this.refreshToken = refreshToken;
     }
+
+//    public void updateRefreshToken(String refreshToken) {
+//        this.refreshToken = refreshToken;
+//    }
 }
