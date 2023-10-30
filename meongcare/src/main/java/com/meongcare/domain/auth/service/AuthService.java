@@ -23,29 +23,26 @@ public class AuthService {
     private RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-
         String providerId = loginRequestDto.getProviderId();
-
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
-
         Long memberId = null;
+
         if (findMemberOptional.isEmpty()) {
             Member member = loginRequestDto.toMemberEntity();
             memberRepository.save(member);
             memberId = member.getId();
         }
-
         if (findMemberOptional.isPresent()){
             memberId = findMemberOptional.get().getId();
         }
 
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
-
-        RefreshToken ree = refreshTokenRedisRepository.save(RefreshToken.builder()
+        refreshTokenRedisRepository.save(RefreshToken.builder()
                         .id(memberId)
                         .refreshToken(refreshToken)
                         .build());
+
         LoginResponseDto loginResponseDto = createLoginResponseDto(accessToken, refreshToken);
 
         return loginResponseDto;
@@ -64,7 +61,10 @@ public class AuthService {
                 .build();
 
         return reissueResponseDto;
+    }
 
+    public void logout(Long userId) {
+        refreshTokenRedisRepository.deleteById(userId);
     }
 
     private LoginResponseDto createLoginResponseDto(String accessToken, String refreshToken) {
@@ -76,6 +76,5 @@ public class AuthService {
                 .build();
         return signUpResponseDto;
     }
-
 
 }

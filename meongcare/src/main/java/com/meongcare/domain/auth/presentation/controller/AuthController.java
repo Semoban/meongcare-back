@@ -1,5 +1,6 @@
 package com.meongcare.domain.auth.presentation.controller;
 
+import com.meongcare.common.jwt.JwtValidation;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
@@ -31,6 +32,12 @@ public class AuthController {
          ReissueResponseDto reissueResponseDto = authService.reissue(refreshToken);
 
         return ResponseEntity.ok().body(reissueResponseDto);
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity login(@JwtValidation Long userId) {
+        authService.logout(userId);
+        return ResponseEntity.ok().build();
     }
 
 
