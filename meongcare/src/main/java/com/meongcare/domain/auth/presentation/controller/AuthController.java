@@ -2,6 +2,7 @@ package com.meongcare.domain.auth.presentation.controller;
 
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
+import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
 import com.meongcare.domain.auth.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,13 @@ public class AuthController {
         LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
 
         return ResponseEntity.ok().body(loginResponseDto);
+    }
+
+    @GetMapping("/reissue")
+    public ResponseEntity<ReissueResponseDto> reissue(@RequestHeader("RefreshToken") String refreshToken) {
+         ReissueResponseDto reissueResponseDto = authService.reissue(refreshToken);
+
+        return ResponseEntity.ok().body(reissueResponseDto);
     }
 
 
