@@ -34,6 +34,7 @@ public class JwtService {
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String ID_CLAIM = "id";
+    private static final String EXP_CLAIM = "exp";
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(Long userId) {
@@ -50,10 +51,10 @@ public class JwtService {
         Date now = new Date();
         Claims claims = Jwts.claims();
         claims.put(ID_CLAIM, userId);
+        claims.put(EXP_CLAIM, now.getTime() + expirationPeriod);
 
         String accessToken = Jwts.builder()
                 .setSubject(tokenSubject)
-                .setExpiration(new Date(now.getTime() + expirationPeriod))
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
