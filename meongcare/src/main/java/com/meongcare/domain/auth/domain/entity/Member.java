@@ -1,4 +1,4 @@
-package com.meongcare.auth.domain.entity;
+package com.meongcare.domain.auth.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

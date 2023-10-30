@@ -1,4 +1,4 @@
-package com.meongcare.auth.presentation.dto.response;
+package com.meongcare.domain.auth.presentation.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

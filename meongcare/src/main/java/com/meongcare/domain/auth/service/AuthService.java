@@ -1,10 +1,10 @@
-package com.meongcare.auth.service;
+package com.meongcare.domain.auth.service;
 
-import com.meongcare.auth.domain.entity.Member;
-import com.meongcare.auth.domain.repository.MemberRepository;
-import com.meongcare.auth.oauth2.token.JwtService;
-import com.meongcare.auth.presentation.dto.request.LoginRequestDto;
-import com.meongcare.auth.presentation.dto.response.LoginResponseDto;
+import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.auth.domain.repository.MemberRepository;
+import com.meongcare.common.jwt.JwtService;
+import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
+import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

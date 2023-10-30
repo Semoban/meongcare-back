@@ -1,10 +1,7 @@
-package com.meongcare.auth.presentation.dto.request;
+package com.meongcare.domain.auth.presentation.dto.request;
 
-import com.meongcare.auth.domain.entity.Member;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.meongcare.domain.auth.domain.entity.Member;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

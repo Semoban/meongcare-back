@@ -1,6 +1,6 @@
-package com.meongcare.auth.domain.repository;
+package com.meongcare.domain.auth.domain.repository;
 
-import com.meongcare.auth.domain.entity.Member;
+import com.meongcare.domain.auth.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
