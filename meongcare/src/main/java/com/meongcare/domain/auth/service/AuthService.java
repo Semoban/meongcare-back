@@ -39,15 +39,24 @@ public class AuthService {
             memberId = findMemberOptional.get().getId();
         }
 
-        LoginResponseDto loginResponseDto = createLoginResponseDto(memberId);
+        String accessToken = jwtService.createAccessToken(memberId);
+        String refreshToken = jwtService.createRefreshToken(memberId);
+
+        RefreshToken ree = refreshTokenRedisRepository.save(RefreshToken.builder()
+                        .id(memberId)
+                        .refreshToken(refreshToken)
+                        .build());
+        LoginResponseDto loginResponseDto = createLoginResponseDto(accessToken, refreshToken);
 
         return loginResponseDto;
     }
     public ReissueResponseDto reissue(String refreshToken) {
-        RefreshToken findRefreshToken = refreshTokenRedisRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new EntityNotFoundException("Entity Not Found"));
-
         Long userId = jwtService.parseJwtToken(refreshToken);
+        Optional<RefreshToken> findRefreshToken = refreshTokenRedisRepository.findById(userId);
+
+        if (findRefreshToken.isEmpty()) {
+            throw new EntityNotFoundException("토큰이 만료 되었습니다.");
+        }
 
         String accessToken =jwtService.createAccessToken(userId);
         ReissueResponseDto reissueResponseDto = ReissueResponseDto.builder()
@@ -58,9 +67,7 @@ public class AuthService {
 
     }
 
-    private LoginResponseDto createLoginResponseDto(Long memberId) {
-        String accessToken = jwtService.createAccessToken(memberId);
-        String refreshToken = jwtService.createRefreshToken(memberId);
+    private LoginResponseDto createLoginResponseDto(String accessToken, String refreshToken) {
 
         LoginResponseDto signUpResponseDto = LoginResponseDto
                 .builder()
