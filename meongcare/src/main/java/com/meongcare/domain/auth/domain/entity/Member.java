@@ -26,14 +26,11 @@ public class Member {
 
     private String profileImage;
 
-
     private boolean pushAgreement;
 
     @Column(length = 500)
     private String fcmToken;
 
-//    @Column(length = 500)
-//    private String refreshToken;
 
     @Builder
     public Member(Long id, String name, String email, String providerId, String provider, String profileImage, boolean pushAgreement, String fcmToken) {
@@ -47,7 +44,4 @@ public class Member {
         this.fcmToken = fcmToken;
     }
 
-//    public void updateRefreshToken(String refreshToken) {
-//        this.refreshToken = refreshToken;
-//    }
 }
