@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -23,7 +25,10 @@ public class DogService {
     @Transactional
     public void saveDog(Long userId, SaveDogRequestDto saveDogRequestDto) {
 
-        Member member = memberRepository.findById(userId).get();
+        Member member = memberRepository
+                .findById(userId)
+                .orElseThrow(IllegalArgumentException::new);
+
         double weight = saveDogRequestDto.getWeight();
 
         Dog dog = saveDogRequestDto.toEntity(member);
