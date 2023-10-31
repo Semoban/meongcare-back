@@ -1,4 +1,4 @@
-package com.meongcare.auth.oauth2;
+package oauth2;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

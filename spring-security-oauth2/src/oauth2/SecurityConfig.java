@@ -1,4 +1,4 @@
-package com.meongcare.auth.oauth2;
+package oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,5 @@
-package com.meongcare.auth.oauth2;
+package oauth2;
 
-import com.meongcare.auth.domain.entity.Member;
 import lombok.Getter;
 
 @Getter

@@ -1,4 +1,4 @@
-package com.meongcare.auth.oauth2;
+package oauth2;
 
 import java.util.Arrays;
 import java.util.Map;

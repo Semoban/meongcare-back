@@ -1,4 +1,4 @@
-package com.meongcare.auth.oauth2.token;
+package oauth2.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

@@ -1,15 +1,11 @@
-package com.meongcare.auth.oauth2;
+package oauth2;
 
 import com.meongcare.auth.domain.entity.Member;
 import com.meongcare.auth.domain.repository.MemberRepository;
 import com.meongcare.auth.oauth2.token.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
