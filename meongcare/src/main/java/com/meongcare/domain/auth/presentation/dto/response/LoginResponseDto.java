@@ -14,4 +14,13 @@ public class LoginResponseDto {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
+
+    public static LoginResponseDto of(String accessToken, String refreshToken) {
+        return LoginResponseDto
+                .builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+    }
 }

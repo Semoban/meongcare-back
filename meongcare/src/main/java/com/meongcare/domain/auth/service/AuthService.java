@@ -11,7 +11,6 @@ import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -39,18 +38,9 @@ public class AuthService {
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
 
-        refreshTokenRedisRepository.save(RefreshToken
-                .builder()
-                .id(memberId)
-                .refreshToken(refreshToken)
-                .build());
+        refreshTokenRedisRepository.save(RefreshToken.of(refreshToken, memberId));
 
-
-        LoginResponseDto loginResponseDto = LoginResponseDto
-                .builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        LoginResponseDto loginResponseDto = LoginResponseDto.of(accessToken, refreshToken);
 
         return loginResponseDto;
     }
@@ -59,7 +49,7 @@ public class AuthService {
 
         refreshTokenRedisRepository
                 .findById(refreshToken)
-                .orElseThrow(() -> new EntityNotFoundException("토큰이 만료 되었습니다."));
+                .orElseThrow(IllegalArgumentException::new);
 
         String accessToken =jwtService.createAccessToken(userId);
         ReissueResponseDto reissueResponseDto = new ReissueResponseDto(accessToken);
