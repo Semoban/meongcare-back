@@ -22,7 +22,8 @@ public class Member {
 
     private String providerId;
 
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     private String profileImage;
 
@@ -33,7 +34,7 @@ public class Member {
 
 
     @Builder
-    public Member(Long id, String name, String email, String providerId, String provider, String profileImage, boolean pushAgreement, String fcmToken) {
+    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImage, boolean pushAgreement, String fcmToken) {
         this.id = id;
         this.name = name;
         this.email = email;

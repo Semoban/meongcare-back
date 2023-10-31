@@ -1,6 +1,7 @@
 package com.meongcare.domain.auth.presentation.dto.request;
 
 import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.auth.domain.entity.Provider;
 import lombok.*;
 
 @Getter
@@ -18,7 +19,7 @@ public class LoginRequestDto {
         return Member
                 .builder()
                 .name(name)
-                .provider(provider)
+                .provider(Provider.of(provider))
                 .providerId(providerId)
                 .pushAgreement(false)
                 .profileImage(profileImage)
