@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class DogService {
 
-    private MemberRepository memberRepository;
-    private DogRepository dogRepository;
-    private DogWeightRepository dogWeightRepository;
+    private final MemberRepository memberRepository;
+    private final DogRepository dogRepository;
+    private final DogWeightRepository dogWeightRepository;
 
     @Transactional
     public void saveDog(Long userId, SaveDogRequestDto saveDogRequestDto) {

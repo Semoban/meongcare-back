@@ -18,9 +18,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthService {
 
-    private JwtService jwtService;
-    private MemberRepository memberRepository;
-    private RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final JwtService jwtService;
+    private final MemberRepository memberRepository;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         String providerId = loginRequestDto.getProviderId();

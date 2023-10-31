@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class DogController {
 
-    private DogService dogService;
+    private final DogService dogService;
 
     @PostMapping()
     public ResponseEntity saveDog(@JwtValidation Long userId, @RequestBody SaveDogRequestDto saveDogRequestDto) {
