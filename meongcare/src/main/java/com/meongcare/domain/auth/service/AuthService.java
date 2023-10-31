@@ -38,12 +38,17 @@ public class AuthService {
 
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
+
         refreshTokenRedisRepository.save(RefreshToken.builder()
                         .id(memberId)
                         .refreshToken(refreshToken)
                         .build());
 
-        LoginResponseDto loginResponseDto = createLoginResponseDto(accessToken, refreshToken);
+        LoginResponseDto loginResponseDto = LoginResponseDto
+                .builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
 
         return loginResponseDto;
     }
@@ -65,16 +70,6 @@ public class AuthService {
 
     public void logout(Long userId) {
         refreshTokenRedisRepository.deleteById(userId);
-    }
-
-    private LoginResponseDto createLoginResponseDto(String accessToken, String refreshToken) {
-
-        LoginResponseDto signUpResponseDto = LoginResponseDto
-                .builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-        return signUpResponseDto;
     }
 
 }
