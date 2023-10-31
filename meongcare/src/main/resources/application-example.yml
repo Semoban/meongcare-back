@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://example.com
+    driver-class-name: org.h2.Driver
+    username: example
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  data:
+    redis:
+      host: example
+      port: ---
+
+jwt:
+  secretKey: ---
+
+  access:
+    expiration: ---
+    header: AccessToken
+
+  refresh:
+    expiration: ---
+    header: RefreshToken
+
+cloud:
+  aws:
+    s3:
+      bucket: bucketName
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ----
+      secret-key: ----
