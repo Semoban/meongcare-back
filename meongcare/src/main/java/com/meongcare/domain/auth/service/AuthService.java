@@ -56,11 +56,10 @@ public class AuthService {
     }
     public ReissueResponseDto reissue(String refreshToken) {
         Long userId = jwtService.parseJwtToken(refreshToken);
-        Optional<RefreshToken> findRefreshToken = refreshTokenRedisRepository.findById(userId);
 
-        if (findRefreshToken.isEmpty()) {
-            throw new EntityNotFoundException("토큰이 만료 되었습니다.");
-        }
+        refreshTokenRedisRepository
+                .findById(refreshToken)
+                .orElseThrow(() -> new EntityNotFoundException("토큰이 만료 되었습니다."));
 
         String accessToken =jwtService.createAccessToken(userId);
         ReissueResponseDto reissueResponseDto = new ReissueResponseDto(accessToken);
@@ -68,8 +67,8 @@ public class AuthService {
         return reissueResponseDto;
     }
 
-    public void logout(Long userId) {
-        refreshTokenRedisRepository.deleteById(userId);
+    public void logout(String refreshToken) {
+        refreshTokenRedisRepository.deleteById(refreshToken);
     }
 
 }

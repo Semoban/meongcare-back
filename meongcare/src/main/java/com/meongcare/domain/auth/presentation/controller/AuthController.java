@@ -33,8 +33,8 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity login(@JwtValidation Long userId) {
-        authService.logout(userId);
+    public ResponseEntity login(@RequestHeader("RefreshToken") String refreshToken) {
+        authService.logout(refreshToken);
         return ResponseEntity.ok().build();
     }
 
