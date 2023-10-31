@@ -63,9 +63,7 @@ public class AuthService {
         }
 
         String accessToken =jwtService.createAccessToken(userId);
-        ReissueResponseDto reissueResponseDto = ReissueResponseDto.builder()
-                .accessToken(accessToken)
-                .build();
+        ReissueResponseDto reissueResponseDto = new ReissueResponseDto(accessToken);
 
         return reissueResponseDto;
     }
