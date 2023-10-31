@@ -1,6 +1,6 @@
 package com.meongcare.common.jwt;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -11,10 +11,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
+@AllArgsConstructor
 public class JwtValidateArgumentResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
