@@ -39,10 +39,12 @@ public class AuthService {
         String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken(memberId);
 
-        refreshTokenRedisRepository.save(RefreshToken.builder()
-                        .id(memberId)
-                        .refreshToken(refreshToken)
-                        .build());
+        refreshTokenRedisRepository.save(RefreshToken
+                .builder()
+                .id(memberId)
+                .refreshToken(refreshToken)
+                .build());
+
 
         LoginResponseDto loginResponseDto = LoginResponseDto
                 .builder()
