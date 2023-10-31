@@ -34,10 +34,7 @@ public class DogService {
         Dog dog = saveDogRequestDto.toEntity(member);
         Dog createDog = dogRepository.save(dog);
 
-        DogWeight dogWeight = DogWeight.builder()
-                .weight(weight)
-                .dog(createDog)
-                .build();
+        DogWeight dogWeight = DogWeight.of(createDog, weight);
 
         dogWeightRepository.save(dogWeight);
 
