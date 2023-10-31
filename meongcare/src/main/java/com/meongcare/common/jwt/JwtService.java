@@ -56,7 +56,7 @@ public class JwtService {
                 .setExpiration(expirationTime)
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
-        return accessToken;
+        return BEARER + accessToken;
     }
 
     public Long parseJwtToken(String token) {
