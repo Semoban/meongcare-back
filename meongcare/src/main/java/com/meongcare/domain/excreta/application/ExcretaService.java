@@ -24,6 +24,7 @@ import static com.meongcare.common.util.LocalDateTimeUtils.createNextMidnight;
 import static com.meongcare.common.util.LocalDateTimeUtils.createNowMidnight;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ExcretaService {
 
@@ -32,7 +33,6 @@ public class ExcretaService {
     private final DogRepository dogRepository;
     private final ImageHandler imageHandler;
 
-    @Transactional
     public void saveExcreta(SaveExcretaRequest request, MultipartFile multipartFile) {
         Dog dog = dogRepository.getById(request.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
@@ -54,7 +54,6 @@ public class ExcretaService {
         return GetExcretaResponse.from(excretaVO);
     }
 
-    @Transactional
     public void editExcreta(PatchExcretaRequest request, MultipartFile multipartFile) {
         Excreta excreta = excretaRepository.getById(request.getExcretaId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
@@ -67,7 +66,6 @@ public class ExcretaService {
 
     }
 
-    @Transactional
     public void deleteExcreta(List<Long> excretaIds) {
         List<Excreta> excretas = excretaQueryRepository.getByIds(excretaIds);
         for (Excreta excreta : excretas) {

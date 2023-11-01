@@ -21,6 +21,7 @@ import static com.meongcare.common.util.LocalDateTimeUtils.createNextMidnight;
 import static com.meongcare.common.util.LocalDateTimeUtils.createNowMidnight;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class SymptomService {
 
@@ -28,7 +29,6 @@ public class SymptomService {
     private final SymptomRepository symptomRepository;
     private final SymptomQueryRepository symptomQueryRepository;
 
-    @Transactional
     public void saveSymptom(SaveSymptomRequest request) {
         Dog dog = dogRepository.getById(request.getDogId());
         symptomRepository.save(
@@ -54,7 +54,6 @@ public class SymptomService {
         return GetSymptomResponse.from(symptomVO);
     }
 
-    @Transactional
     public void editSymptom(EditSymptomRequest request) {
         Symptom symptom = symptomRepository.getById(request.getSymptomId());
         symptom.updateRecord(
@@ -64,7 +63,6 @@ public class SymptomService {
         );
     }
 
-    @Transactional
     public void deleteSymptom(List<Long> symptomIds) {
         symptomQueryRepository.deleteSymptomById(symptomIds);
     }
