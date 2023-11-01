@@ -1,4 +1,4 @@
-package com.meongcare.auth.domain.entity;
+package com.meongcare.domain.auth.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
@@ -16,30 +17,40 @@ public class Member {
     @Id
     private Long id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String email;
 
-    private String provider;
+    @NotNull
+    private String providerId;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Provider provider;
+
+    @NotNull
     private String profileImage;
 
+    @NotNull
     private boolean pushAgreement;
 
     @Column(length = 500)
+    @NotNull
     private String fcmToken;
 
-    @Column(length = 500)
-    private String refreshToken;
 
     @Builder
-    public Member(String name, String email, String provider, String profileImage, boolean pushAgreement, String fcmToken, String refreshToken) {
+    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImage, boolean pushAgreement, String fcmToken) {
+        this.id = id;
         this.name = name;
         this.email = email;
+        this.providerId = providerId;
         this.provider = provider;
         this.profileImage = profileImage;
         this.pushAgreement = pushAgreement;
         this.fcmToken = fcmToken;
-        this.refreshToken = refreshToken;
     }
+
 }

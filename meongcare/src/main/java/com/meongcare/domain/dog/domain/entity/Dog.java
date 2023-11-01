@@ -1,13 +1,14 @@
-package com.meongcare.dog.domain.entity;
+package com.meongcare.domain.dog.domain.entity;
 
-import com.meongcare.auth.domain.entity.Member;
+import com.meongcare.domain.auth.domain.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -20,33 +21,41 @@ public class Dog {
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     private Member member;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String type;
 
+    @NotNull
+    private String profileImage;
+
+    @NotNull
     private String sex;
 
+    @NotNull
     private boolean castrate;
 
-    private Date birthDate;
+    private LocalDateTime birthDate;
 
-    private Date adoptDate;
-
+    @NotNull
     private double neckRound;
 
+    @NotNull
     private double chestRound;
 
     @Builder
-    public Dog(Member member, String name, String type, String sex, boolean castrate, Date birthDate, Date adoptDate, double neckRound, double chestRound) {
+    public Dog(Member member, String name, String type, String profileImage, String sex, boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound) {
         this.member = member;
         this.name = name;
         this.type = type;
+        this.profileImage = profileImage;
         this.sex = sex;
         this.castrate = castrate;
         this.birthDate = birthDate;
-        this.adoptDate = adoptDate;
         this.neckRound = neckRound;
         this.chestRound = chestRound;
     }
