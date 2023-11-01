@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DogRepository extends JpaRepository<Dog, Long> {
+    default Dog getById(Long id) {
+        return this.findById(id)
+                .orElseThrow(RuntimeException::new);
+    }
 }
