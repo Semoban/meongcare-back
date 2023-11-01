@@ -51,7 +51,7 @@ public class SymptomService {
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
         );
-        return GetSymptomResponse.of(symptomVO);
+        return GetSymptomResponse.from(symptomVO);
     }
 
     @Transactional

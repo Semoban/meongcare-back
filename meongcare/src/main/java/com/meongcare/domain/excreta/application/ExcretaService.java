@@ -51,7 +51,7 @@ public class ExcretaService {
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
         );
-        return GetExcretaResponse.of(excretaVO);
+        return GetExcretaResponse.from(excretaVO);
     }
 
     @Transactional
