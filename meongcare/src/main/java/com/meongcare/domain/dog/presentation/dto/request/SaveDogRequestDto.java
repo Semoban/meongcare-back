@@ -6,20 +6,37 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SaveDogRequestDto {
 
+    @NotNull
     private String name;
+
+    @NotNull
     private String type;
+
+    @NotNull
     private String sex;
+
     private LocalDateTime birthDate;
+
+    @NotNull
     private String profileImage;
+
+    @NotNull
     private boolean castrate;
+
+    @NotNull
     private double weight;
+
+    @NotNull
     private double neckRound;
+
+    @NotNull
     private double chestRound;
 
     public Dog toEntity(Member member) {

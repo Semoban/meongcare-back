@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,6 +23,7 @@ public class DogWeight {
     @ManyToOne(fetch = FetchType.LAZY)
     private Dog dog;
 
+    @NotNull
     private double weight;
 
     @CreationTimestamp
@@ -31,5 +33,13 @@ public class DogWeight {
     public DogWeight(Dog dog, double weight) {
         this.dog = dog;
         this.weight = weight;
+    }
+
+    public static DogWeight of(Dog dog, double weight) {
+        return DogWeight
+                .builder()
+                .dog(dog)
+                .weight(weight)
+                .build();
     }
 }

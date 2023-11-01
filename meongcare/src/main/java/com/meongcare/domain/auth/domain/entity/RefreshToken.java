@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import javax.validation.constraints.NotNull;
+
 @Builder
 @Getter
 @AllArgsConstructor
@@ -11,7 +13,19 @@ import org.springframework.data.redis.core.RedisHash;
 public class RefreshToken {
 
     @Id
+    @NotNull
+    private String refreshToken;
+
+    @NotNull
     private Long id;
 
-    private String refreshToken;
+
+    public static RefreshToken of(String refreshToken, Long id) {
+        return RefreshToken
+                .builder()
+                .refreshToken(refreshToken)
+                .id(id)
+                .build();
+    }
+
 }

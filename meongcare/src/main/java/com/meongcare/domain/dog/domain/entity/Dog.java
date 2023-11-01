@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,22 +21,30 @@ public class Dog {
 
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     private Member member;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String type;
 
+    @NotNull
     private String profileImage;
 
+    @NotNull
     private String sex;
 
+    @NotNull
     private boolean castrate;
 
     private LocalDateTime birthDate;
 
+    @NotNull
     private double neckRound;
 
+    @NotNull
     private double chestRound;
 
     @Builder

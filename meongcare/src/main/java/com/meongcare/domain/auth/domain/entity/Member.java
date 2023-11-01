@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
@@ -16,24 +17,32 @@ public class Member {
     @Id
     private Long id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String email;
 
+    @NotNull
     private String providerId;
 
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Provider provider;
 
+    @NotNull
     private String profileImage;
 
+    @NotNull
     private boolean pushAgreement;
 
     @Column(length = 500)
+    @NotNull
     private String fcmToken;
 
 
     @Builder
-    public Member(Long id, String name, String email, String providerId, String provider, String profileImage, boolean pushAgreement, String fcmToken) {
+    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImage, boolean pushAgreement, String fcmToken) {
         this.id = id;
         this.name = name;
         this.email = email;
