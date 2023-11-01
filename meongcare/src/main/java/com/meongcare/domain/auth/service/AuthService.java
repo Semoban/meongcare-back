@@ -10,6 +10,7 @@ import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
+    @Transactional
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         String providerId = loginRequestDto.getProviderId();
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
