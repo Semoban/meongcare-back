@@ -24,7 +24,7 @@ public class GetSymptomResponse {
         private String note;
     }
 
-    public static GetSymptomResponse of(List<GetSymptomVO> symptomVO) {
+    public static GetSymptomResponse from(List<GetSymptomVO> symptomVO) {
         List<Record> records = symptomVO.stream()
                 .map(symptom -> new Record(
                         symptom.getSymptomId(),

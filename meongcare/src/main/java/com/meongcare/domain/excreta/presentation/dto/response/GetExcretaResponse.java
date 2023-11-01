@@ -26,7 +26,7 @@ public class GetExcretaResponse {
         private ExcretaType excretaType;
     }
 
-    public static GetExcretaResponse of(List<GetExcretaVO> excretaVO) {
+    public static GetExcretaResponse from(List<GetExcretaVO> excretaVO) {
         int fecesCount = (int) excretaVO.stream()
                 .filter(excreta -> excreta.getExcretaType() == ExcretaType.FECES)
                 .count();
