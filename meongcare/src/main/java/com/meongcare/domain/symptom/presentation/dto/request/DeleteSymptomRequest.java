@@ -9,5 +9,5 @@ import java.util.List;
 public class DeleteSymptomRequest {
 
     @NotNull
-    List<Long> symptomIds;
+    private List<Long> symptomIds;
 }

@@ -9,5 +9,5 @@ import java.util.List;
 public class DeleteExcretaRequest {
 
     @NotNull
-    List<Long> excretaIds;
+    private List<Long> excretaIds;
 }
