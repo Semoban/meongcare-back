@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "feature/6" ]
+    branches: [ "develop" ]
 
 jobs:
   CI-CD:
@@ -52,7 +52,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: docker 빌드 및 ECR 푸시
+      - name: docker 빌드 및 ECR push
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
