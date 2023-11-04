@@ -28,7 +28,9 @@ jobs:
         uses: gradle/gradle-build-action@v2
     
       - name: Gradle 빌드
-        run: ./meongcare/gradlew build
+        run: |
+          cd ./meongcare
+          ./gradlew build
 
       - name: AWS Configure 설정
         uses: aws-actions/configure-aws-credentials@v4
