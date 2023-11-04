@@ -82,4 +82,4 @@ jobs:
             docker image tag $IMAGE_NAME:$IMAGE_TAG meongcare/dev
             chmod 777 ./deploy.sh
             ./deploy.sh
-            docker image prune -a
+            docker image prune -f
