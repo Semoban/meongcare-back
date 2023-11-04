@@ -25,7 +25,7 @@ jobs:
           APPLICATION_DEV: ${{ secrets.APPLICATION_DEV }}
 
       - name: Gradle 빌드
-        run: ./meongcare/gradlew build -x test
+        run: ./meongcare/gradlew build
 
       - name: AWS Configure 설정
         uses: aws-actions/configure-aws-credentials@v4
