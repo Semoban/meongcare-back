@@ -66,7 +66,7 @@ jobs:
           host: ${{ secrets.EC2_DEV_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_DEV_KEY }}
-          envs: ECR_IMAGE_NAME, IMAGE_TAG, AWS_ACCOUNT
+          envs: IMAGE_NAME, IMAGE_TAG, AWS_ACCOUNT
           script: |
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $AWS_ACCOUNT
             docker pull $IMAGE_NAME:$IMAGE_TAG
