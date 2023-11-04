@@ -18,7 +18,7 @@ jobs:
 
       - name: application.yml 생성
         run: |
-          cd ./src/main/resources 
+          cd ./meongcare/src/main/resources 
           touch ./application.yml 
           echo "$APPLICATION_DEV" > ./application.yml
         env:
