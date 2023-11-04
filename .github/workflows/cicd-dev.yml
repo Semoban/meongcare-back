@@ -24,6 +24,9 @@ jobs:
         env:
           APPLICATION_DEV: ${{ secrets.APPLICATION_DEV }}
 
+      - name: Gradle 빌드 권한 부여
+        run: chmod +x gradlew
+      
       - name: Gradle 빌드
         run: ./meongcare/gradlew build
 
