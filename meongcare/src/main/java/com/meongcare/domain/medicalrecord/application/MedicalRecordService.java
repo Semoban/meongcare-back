@@ -63,8 +63,10 @@ public class MedicalRecordService {
         return GetMedicalRecordResponseDto.of(medicalRecord);
     }
 
-    public GetMedicalRecordsResponseDto getMedicalRecords(LocalDateTime dateTime) {
+    public GetMedicalRecordsResponseDto getMedicalRecords(Long dogId, LocalDateTime dateTime) {
+        Dog dog = dogRepository.getById(dogId);
         List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(
+                dog,
                 LocalDateTimeUtils.createNowMidnight(dateTime),
                 LocalDateTimeUtils.createNextMidnight(dateTime)
         );

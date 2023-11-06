@@ -54,8 +54,9 @@ public class MedicalRecordController {
 
     @GetMapping
     public ResponseEntity<GetMedicalRecordsResponseDto> getMedicalRecords(
+            @RequestParam("dogId") Long dogId,
             @RequestParam("dateTime") @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime){
-        GetMedicalRecordsResponseDto getMedicalRecordsResponseDto = medicalRecordService.getMedicalRecords(dateTime);
+        GetMedicalRecordsResponseDto getMedicalRecordsResponseDto = medicalRecordService.getMedicalRecords(dogId, dateTime);
         return ResponseEntity.ok().body(getMedicalRecordsResponseDto);
     }
 

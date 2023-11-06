@@ -1,5 +1,6 @@
 package com.meongcare.domain.medicalrecord.domain.repository;
 
+import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.QGetMedicalRecordsVo;
@@ -33,7 +34,7 @@ public class MedicalRecordQueryRepository {
                 .execute();
     }
 
-    public List<GetMedicalRecordsVo> getByDate(LocalDateTime nowDateTime, LocalDateTime nextDateTime) {
+    public List<GetMedicalRecordsVo> getByDate(Dog dog, LocalDateTime nowDateTime, LocalDateTime nextDateTime) {
         return queryFactory
                 .select(new QGetMedicalRecordsVo(
                         medicalRecord.id,
@@ -41,11 +42,16 @@ public class MedicalRecordQueryRepository {
                 ))
                 .from(medicalRecord)
                 .where(
+                        dogIdEq(dog),
                         dateTimeGoe(nowDateTime),
                         dateTimeLt(nextDateTime)
                 )
                 .orderBy(medicalRecord.dateTime.asc())
                 .fetch();
+    }
+
+    private BooleanExpression dogIdEq(Dog dog) {
+        return medicalRecord.dog.eq(dog);
     }
     private BooleanExpression dateTimeGoe(LocalDateTime nowDateTime) {
         return medicalRecord.dateTime.goe(nowDateTime);
