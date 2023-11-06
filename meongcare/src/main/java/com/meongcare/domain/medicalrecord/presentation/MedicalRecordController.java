@@ -1,13 +1,11 @@
 package com.meongcare.domain.medicalrecord.presentation;
 
 import com.meongcare.domain.medicalrecord.application.MedicalRecordService;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -24,6 +22,14 @@ public class MedicalRecordController {
             @RequestPart(value = "file") MultipartFile multipartFile,
             @RequestPart(value = "dto") @Valid SaveMedicalRecordRequestDto saveMedicalRecordRequestDto) {
         medicalRecordService.save(multipartFile, saveMedicalRecordRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping()
+    public ResponseEntity<Void> updateMedicalRecord(
+            @RequestPart(value = "file") MultipartFile multipartFile,
+            @RequestPart(value = "dto") @Valid PutMedicalRecordRequestDto putMedicalRecordRequestDto) {
+        medicalRecordService.updateMedicalRecord(multipartFile, putMedicalRecordRequestDto);
         return ResponseEntity.ok().build();
     }
 }
