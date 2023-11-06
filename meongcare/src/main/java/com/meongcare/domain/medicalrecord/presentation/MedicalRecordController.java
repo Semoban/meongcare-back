@@ -3,6 +3,7 @@ package com.meongcare.domain.medicalrecord.presentation;
 import com.meongcare.domain.medicalrecord.application.MedicalRecordService;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,4 +40,12 @@ public class MedicalRecordController {
         medicalRecordService.deleteMedicalRecords(medicalRecordIds);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{medicalRecordId}")
+    public ResponseEntity<GetMedicalRecordResponseDto> getMedicalRecord(@PathVariable Long medicalRecordId) {
+        GetMedicalRecordResponseDto getMedicalRecordResponseDto = medicalRecordService.get(medicalRecordId);
+        return ResponseEntity.ok().body(getMedicalRecordResponseDto);
+
+    }
+
 }

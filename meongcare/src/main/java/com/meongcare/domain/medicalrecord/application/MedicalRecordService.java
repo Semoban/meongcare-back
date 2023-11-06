@@ -7,6 +7,7 @@ import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordQueryRe
 import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordRepository;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponseDto;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.AllArgsConstructor;
@@ -52,4 +53,10 @@ public class MedicalRecordService {
     }
 
 
+    public GetMedicalRecordResponseDto get(Long medicalRecordId) {
+        MedicalRecord medicalRecord = medicalRecordRepository.getById(medicalRecordId);
+
+        return GetMedicalRecordResponseDto.of(medicalRecord);
+
+    }
 }
