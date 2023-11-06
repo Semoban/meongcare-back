@@ -4,13 +4,18 @@ import com.meongcare.domain.medicalrecord.application.MedicalRecordService;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
 import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponseDto;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordsResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
 
 @RequiredArgsConstructor
 @RequestMapping("/medical-record")
@@ -45,7 +50,13 @@ public class MedicalRecordController {
     public ResponseEntity<GetMedicalRecordResponseDto> getMedicalRecord(@PathVariable Long medicalRecordId) {
         GetMedicalRecordResponseDto getMedicalRecordResponseDto = medicalRecordService.get(medicalRecordId);
         return ResponseEntity.ok().body(getMedicalRecordResponseDto);
+    }
 
+    @GetMapping
+    public ResponseEntity<GetMedicalRecordsResponseDto> getMedicalRecords(
+            @RequestParam("dateTime") @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime){
+        GetMedicalRecordsResponseDto getMedicalRecordsResponseDto = medicalRecordService.getMedicalRecords(dateTime);
+        return ResponseEntity.ok().body(getMedicalRecordsResponseDto);
     }
 
 }
