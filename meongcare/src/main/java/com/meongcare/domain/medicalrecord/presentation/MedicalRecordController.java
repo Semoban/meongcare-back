@@ -17,7 +17,7 @@ public class MedicalRecordController {
 
     private final MedicalRecordService medicalRecordService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Void> saveMedicalRecord(
             @RequestPart(value = "file") MultipartFile multipartFile,
             @RequestPart(value = "dto") @Valid SaveMedicalRecordRequestDto saveMedicalRecordRequestDto) {
@@ -25,11 +25,17 @@ public class MedicalRecordController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<Void> updateMedicalRecord(
             @RequestPart(value = "file") MultipartFile multipartFile,
             @RequestPart(value = "dto") @Valid PutMedicalRecordRequestDto putMedicalRecordRequestDto) {
-        medicalRecordService.updateMedicalRecord(multipartFile, putMedicalRecordRequestDto);
+        medicalRecordService.update(multipartFile, putMedicalRecordRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteMedicalRecord(@RequestParam("medicalRecordId") Long medicalRecordId) {
+        medicalRecordService.delete(medicalRecordId);
         return ResponseEntity.ok().build();
     }
 }

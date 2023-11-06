@@ -31,10 +31,17 @@ public class MedicalRecordService {
     }
 
     @Transactional
-    public void updateMedicalRecord(MultipartFile multipartFile, PutMedicalRecordRequestDto putMedicalRecordRequestDto) {
+    public void update(MultipartFile multipartFile, PutMedicalRecordRequestDto putMedicalRecordRequestDto) {
         MedicalRecord medicalRecord = medicalRecordRepository.getById(putMedicalRecordRequestDto.getMedicalRecordId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
 
         medicalRecord.updateMedicalRecord(putMedicalRecordRequestDto, imageURL);
     }
+
+    @Transactional
+    public void delete(Long medicalRecordId) {
+        medicalRecordRepository.deleteById(medicalRecordId);
+    }
+
+
 }
