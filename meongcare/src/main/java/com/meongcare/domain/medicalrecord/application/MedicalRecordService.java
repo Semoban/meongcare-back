@@ -3,6 +3,7 @@ package com.meongcare.domain.medicalrecord.application;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
+import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordQueryRepository;
 import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordRepository;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
@@ -21,6 +24,7 @@ public class MedicalRecordService {
     private final DogRepository dogRepository;
     private final ImageHandler imageHandler;
     private final MedicalRecordRepository medicalRecordRepository;
+    private final MedicalRecordQueryRepository medicalRecordQueryRepository;
 
     @Transactional
     public void save(MultipartFile multipartFile, SaveMedicalRecordRequestDto saveMedicalRecordRequestDto) {
@@ -39,8 +43,12 @@ public class MedicalRecordService {
     }
 
     @Transactional
-    public void delete(Long medicalRecordId) {
-        medicalRecordRepository.deleteById(medicalRecordId);
+    public void deleteMedicalRecords(List<Long> medicalRecordIds) {
+        List<MedicalRecord> medicalRecords = medicalRecordQueryRepository.getByIds(medicalRecordIds);
+        for (MedicalRecord medicalRecord : medicalRecords) {
+            imageHandler.deleteImage(medicalRecord.getImageUrl());
+        }
+        medicalRecordQueryRepository.deleteByIds(medicalRecordIds);
     }
 
 

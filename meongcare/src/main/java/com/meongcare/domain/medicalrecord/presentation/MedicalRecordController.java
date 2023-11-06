@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/medical-record")
@@ -34,8 +35,8 @@ public class MedicalRecordController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteMedicalRecord(@RequestParam("medicalRecordId") Long medicalRecordId) {
-        medicalRecordService.delete(medicalRecordId);
+    public ResponseEntity<Void> deleteMedicalRecord(@RequestParam List<Long> medicalRecordIds) {
+        medicalRecordService.deleteMedicalRecords(medicalRecordIds);
         return ResponseEntity.ok().build();
     }
 }
