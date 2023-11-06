@@ -1,6 +1,5 @@
 package com.meongcare.domain.medicalrecord.domain.repository;
 
-import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.QGetMedicalRecordsVo;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.meongcare.domain.excreta.domain.entity.QExcreta.excreta;
 import static com.meongcare.domain.medicalrecord.domain.entity.QMedicalRecord.*;
 
 @RequiredArgsConstructor

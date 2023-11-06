@@ -1,11 +1,9 @@
 package com.meongcare.domain.medicalrecord.presentation.dto.response;
 
-import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
