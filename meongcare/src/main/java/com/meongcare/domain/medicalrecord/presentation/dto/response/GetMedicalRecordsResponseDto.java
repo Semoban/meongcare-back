@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Getter
 public class GetMedicalRecordsResponseDto {
 
-    private List<Record> recordList;
+    private List<Record> records;
 
     @AllArgsConstructor
     @Getter
