@@ -1,5 +1,6 @@
 package com.meongcare.domain.medicalrecord.application;
 
+import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
@@ -63,7 +64,10 @@ public class MedicalRecordService {
     }
 
     public GetMedicalRecordsResponseDto getMedicalRecords(LocalDateTime dateTime) {
-        List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(dateTime);
+        List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(
+                LocalDateTimeUtils.createNowMidnight(dateTime),
+                LocalDateTimeUtils.createNextMidnight(dateTime)
+        );
         return GetMedicalRecordsResponseDto.of(getMedicalRecordsVos);
 
     }

@@ -1,5 +1,6 @@
 package com.meongcare.domain.medicalrecord.domain.repository;
 
+import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.QGetMedicalRecordsVo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.meongcare.domain.excreta.domain.entity.QExcreta.excreta;
 import static com.meongcare.domain.medicalrecord.domain.entity.QMedicalRecord.*;
 
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class MedicalRecordQueryRepository {
                 .execute();
     }
 
-    public List<GetMedicalRecordsVo> getByDate(LocalDateTime datetime) {
+    public List<GetMedicalRecordsVo> getByDate(LocalDateTime nowDateTime, LocalDateTime nextDateTime) {
         return queryFactory
                 .select(new QGetMedicalRecordsVo(
                         medicalRecord.id,
@@ -41,14 +43,17 @@ public class MedicalRecordQueryRepository {
                 ))
                 .from(medicalRecord)
                 .where(
-                        dateEq(datetime))
+                        dateTimeGoe(nowDateTime),
+                        dateTimeLt(nextDateTime)
+                )
                 .orderBy(medicalRecord.dateTime.asc())
                 .fetch();
     }
+    private BooleanExpression dateTimeGoe(LocalDateTime nowDateTime) {
+        return medicalRecord.dateTime.goe(nowDateTime);
+    }
 
-    private BooleanExpression dateEq(LocalDateTime datetime) {
-        return medicalRecord.dateTime.between(
-                LocalDateTime.of(datetime.getYear(), datetime.getMonth(), datetime.getDayOfMonth(), 0, 0, 0)
-                ,LocalDateTime.of(datetime.getYear(), datetime.getMonth(), datetime.getDayOfMonth(), 23, 59, 59));
+    private BooleanExpression dateTimeLt(LocalDateTime nextDatetime) {
+        return medicalRecord.dateTime.lt(nextDatetime);
     }
 }
