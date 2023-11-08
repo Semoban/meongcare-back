@@ -1,6 +1,7 @@
 package com.meongcare.domain.medicalrecord.presentation.dto.response;
 
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,7 +19,9 @@ public class GetMedicalRecordsResponseDto {
     @AllArgsConstructor
     @Getter
     static class Record {
+        @Schema(description = "진료기록 ID", example = "1")
         private Long medicalRecordId;
+        @Schema(description = "진료기록 시간", example = "오전 08:00")
         private String time;
     }
 
