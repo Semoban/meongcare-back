@@ -2,6 +2,7 @@ package com.meongcare.domain.excreta.presentation.dto.response;
 
 import com.meongcare.domain.excreta.domain.entity.ExcretaType;
 import com.meongcare.domain.excreta.domain.repository.vo.GetExcretaVO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,7 +15,9 @@ import static com.meongcare.common.util.LocalDateTimeUtils.createAMPMTime;
 @Getter
 public class GetExcretaResponse {
 
+    @Schema(description = "대변 횟수", example = "1")
     private int fecesCount;
+    @Schema(description = "소변 횟수", example = "3")
     private int urineCount;
     private List<Record> recordList;
 

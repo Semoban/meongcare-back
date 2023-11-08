@@ -2,12 +2,11 @@ package com.meongcare.domain.weight.presentation.dto.response;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.weight.domain.repository.vo.GetWeekWeightVO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.time.temporal.WeekFields;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,18 +15,20 @@ import static com.meongcare.common.util.LocalDateTimeUtils.getPeriodDate;
 
 @AllArgsConstructor
 @Getter
-public class GetWeightWeekResponse {
+public class GetWeekWeightResponse {
 
     private List<Week> weeks;
 
     @Getter
     @AllArgsConstructor
     static class Week {
+        @Schema(description = "주차별 몸무게", example = "12.4")
         private double weight;
+        @Schema(description = "주차별 기간", example = "11.08 ~ 11.14")
         private String periodDate;
     }
 
-    public static GetWeightWeekResponse of(List<GetWeekWeightVO> weekWeightVO, LocalDateTime dateTime) {
+    public static GetWeekWeightResponse of(List<GetWeekWeightVO> weekWeightVO, LocalDateTime dateTime) {
         LocalDateTime threeWeeksAgoStartDay = LocalDateTimeUtils.createThreeWeeksAgoStartDay(dateTime);
         LocalDateTime threeWeeksAgoLastDay = LocalDateTimeUtils.createThisWeekLastDay(threeWeeksAgoStartDay);
 
@@ -41,7 +42,7 @@ public class GetWeightWeekResponse {
                 })
                 .collect(Collectors.toList());
 
-        return new GetWeightWeekResponse(weeks);
+        return new GetWeekWeightResponse(weeks);
     }
 
     private static double getWeightAverage(List<GetWeekWeightVO> weekWeightVO, LocalDateTime startDay, LocalDateTime lastDay) {
