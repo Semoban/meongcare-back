@@ -47,8 +47,11 @@ public class Dog {
     @NotNull
     private double chestRound;
 
+    private double weight;
+
     @Builder
-    public Dog(Member member, String name, String type, String profileImage, String sex, boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound) {
+    public Dog(Member member, String name, String type, String profileImage, String sex,
+               boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
         this.member = member;
         this.name = name;
         this.type = type;
@@ -58,5 +61,10 @@ public class Dog {
         this.birthDate = birthDate;
         this.neckRound = neckRound;
         this.chestRound = chestRound;
+        this.weight = weight;
+    }
+
+    public void updateWeight(double weight) {
+        this.weight = weight;
     }
 }
