@@ -4,6 +4,8 @@ import com.meongcare.domain.excreta.application.ExcretaService;
 import com.meongcare.domain.excreta.presentation.dto.request.SaveExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.request.PatchExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
 
+@Tag(name = "대소변 API")
 @RequiredArgsConstructor
 @RequestMapping("/excreta")
 @RestController
@@ -31,6 +34,7 @@ public class ExcretaController {
 
     private final ExcretaService excretaService;
 
+    @Operation(description = "대소변 저장")
     @PostMapping
     public ResponseEntity<Void> saveExcreta(
             @RequestPart(value = "dto") @Valid SaveExcretaRequest request,
@@ -40,6 +44,7 @@ public class ExcretaController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(description = "대소변 조회")
     @GetMapping("/{dogId}")
     public ResponseEntity<GetExcretaResponse> getExcreta(
             @PathVariable Long dogId,
@@ -47,6 +52,7 @@ public class ExcretaController {
         return ResponseEntity.ok(excretaService.getExcreta(dogId, dateTime));
     }
 
+    @Operation(description = "대소변 수정")
     @PatchMapping
     public ResponseEntity<Void> patchExcreta(
             @RequestPart(value = "dto") @Valid PatchExcretaRequest request,
@@ -56,12 +62,14 @@ public class ExcretaController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(description = "대소변 삭제")
     @DeleteMapping
     public ResponseEntity<Void> deleteExcreta(@RequestParam List<Long> excretaIds) {
         excretaService.deleteExcreta(excretaIds);
         return ResponseEntity.ok().build();
     }
 
+    @Operation(description = "대소변 이미지 조회")
     @GetMapping("/image/{excretaId}")
     public ResponseEntity<String> getExcretaImage(@PathVariable Long excretaId) {
         return ResponseEntity.ok(excretaService.getExcretaImage(excretaId));
