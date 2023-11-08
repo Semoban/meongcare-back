@@ -20,15 +20,13 @@ import static com.meongcare.common.util.LocalDateTimeUtils.createThisMonthDateTi
 import static com.meongcare.common.util.LocalDateTimeUtils.createThisWeekLastDay;
 
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class WeightService {
 
     private final DogRepository dogRepository;
     private final WeightQueryRepository weightQueryRepository;
 
-
-    @Transactional(readOnly = true)
     public GetWeightWeekResponse getWeekWeight(Long dogId, LocalDateTime dateTime) {
         List<GetWeekWeightVO> weekWeightVO = weightQueryRepository.getWeekWeightByDogIdAndDateTime(
                 dogId,
@@ -39,7 +37,6 @@ public class WeightService {
         return GetWeightWeekResponse.of(weekWeightVO, dateTime);
     }
 
-    @Transactional(readOnly = true)
     public GetWeightMonthResponse getMonthWeight(Long dogId, LocalDateTime dateTime) {
         List<GetMonthWeightVO> weightVO = weightQueryRepository.getMonthWeightByDogIdAndDateTime(
                 dogId,
@@ -49,6 +46,7 @@ public class WeightService {
         return GetWeightMonthResponse.of(weightVO, dateTime);
     }
 
+    @Transactional
     public void updateWeight(Long dogId, double weight) {
         Dog dog = dogRepository.getById(dogId);
         dog.updateWeight(weight);
