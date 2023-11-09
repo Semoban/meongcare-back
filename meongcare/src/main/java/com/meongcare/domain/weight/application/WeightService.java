@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+import static com.meongcare.common.util.LocalDateTimeUtils.createNextMidnight;
+import static com.meongcare.common.util.LocalDateTimeUtils.createNowMidnight;
 import static com.meongcare.common.util.LocalDateTimeUtils.createThreeWeeksAgoStartDay;
 import static com.meongcare.common.util.LocalDateTimeUtils.createLastMonthDateTime;
 import static com.meongcare.common.util.LocalDateTimeUtils.createThisMonthDateTime;
@@ -81,5 +83,13 @@ public class WeightService {
             weights.get(TODAY_WEIGHT).modifyTodayWeight(kg);
         }
         weightJdbcRepository.saveWeight(weights);
+    }
+
+    public double getDayWeight(Long dogId, LocalDateTime dateTime) {
+        return weightQueryRepository.getDayWeightByDogIdAndDateTime(
+                dogId,
+                createNowMidnight(dateTime),
+                createNextMidnight(dateTime)
+        );
     }
 }
