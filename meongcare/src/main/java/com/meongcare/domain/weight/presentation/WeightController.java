@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
@@ -61,5 +62,14 @@ public class WeightController {
     public ResponseEntity<Void> saveWeight(@RequestBody @Valid SaveWeightRequest request) {
         weightService.saveWeight(request.getDogId(), request.getDateTime(), request.getKg());
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "당일 몸무게 조회")
+    @GetMapping("/day/{dogId}")
+    public ResponseEntity<Double> getWeight(
+            @PathVariable Long dogId,
+            @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+    ) {
+        return ResponseEntity.ok(weightService.getDayWeight(dogId, dateTime));
     }
 }

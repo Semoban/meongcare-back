@@ -73,6 +73,17 @@ public class WeightQueryRepository {
                 .fetchFirst();
     }
 
+    public double getDayWeightByDogIdAndDateTime(Long dogId, LocalDateTime nowMidnight, LocalDateTime nextMidnight) {
+        return queryFactory
+                .select(weight.kg)
+                .from(weight)
+                .where(
+                        dogIdEq(dogId),
+                        dateTimeGoe(nowMidnight), dateTimeLt(nextMidnight)
+                )
+                .fetchFirst();
+    }
+
     private BooleanExpression dateTimeLt(LocalDateTime dateTime) {
         return weight.dateTime.lt(dateTime);
     }
@@ -88,5 +99,4 @@ public class WeightQueryRepository {
     private BooleanExpression dateTimeGoe(LocalDateTime dateTime) {
         return weight.dateTime.goe(dateTime);
     }
-
 }
