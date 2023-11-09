@@ -1,7 +1,9 @@
 package com.meongcare.domain.weight.domain.repository;
 
+import com.meongcare.domain.weight.domain.repository.vo.GetLastDayWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetMonthWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetWeekWeightVO;
+import com.meongcare.domain.weight.domain.repository.vo.QGetLastDayWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.QGetMonthWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.QGetWeekWeightVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -57,15 +59,34 @@ public class WeightQueryRepository {
                 .fetch();
     }
 
+    public GetLastDayWeightVO getRecentDayWeightByDogIdAndDateTime(Long dogId, LocalDateTime dateTime) {
+        return queryFactory
+                .select(new QGetLastDayWeightVO(
+                        weight.dateTime,
+                        weight.kg
+                ))
+                .from(weight)
+                .where(dogIdEq(dogId),
+                        dateTimeLt(dateTime)
+                )
+                .orderBy(weight.dateTime.desc())
+                .fetchFirst();
+    }
+
+    private BooleanExpression dateTimeLt(LocalDateTime dateTime) {
+        return weight.dateTime.lt(dateTime);
+    }
+
     private BooleanExpression dogIdEq(Long dogId) {
         return weight.dogId.eq(dogId);
     }
 
-    private BooleanExpression dateTimeLoe(LocalDateTime nowMonthDateTime) {
-        return weight.dateTime.loe(nowMonthDateTime);
+    private BooleanExpression dateTimeLoe(LocalDateTime dateTime) {
+        return weight.dateTime.loe(dateTime);
     }
 
-    private BooleanExpression dateTimeGoe(LocalDateTime beforeMonthDateTime) {
-        return weight.dateTime.goe(beforeMonthDateTime);
+    private BooleanExpression dateTimeGoe(LocalDateTime dateTime) {
+        return weight.dateTime.goe(dateTime);
     }
+
 }
