@@ -1,12 +1,17 @@
 package com.meongcare.common.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LocalDateTimeUtils {
 
     private static final DateTimeFormatter AM_PM_Formatter = DateTimeFormatter.ofPattern("a hh:mm");
@@ -67,5 +72,9 @@ public class LocalDateTimeUtils {
                 startDay.getMonthValue(), startDay.getDayOfMonth(),
                 lastDay.getMonthValue(), lastDay.getDayOfMonth()
         );
+    }
+
+    public static long getBetweenDays(LocalDateTime startDay, LocalDateTime lastDay) {
+        return Math.abs(ChronoUnit.DAYS.between(startDay, lastDay));
     }
 }
