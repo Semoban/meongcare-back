@@ -15,17 +15,16 @@ public class WeightJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public void saveWeight(List<Weight> weights) {
-        String saveWeightSql = "INSERT INTO weight (created_at, date_time, dog_id, kg) " +
-                "VALUES (?, ?, ?, ?)";
+        String saveWeightSql = "INSERT INTO weight (date_time, dog_id, kg) " +
+                "VALUES (?, ?, ?)";
 
         jdbcTemplate.batchUpdate(saveWeightSql,
                 weights,
                 weights.size(),
                 (ps, weight) -> {
                     ps.setTimestamp(1, Timestamp.valueOf(weight.getDateTime()));
-                    ps.setTimestamp(2, Timestamp.valueOf(weight.getDateTime()));
-                    ps.setLong(3, weight.getDogId());
-                    ps.setDouble(4, weight.getKg());
+                    ps.setLong(2, weight.getDogId());
+                    ps.setDouble(3, weight.getKg());
                 }
         );
     }
