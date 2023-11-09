@@ -15,10 +15,10 @@ public class WeightJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public void saveWeight(List<Weight> weights) {
-        String sql = "INSERT INTO weight (created_at, date_time, dog_id, kg) " +
+        String saveWeightSql = "INSERT INTO weight (created_at, date_time, dog_id, kg) " +
                 "VALUES (?, ?, ?, ?)";
 
-        jdbcTemplate.batchUpdate(sql,
+        jdbcTemplate.batchUpdate(saveWeightSql,
                 weights,
                 weights.size(),
                 (ps, weight) -> {
