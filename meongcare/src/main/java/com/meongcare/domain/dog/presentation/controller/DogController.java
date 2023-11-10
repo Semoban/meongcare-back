@@ -2,11 +2,13 @@ package com.meongcare.domain.dog.presentation.controller;
 
 import com.meongcare.common.jwt.JwtValidation;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
+import com.meongcare.domain.dog.presentation.dto.response.GetDogResponseDto;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponseDto;
 import com.meongcare.domain.dog.service.DogService;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +40,14 @@ public class DogController {
     public ResponseEntity<GetDogsResponseDto> getDogs(@JwtValidation Long userId) {
         GetDogsResponseDto getDogsResponseDto = dogService.getDogs(userId);
         return ResponseEntity.ok().body(getDogsResponseDto);
+    }
+
+    @Operation(description = "반려동물 상세 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/{dogId}")
+    public ResponseEntity<GetDogResponseDto> getDog(
+            @PathVariable Long dogId) {
+        GetDogResponseDto getDogResponseDto = dogService.getDog(dogId);
+        return ResponseEntity.ok().body(getDogResponseDto);
     }
 }

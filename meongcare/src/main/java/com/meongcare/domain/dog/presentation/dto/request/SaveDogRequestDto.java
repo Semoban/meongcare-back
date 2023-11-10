@@ -57,6 +57,7 @@ public class SaveDogRequestDto {
                 .castrate(castrate)
                 .neckRound(neckRound)
                 .chestRound(chestRound)
+                .weight(weight)
                 .build();
 
     }
