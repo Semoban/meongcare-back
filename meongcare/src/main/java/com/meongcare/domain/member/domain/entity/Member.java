@@ -53,4 +53,8 @@ public class Member {
         this.fcmToken = fcmToken;
     }
 
+    public void updatePushAgreement(boolean pushAgreement) {
+        this.pushAgreement = pushAgreement;
+    }
+
 }

@@ -20,4 +20,10 @@ public class MemberService {
                 member.getEmail(),
                 member.getProfileImageUrl());
     }
+
+    @Transactional
+    public void updateAlarm(Long userId, boolean pushAgreement) {
+        Member member = memberRepository.findByUserId(userId);
+        member.updatePushAgreement(pushAgreement);
+    }
 }

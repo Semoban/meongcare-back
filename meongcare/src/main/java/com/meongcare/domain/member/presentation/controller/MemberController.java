@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "회원 API")
 @RestController
@@ -19,10 +17,18 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(description = " 나의 정보 조회")
+    @Operation(description = "나의 정보 조회")
     @GetMapping("/profile")
     public ResponseEntity<GetProfileResponseDto> getProfile(@JwtValidation Long userId){
         GetProfileResponseDto getProfileResponseDto = memberService.getProfile(userId);
         return ResponseEntity.ok().body(getProfileResponseDto);
+    }
+
+    @Operation(description = "알림 설정")
+    @PatchMapping("/alarm")
+    public ResponseEntity updateAlarm(@JwtValidation Long userId,
+                                     @RequestParam("pushAgreement") boolean pushAgreement) {
+        memberService.updateAlarm(userId, pushAgreement);
+        return ResponseEntity.ok().build();
     }
 }
