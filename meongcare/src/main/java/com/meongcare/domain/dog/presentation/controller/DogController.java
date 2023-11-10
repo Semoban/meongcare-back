@@ -38,6 +38,5 @@ public class DogController {
     public ResponseEntity<GetDogsResponseDto> getDogs(@JwtValidation Long userId) {
         GetDogsResponseDto getDogsResponseDto = dogService.getDogs(userId);
         return ResponseEntity.ok().body(getDogsResponseDto);
-
     }
 }
