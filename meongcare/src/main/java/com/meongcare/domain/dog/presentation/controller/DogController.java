@@ -1,6 +1,7 @@
 package com.meongcare.domain.dog.presentation.controller;
 
 import com.meongcare.common.jwt.JwtValidation;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogResponseDto;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponseDto;
@@ -49,5 +50,16 @@ public class DogController {
             @PathVariable Long dogId) {
         GetDogResponseDto getDogResponseDto = dogService.getDog(dogId);
         return ResponseEntity.ok().body(getDogResponseDto);
+    }
+
+    @Operation(description = "강아지 저장")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PutMapping("/{dogId}")
+    public ResponseEntity updateDog(
+            @RequestPart(value = "file") MultipartFile multipartFile,
+            @RequestPart(value = "dto") @Valid PutDogRequestDto putDogRequestDto,
+            @PathVariable Long dogId) {
+        dogService.updateDog(multipartFile, putDogRequestDto, dogId);
+        return ResponseEntity.ok().build();
     }
 }

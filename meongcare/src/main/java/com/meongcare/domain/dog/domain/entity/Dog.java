@@ -1,6 +1,7 @@
 package com.meongcare.domain.dog.domain.entity;
 
 import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,5 +68,17 @@ public class Dog {
 
     public void updateWeight(double weight) {
         this.weight = weight;
+    }
+
+    public void updateAll(PutDogRequestDto putDogRequestDto, String dogImageURL) {
+        this.name = putDogRequestDto.getName();
+        this.type = putDogRequestDto.getType();
+        this.imageUrl = dogImageURL;
+        this.sex = Sex.of(putDogRequestDto.getSex());
+        this.castrate = putDogRequestDto.isCastrate();
+        this.birthDate = putDogRequestDto.getBirthDate();
+        this.neckRound = putDogRequestDto.getNeckRound();
+        this.chestRound = putDogRequestDto.getChestRound();
+        this.weight = putDogRequestDto.getWeight();
     }
 }

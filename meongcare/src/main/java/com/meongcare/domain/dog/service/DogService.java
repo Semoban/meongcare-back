@@ -4,22 +4,18 @@ import com.meongcare.domain.auth.domain.entity.Member;
 import com.meongcare.domain.auth.domain.repository.MemberRepository;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogResponseDto;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponseDto;
 import com.meongcare.domain.weight.domain.entity.Weight;
-import com.meongcare.domain.weight.domain.repository.WeightQueryRepository;
 import com.meongcare.domain.weight.domain.repository.WeightRepository;
-import com.meongcare.domain.weight.domain.repository.vo.GetLastDayWeightVO;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 
 @Service
@@ -69,5 +65,12 @@ public class DogService {
                 .chestRound(dog.getChestRound())
                 .weight(dog.getWeight())
                 .build();
+    }
+
+    @Transactional
+    public void updateDog(MultipartFile multipartFile, PutDogRequestDto putDogRequestDto, Long dogId) {
+        Dog dog = dogRepository.getById(dogId);
+        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
+        dog.updateAll(putDogRequestDto, dogImageURL);
     }
 }
