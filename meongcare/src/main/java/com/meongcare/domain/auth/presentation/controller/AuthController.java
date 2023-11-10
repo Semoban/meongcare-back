@@ -1,8 +1,6 @@
 package com.meongcare.domain.auth.presentation.controller;
 
-import com.meongcare.common.jwt.JwtValidation;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
-import com.meongcare.domain.auth.presentation.dto.response.GetProfileResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
 import com.meongcare.domain.auth.application.AuthService;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "회원 API")
+@Tag(name = "로그인 API")
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
@@ -44,15 +42,5 @@ public class AuthController {
         authService.logout(refreshToken);
         return ResponseEntity.ok().build();
     }
-
-    @Operation(description = " 나의 정보 조회")
-    @GetMapping("/profile")
-    public ResponseEntity<GetProfileResponseDto> getProfile(@JwtValidation Long userId){
-        GetProfileResponseDto getProfileResponseDto = authService.getProfile(userId);
-        return ResponseEntity.ok().body(getProfileResponseDto);
-    }
-
-
-
 
 }

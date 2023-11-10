@@ -1,7 +1,7 @@
 package com.meongcare.domain.dog.application;
 
-import com.meongcare.domain.auth.domain.entity.Member;
-import com.meongcare.domain.auth.domain.repository.MemberRepository;
+import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;

@@ -1,12 +1,11 @@
 package com.meongcare.domain.auth.application;
 
-import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
-import com.meongcare.domain.auth.domain.repository.MemberRepository;
+import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.common.jwt.JwtService;
 import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
-import com.meongcare.domain.auth.presentation.dto.response.GetProfileResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
 import lombok.AllArgsConstructor;
@@ -66,10 +65,4 @@ public class AuthService {
         refreshTokenRedisRepository.deleteById(refreshToken);
     }
 
-    public GetProfileResponseDto getProfile(Long userId) {
-        Member member = memberRepository.findByUserId(userId);
-        return GetProfileResponseDto.of(
-                member.getEmail(),
-                member.getProfileImageUrl());
-    }
 }

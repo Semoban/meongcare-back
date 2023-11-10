@@ -1,7 +1,7 @@
 package com.meongcare.domain.auth.presentation.dto.request;
 
-import com.meongcare.domain.auth.domain.entity.Member;
-import com.meongcare.domain.auth.domain.entity.Provider;
+import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Provider;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

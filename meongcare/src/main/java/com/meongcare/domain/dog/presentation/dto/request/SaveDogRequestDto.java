@@ -1,6 +1,6 @@
 package com.meongcare.domain.dog.presentation.dto.request;
 
-import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.dog.domain.entity.Sex;
 import io.swagger.v3.oas.annotations.media.Schema;

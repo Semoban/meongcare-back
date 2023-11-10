@@ -1,4 +1,4 @@
-package com.meongcare.domain.auth.domain.entity;
+package com.meongcare.domain.member.domain.entity;
 
 import lombok.Getter;
 

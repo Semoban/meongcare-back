@@ -1,4 +1,4 @@
-package com.meongcare.domain.auth.presentation.dto.response;
+package com.meongcare.domain.member.presentation.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

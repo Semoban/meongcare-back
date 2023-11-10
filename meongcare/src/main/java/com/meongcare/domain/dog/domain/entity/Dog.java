@@ -1,6 +1,6 @@
 package com.meongcare.domain.dog.domain.entity;
 
-import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
