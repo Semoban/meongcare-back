@@ -7,6 +7,7 @@ import com.meongcare.domain.dog.domain.DogWeightRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.dog.domain.entity.DogWeight;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
+import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponseDto;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.AllArgsConstructor;
@@ -40,5 +41,15 @@ public class DogService {
 
         dogWeightRepository.save(dogWeight);
 
+    }
+
+    public GetDogsResponseDto getDogs(Long userId) {
+
+        Dog dog = dogRepository.getById(userId);
+        return GetDogsResponseDto.of(
+                dog.getId(),
+                dog.getName(),
+                dog.getImageUrl()
+        );
     }
 }
