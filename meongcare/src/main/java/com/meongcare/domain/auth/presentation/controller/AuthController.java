@@ -5,7 +5,7 @@ import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
 import com.meongcare.domain.auth.presentation.dto.response.GetProfileResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
-import com.meongcare.domain.auth.service.AuthService;
+import com.meongcare.domain.auth.application.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

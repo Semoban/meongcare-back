@@ -1,4 +1,4 @@
-package com.meongcare.domain.auth.service;
+package com.meongcare.domain.auth.application;
 
 import com.meongcare.domain.auth.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
