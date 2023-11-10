@@ -26,4 +26,10 @@ public class MemberService {
         Member member = memberRepository.findByUserId(userId);
         member.updatePushAgreement(pushAgreement);
     }
+
+    @Transactional
+    public void deleteMember(Long userId) {
+        Member member = memberRepository.findByUserId(userId);
+        member.deleteMember();
+    }
 }

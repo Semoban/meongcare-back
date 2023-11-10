@@ -1,5 +1,6 @@
 package com.meongcare.domain.member.domain.entity;
 
+import com.meongcare.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -55,6 +56,10 @@ public class Member {
 
     public void updatePushAgreement(boolean pushAgreement) {
         this.pushAgreement = pushAgreement;
+    }
+
+    public void deleteMember() {
+        delete();
     }
 
 }

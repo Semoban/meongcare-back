@@ -31,4 +31,11 @@ public class MemberController {
         memberService.updateAlarm(userId, pushAgreement);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "회원 탈퇴")
+    @DeleteMapping
+    public ResponseEntity deleteMember(@JwtValidation Long userId){
+        memberService.deleteMember(userId);
+        return ResponseEntity.ok().build();
+    }
 }
