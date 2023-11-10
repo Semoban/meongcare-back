@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class AuthService {
 
     private final JwtService jwtService;
