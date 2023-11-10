@@ -33,8 +33,9 @@ public class Dog {
     @NotNull
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String sex;
+    private Sex sex;
 
     @NotNull
     private boolean castrate;
@@ -50,7 +51,7 @@ public class Dog {
     private double weight;
 
     @Builder
-    public Dog(Member member, String name, String type, String imageUrl, String sex,
+    public Dog(Member member, String name, String type, String imageUrl, Sex sex,
                boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
         this.member = member;
         this.name = name;

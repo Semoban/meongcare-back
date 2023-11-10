@@ -2,6 +2,7 @@ package com.meongcare.domain.dog.presentation.dto.request;
 
 import com.meongcare.domain.auth.domain.entity.Member;
 import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.dog.domain.entity.Sex;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,7 +51,7 @@ public class SaveDogRequestDto {
                 .member(member)
                 .name(name)
                 .type(type)
-                .sex(sex)
+                .sex(Sex.of(sex))
                 .birthDate(birthDate)
                 .imageUrl(dogImageURL)
                 .castrate(castrate)
