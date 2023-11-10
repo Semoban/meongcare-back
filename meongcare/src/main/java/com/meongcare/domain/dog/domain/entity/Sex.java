@@ -1,6 +1,5 @@
 package com.meongcare.domain.dog.domain.entity;
 
-import com.meongcare.domain.auth.domain.entity.Provider;
 import lombok.Getter;
 
 import java.util.stream.Stream;
