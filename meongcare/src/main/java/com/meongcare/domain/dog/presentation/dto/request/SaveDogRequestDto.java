@@ -29,10 +29,6 @@ public class SaveDogRequestDto {
     @Schema(description = "강아지 생일", example = "2023-08-13T11:00:00")
     private LocalDateTime birthDate;
 
-    @Schema(description = "강아지 이미지 URL", example = "http://meongcare.com/123123")
-    @NotNull
-    private String profileImage;
-
     @Schema(description = "중성화 수술 여부", example = "false")
     @NotNull
     private boolean castrate;
@@ -49,14 +45,14 @@ public class SaveDogRequestDto {
     @NotNull
     private double chestRound;
 
-    public Dog toEntity(Member member) {
+    public Dog toEntity(Member member, String dogImageURL) {
         return Dog.builder()
                 .member(member)
                 .name(name)
                 .type(type)
                 .sex(sex)
                 .birthDate(birthDate)
-                .profileImage(profileImage)
+                .imageUrl(dogImageURL)
                 .castrate(castrate)
                 .neckRound(neckRound)
                 .chestRound(chestRound)

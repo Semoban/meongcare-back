@@ -7,9 +7,12 @@ import com.meongcare.domain.dog.domain.DogWeightRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.dog.domain.entity.DogWeight;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
+import com.meongcare.infra.image.ImageDirectory;
+import com.meongcare.infra.image.ImageHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -21,17 +24,16 @@ public class DogService {
     private final MemberRepository memberRepository;
     private final DogRepository dogRepository;
     private final DogWeightRepository dogWeightRepository;
+    private final ImageHandler imageHandler;
 
     @Transactional
-    public void saveDog(Long userId, SaveDogRequestDto saveDogRequestDto) {
+    public void saveDog(MultipartFile multipartFile, SaveDogRequestDto saveDogRequestDto, Long userId) {
 
-        Member member = memberRepository
-                .findById(userId)
-                .orElseThrow(IllegalArgumentException::new);
-
+        Member member = memberRepository.findByUserId(userId);
+        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
         double weight = saveDogRequestDto.getWeight();
 
-        Dog dog = saveDogRequestDto.toEntity(member);
+        Dog dog = saveDogRequestDto.toEntity(member, dogImageURL);
         Dog createDog = dogRepository.save(dog);
 
         DogWeight dogWeight = DogWeight.of(createDog, weight);

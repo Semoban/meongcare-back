@@ -31,7 +31,7 @@ public class Dog {
     private String type;
 
     @NotNull
-    private String profileImage;
+    private String imageUrl;
 
     @NotNull
     private String sex;
@@ -50,12 +50,12 @@ public class Dog {
     private double weight;
 
     @Builder
-    public Dog(Member member, String name, String type, String profileImage, String sex,
+    public Dog(Member member, String name, String type, String imageUrl, String sex,
                boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
         this.member = member;
         this.name = name;
         this.type = type;
-        this.profileImage = profileImage;
+        this.imageUrl = imageUrl;
         this.sex = sex;
         this.castrate = castrate;
         this.birthDate = birthDate;
