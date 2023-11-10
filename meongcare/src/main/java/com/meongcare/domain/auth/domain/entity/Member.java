@@ -31,7 +31,7 @@ public class Member {
     private Provider provider;
 
     @NotNull
-    private String profileImage;
+    private String profileImageUrl;
 
     @NotNull
     private boolean pushAgreement;
@@ -42,13 +42,13 @@ public class Member {
 
 
     @Builder
-    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImage, boolean pushAgreement, String fcmToken) {
+    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImageUrl, boolean pushAgreement, String fcmToken) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.providerId = providerId;
         this.provider = provider;
-        this.profileImage = profileImage;
+        this.profileImageUrl = profileImageUrl;
         this.pushAgreement = pushAgreement;
         this.fcmToken = fcmToken;
     }

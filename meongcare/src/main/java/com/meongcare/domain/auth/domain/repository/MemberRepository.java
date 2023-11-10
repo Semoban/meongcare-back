@@ -8,7 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByEmail(String email);
     Optional<Member> findByProviderId(String providerId);
+
+    default Member findByUserId(Long userId) {
+        return this.findById(userId).orElseThrow(RuntimeException::new);
+    }
 
 }

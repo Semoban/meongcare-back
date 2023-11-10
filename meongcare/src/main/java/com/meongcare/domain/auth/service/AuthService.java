@@ -6,6 +6,7 @@ import com.meongcare.domain.auth.domain.repository.MemberRepository;
 import com.meongcare.common.jwt.JwtService;
 import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
+import com.meongcare.domain.auth.presentation.dto.response.GetProfileResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class AuthService {
             memberRepository.save(member);
             memberId = member.getId();
         }
-        if (findMemberOptional.isPresent()){
+        if (findMemberOptional.isPresent()) {
             memberId = findMemberOptional.get().getId();
         }
 
@@ -46,6 +47,7 @@ public class AuthService {
 
         return loginResponseDto;
     }
+
     public ReissueResponseDto reissue(String refreshToken) {
         Long userId = jwtService.parseJwtToken(refreshToken);
 
@@ -53,7 +55,7 @@ public class AuthService {
                 .findById(refreshToken)
                 .orElseThrow(IllegalArgumentException::new);
 
-        String accessToken =jwtService.createAccessToken(userId);
+        String accessToken = jwtService.createAccessToken(userId);
         ReissueResponseDto reissueResponseDto = new ReissueResponseDto(accessToken);
 
         return reissueResponseDto;
@@ -63,4 +65,10 @@ public class AuthService {
         refreshTokenRedisRepository.deleteById(refreshToken);
     }
 
+    public GetProfileResponseDto getProfile(Long userId) {
+        Member member = memberRepository.findByUserId(userId);
+        return GetProfileResponseDto.of(
+                member.getEmail(),
+                member.getProfileImageUrl());
+    }
 }
