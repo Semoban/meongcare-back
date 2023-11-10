@@ -35,9 +35,16 @@ public class Weight extends BaseEntity {
         this.dogId = dogId;
     }
 
-    public static Weight createBeforeWeight(
-            LocalDateTime dateTime, long minusDays, double kg, Long dogId
-    ) {
+    public static Weight createWeight(double kg, Long dogId) {
+        return Weight.builder()
+                .dateTime(LocalDateTime.now())
+                .kg(kg)
+                .dogId(dogId)
+                .build();
+
+    }
+
+    public static Weight createBeforeWeight(LocalDateTime dateTime, long minusDays, double kg, Long dogId) {
         return Weight.builder()
                 .dateTime(dateTime.minusDays(minusDays))
                 .kg(kg)
