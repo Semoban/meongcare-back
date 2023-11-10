@@ -13,7 +13,6 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     private final String ACCESS_TOKEN_HEADER = "AccessToken";
 
     private final JwtService jwtService;
@@ -24,7 +23,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
             jwtService.parseJwtToken(accessToken);
         } catch (Exception e) {
-
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
         filterChain.doFilter(request, response);
