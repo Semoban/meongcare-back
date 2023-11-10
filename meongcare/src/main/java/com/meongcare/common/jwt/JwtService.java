@@ -24,13 +24,11 @@ public class JwtService {
     private Long refreshTokenExpirationPeriod;
 
     @Value("${jwt.access.header}")
-    private String accessHeader;
+    private String ACCESS_TOKEN_SUBJECT;
 
     @Value("${jwt.refresh.header}")
-    private String refreshHeader;
+    private String REFRESH_TOKEN_SUBJECT;
 
-    private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-    private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String ID_CLAIM = "id";
     private static final String BEARER = "Bearer ";
 

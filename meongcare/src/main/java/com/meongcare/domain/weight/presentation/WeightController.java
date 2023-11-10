@@ -5,6 +5,8 @@ import com.meongcare.domain.weight.presentation.dto.request.SaveWeightRequest;
 import com.meongcare.domain.weight.presentation.dto.response.GetWeekWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetMonthWeightResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +35,7 @@ public class WeightController {
     private final WeightService weightService;
 
     @Operation(description = "몸무게 주차 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/week/{dogId}")
     public ResponseEntity<GetWeekWeightResponse> getWeekWeight(
             @PathVariable Long dogId,
@@ -42,6 +45,7 @@ public class WeightController {
     }
 
     @Operation(description = "몸무게 월별 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/month/{dogId}")
     public ResponseEntity<GetMonthWeightResponse> getMonthWeight(
             @PathVariable Long dogId,
@@ -51,6 +55,7 @@ public class WeightController {
     }
 
     @Operation(description = "몸무게 수정")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/{dogId}")
     public ResponseEntity<Void> updateWeight(@PathVariable Long dogId, @RequestParam double weight) {
         weightService.updateWeight(dogId, weight);
@@ -58,6 +63,7 @@ public class WeightController {
     }
 
     @Operation(description = "몸무게 데이터 추가")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity<Void> saveWeight(@RequestBody @Valid SaveWeightRequest request) {
         weightService.saveWeight(request.getDogId(), request.getDateTime(), request.getKg());
@@ -65,6 +71,7 @@ public class WeightController {
     }
 
     @Operation(description = "당일 몸무게 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/day/{dogId}")
     public ResponseEntity<Double> getWeight(
             @PathVariable Long dogId,

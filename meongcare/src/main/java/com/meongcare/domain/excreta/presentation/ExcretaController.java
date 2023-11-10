@@ -5,6 +5,8 @@ import com.meongcare.domain.excreta.presentation.dto.request.SaveExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.request.PatchExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,6 +37,7 @@ public class ExcretaController {
     private final ExcretaService excretaService;
 
     @Operation(description = "대소변 저장")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity<Void> saveExcreta(
             @RequestPart(value = "dto") @Valid SaveExcretaRequest request,
@@ -45,6 +48,7 @@ public class ExcretaController {
     }
 
     @Operation(description = "대소변 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/{dogId}")
     public ResponseEntity<GetExcretaResponse> getExcreta(
             @PathVariable Long dogId,
@@ -53,6 +57,7 @@ public class ExcretaController {
     }
 
     @Operation(description = "대소변 수정")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping
     public ResponseEntity<Void> patchExcreta(
             @RequestPart(value = "dto") @Valid PatchExcretaRequest request,
@@ -63,6 +68,7 @@ public class ExcretaController {
     }
 
     @Operation(description = "대소변 삭제")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping
     public ResponseEntity<Void> deleteExcreta(@RequestParam List<Long> excretaIds) {
         excretaService.deleteExcreta(excretaIds);
@@ -70,6 +76,7 @@ public class ExcretaController {
     }
 
     @Operation(description = "대소변 이미지 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/image/{excretaId}")
     public ResponseEntity<String> getExcretaImage(@PathVariable Long excretaId) {
         return ResponseEntity.ok(excretaService.getExcretaImage(excretaId));
