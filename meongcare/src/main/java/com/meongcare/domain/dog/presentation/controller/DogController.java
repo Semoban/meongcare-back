@@ -62,4 +62,12 @@ public class DogController {
         dogService.updateDog(multipartFile, putDogRequestDto, dogId);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "강아지 삭제")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @DeleteMapping("/{dogId}")
+    public ResponseEntity updateDog(@PathVariable Long dogId) {
+        dogService.deleteDog(dogId);
+        return ResponseEntity.ok().build();
+    }
 }

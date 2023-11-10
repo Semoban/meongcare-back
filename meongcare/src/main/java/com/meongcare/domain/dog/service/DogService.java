@@ -73,4 +73,9 @@ public class DogService {
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
         dog.updateAll(putDogRequestDto, dogImageURL);
     }
+
+    @Transactional
+    public void deleteDog(Long dogId) {
+        dogRepository.deleteById(dogId);
+    }
 }
