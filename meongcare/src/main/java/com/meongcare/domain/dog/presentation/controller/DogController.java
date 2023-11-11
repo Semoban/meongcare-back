@@ -4,6 +4,8 @@ import com.meongcare.common.jwt.JwtValidation;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
 import com.meongcare.domain.dog.service.DogService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class DogController {
     private final DogService dogService;
 
     @Operation(description = "강아지 저장")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity saveDog(@JwtValidation Long userId, @Valid @RequestBody SaveDogRequestDto saveDogRequestDto) {
         dogService.saveDog(userId, saveDogRequestDto);

@@ -36,6 +36,7 @@ public class SymptomController {
     private final SymptomService symptomService;
 
     @Operation(description = "이상증상 저장")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity<?> saveSymptom(@Parameter @RequestBody @Valid SaveSymptomRequest request) {
         symptomService.saveSymptom(request);
@@ -43,6 +44,7 @@ public class SymptomController {
     }
 
     @Operation(description = "이상증상 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/{dogId}")
     public ResponseEntity<GetSymptomResponse> getSymptom(
             @Parameter @PathVariable Long dogId,
@@ -51,6 +53,7 @@ public class SymptomController {
     }
 
     @Operation(description = "이상증상 수정")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping
     public ResponseEntity<?> editSymptom(@RequestBody @Valid EditSymptomRequest request) {
         symptomService.editSymptom(request);
@@ -58,6 +61,7 @@ public class SymptomController {
     }
 
     @Operation(description = "이상증상 삭제")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping
     public ResponseEntity<Void> deleteSymptom(@RequestParam List<Long> symptomIds) {
         symptomService.deleteSymptom(symptomIds);
