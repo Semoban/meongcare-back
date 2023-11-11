@@ -1,7 +1,5 @@
 package com.meongcare.infra.config;
 
-import com.meongcare.common.jwt.JwtAccessDeniedHandler;
-import com.meongcare.common.jwt.JwtAuthenticationEntryPoint;
 import com.meongcare.common.jwt.JwtAuthenticationFilter;
 import com.meongcare.common.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
     private final JwtService jwtService;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     private static final String[] whiteList = {"/auth/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**", "/v3/api-docs/**", "/error/**"};
 
