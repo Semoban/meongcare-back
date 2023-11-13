@@ -1,6 +1,5 @@
 package com.meongcare.domain.notice.domain.entity;
 
-import com.meongcare.domain.member.domain.entity.Provider;
 import lombok.Getter;
 
 import java.util.stream.Stream;

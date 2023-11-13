@@ -1,8 +1,6 @@
 package com.meongcare.domain.notice.presentation.dto.response;
 
-import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.notice.domain.repository.vo.GetNoticesVO;
-import com.meongcare.domain.symptom.presentation.dto.response.GetSymptomResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
