@@ -38,4 +38,10 @@ public class NoticeService {
         Notice notice = noticeRepository.getById(patchNoticeRequest.getNoticeId());
         notice.update(patchNoticeRequest.getTitle(), patchNoticeRequest.getText());
     }
+
+    @Transactional
+    public void deleteNotice(Long noticeId) {
+        Notice notice = noticeRepository.getById(noticeId);
+        notice.delete();
+    }
 }

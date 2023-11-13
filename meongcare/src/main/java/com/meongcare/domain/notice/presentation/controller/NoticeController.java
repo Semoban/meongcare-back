@@ -36,8 +36,15 @@ public class NoticeController {
 
     @Operation(description = "공지사항 수정")
     @PatchMapping
-    public ResponseEntity<Void> getNotices(@RequestBody @Valid PatchNoticeRequest patchNoticeRequest){
+    public ResponseEntity<Void> updateNotice(@RequestBody @Valid PatchNoticeRequest patchNoticeRequest){
         noticeService.updateNotice(patchNoticeRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "공지사항 삭제")
+    @DeleteMapping("/{noticeId}")
+    public ResponseEntity<Void> deleteNotice(@PathVariable Long noticeId){
+        noticeService.deleteNotice(noticeId);
         return ResponseEntity.ok().build();
     }
 

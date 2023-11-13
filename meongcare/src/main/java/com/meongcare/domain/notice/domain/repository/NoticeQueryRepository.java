@@ -27,11 +27,15 @@ public class NoticeQueryRepository {
                         notice.updatedAt
                 ))
                 .from(notice)
-                .where(noticeTypeEq(noticeType))
+                .where(noticeTypeEq(noticeType), isNotDelete())
                 .fetch();
     }
 
     private BooleanExpression noticeTypeEq(NoticeType noticeType) {
         return notice.noticeType.eq(noticeType);
+    }
+
+    private BooleanExpression isNotDelete() {
+        return notice.deleted.isFalse();
     }
 }
