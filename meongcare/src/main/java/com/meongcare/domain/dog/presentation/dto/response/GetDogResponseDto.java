@@ -1,5 +1,6 @@
 package com.meongcare.domain.dog.presentation.dto.response;
 
+import com.meongcare.domain.dog.domain.entity.Dog;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,5 +43,21 @@ public class GetDogResponseDto {
         this.neckRound = neckRound;
         this.chestRound = chestRound;
         this.weight = weight;
+    }
+
+    public static GetDogResponseDto from(Dog dog) {
+        return GetDogResponseDto
+                .builder()
+                .dogId(dog.getId())
+                .name(dog.getName())
+                .imageUrl(dog.getImageUrl())
+                .type(dog.getType())
+                .sex(dog.getSex().getSex())
+                .castrate(dog.isCastrate())
+                .birthDate(dog.getBirthDate())
+                .neckRound(dog.getNeckRound())
+                .chestRound(dog.getChestRound())
+                .weight(dog.getWeight())
+                .build();
     }
 }

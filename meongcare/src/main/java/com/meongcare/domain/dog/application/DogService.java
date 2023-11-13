@@ -52,19 +52,8 @@ public class DogService {
     public GetDogResponseDto getDog(Long dogId) {
         Dog dog = dogRepository.getById(dogId);
 
-        return GetDogResponseDto
-                .builder()
-                .dogId(dogId)
-                .name(dog.getName())
-                .imageUrl(dog.getImageUrl())
-                .type(dog.getType())
-                .sex(dog.getSex().getSex())
-                .castrate(dog.isCastrate())
-                .birthDate(dog.getBirthDate())
-                .neckRound(dog.getNeckRound())
-                .chestRound(dog.getChestRound())
-                .weight(dog.getWeight())
-                .build();
+        return GetDogResponseDto.from(dog);
+
     }
 
     @Transactional
