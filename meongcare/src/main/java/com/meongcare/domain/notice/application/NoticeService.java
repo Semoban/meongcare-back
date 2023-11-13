@@ -8,14 +8,14 @@ import com.meongcare.domain.notice.domain.repository.vo.GetNoticesVO;
 import com.meongcare.domain.notice.presentation.dto.request.PatchNoticeRequest;
 import com.meongcare.domain.notice.presentation.dto.request.SaveNoticeRequest;
 import com.meongcare.domain.notice.presentation.dto.response.GetNoticesResponse;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class NoticeService {
 

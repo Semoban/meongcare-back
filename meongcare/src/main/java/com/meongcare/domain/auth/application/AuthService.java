@@ -8,14 +8,14 @@ import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequest;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponse;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponse;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthService {
 

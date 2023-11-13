@@ -6,7 +6,7 @@ import com.meongcare.domain.notice.presentation.dto.request.SaveNoticeRequest;
 import com.meongcare.domain.notice.presentation.dto.response.GetNoticesResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @Tag(name = "공지/이벤트 API")
 @RestController
 @RequestMapping("/notice")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NoticeController {
 
     private final NoticeService noticeService;
