@@ -1,6 +1,7 @@
 package com.meongcare.domain.notice.presentation.controller;
 
 import com.meongcare.domain.notice.application.NoticeService;
+import com.meongcare.domain.notice.presentation.dto.request.PatchNoticeRequest;
 import com.meongcare.domain.notice.presentation.dto.request.SaveNoticeRequest;
 import com.meongcare.domain.notice.presentation.dto.response.GetNoticesResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,5 +34,11 @@ public class NoticeController {
         return ResponseEntity.ok().body(getNoticesResponse);
     }
 
+    @Operation(description = "공지사항 수정")
+    @PatchMapping
+    public ResponseEntity<Void> getNotices(@RequestBody @Valid PatchNoticeRequest patchNoticeRequest){
+        noticeService.updateNotice(patchNoticeRequest);
+        return ResponseEntity.ok().build();
+    }
 
 }
