@@ -3,7 +3,6 @@ package com.meongcare.domain.medicalrecord.presentation.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
 
 @Getter
-public class PutMedicalRecordRequestDto {
+public class PutMedicalRecordRequest {
 
     @Schema(description = "진료 기록 ID", example = "1")
     @NotNull

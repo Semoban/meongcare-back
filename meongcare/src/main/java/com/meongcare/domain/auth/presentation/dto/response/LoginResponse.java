@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class LoginResponseDto {
+public class LoginResponse {
 
     @Schema(description = "엑세스 토큰")
     private String accessToken;
@@ -13,13 +13,13 @@ public class LoginResponseDto {
     private String refreshToken;
 
     @Builder
-    public LoginResponseDto(String accessToken, String refreshToken) {
+    public LoginResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public static LoginResponseDto of(String accessToken, String refreshToken) {
-        return LoginResponseDto
+    public static LoginResponse of(String accessToken, String refreshToken) {
+        return LoginResponse
                 .builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

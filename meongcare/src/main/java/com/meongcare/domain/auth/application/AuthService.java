@@ -1,13 +1,13 @@
-package com.meongcare.domain.auth.service;
+package com.meongcare.domain.auth.application;
 
-import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
-import com.meongcare.domain.auth.domain.repository.MemberRepository;
+import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.common.jwt.JwtService;
 import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
-import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
-import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
-import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
+import com.meongcare.domain.auth.presentation.dto.request.LoginRequest;
+import com.meongcare.domain.auth.presentation.dto.response.LoginResponse;
+import com.meongcare.domain.auth.presentation.dto.response.ReissueResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class AuthService {
 
     private final JwtService jwtService;
@@ -23,17 +24,17 @@ public class AuthService {
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     @Transactional
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-        String providerId = loginRequestDto.getProviderId();
+    public LoginResponse login(LoginRequest loginRequest) {
+        String providerId = loginRequest.getProviderId();
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
         Long memberId = null;
 
         if (findMemberOptional.isEmpty()) {
-            Member member = loginRequestDto.toMemberEntity();
+            Member member = loginRequest.toMemberEntity();
             memberRepository.save(member);
             memberId = member.getId();
         }
-        if (findMemberOptional.isPresent()){
+        if (findMemberOptional.isPresent()) {
             memberId = findMemberOptional.get().getId();
         }
 
@@ -42,21 +43,22 @@ public class AuthService {
 
         refreshTokenRedisRepository.save(RefreshToken.of(refreshToken, memberId));
 
-        LoginResponseDto loginResponseDto = LoginResponseDto.of(accessToken, refreshToken);
+        LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken);
 
-        return loginResponseDto;
+        return loginResponse;
     }
-    public ReissueResponseDto reissue(String refreshToken) {
+
+    public ReissueResponse reissue(String refreshToken) {
         Long userId = jwtService.parseJwtToken(refreshToken);
 
         refreshTokenRedisRepository
                 .findById(refreshToken)
                 .orElseThrow(IllegalArgumentException::new);
 
-        String accessToken =jwtService.createAccessToken(userId);
-        ReissueResponseDto reissueResponseDto = new ReissueResponseDto(accessToken);
+        String accessToken = jwtService.createAccessToken(userId);
+        ReissueResponse reissueResponse = new ReissueResponse(accessToken);
 
-        return reissueResponseDto;
+        return reissueResponse;
     }
 
     public void logout(String refreshToken) {

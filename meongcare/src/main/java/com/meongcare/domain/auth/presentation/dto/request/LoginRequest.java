@@ -1,7 +1,7 @@
 package com.meongcare.domain.auth.presentation.dto.request;
 
-import com.meongcare.domain.auth.domain.entity.Member;
-import com.meongcare.domain.auth.domain.entity.Provider;
+import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Provider;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class LoginRequestDto {
+public class LoginRequest {
 
     @Schema(description = "소셜 로그인 고유 ID")
     @NotNull
@@ -32,7 +32,7 @@ public class LoginRequestDto {
 
     @Schema(description = "프로필 이미지 URL", example = "http://meongcare.com/123")
     @NotNull
-    private String profileImage;
+    private String profileImageUrl;
 
     public Member toMemberEntity() {
         return Member
@@ -41,7 +41,7 @@ public class LoginRequestDto {
                 .provider(Provider.of(provider))
                 .providerId(providerId)
                 .pushAgreement(false)
-                .profileImage(profileImage)
+                .profileImageUrl(profileImageUrl)
                 .email(email)
                 .fcmToken("example")
                 .build();

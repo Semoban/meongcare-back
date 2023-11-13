@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
 
 @Getter
-public class SaveMedicalRecordRequestDto {
+public class SaveMedicalRecordRequest {
 
     @Schema(description = "강아지 ID", example = "1")
     @NotNull
