@@ -5,9 +5,8 @@ import com.meongcare.domain.auth.presentation.dto.response.LoginResponse;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponse;
 import com.meongcare.domain.auth.application.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +15,7 @@ import javax.validation.Valid;
 @Tag(name = "로그인 API")
 @RestController
 @RequestMapping("/auth")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
