@@ -31,7 +31,7 @@ public class DogService {
     @Transactional
     public void saveDog(MultipartFile multipartFile, SaveDogRequestDto saveDogRequestDto, Long userId) {
         Member member = memberRepository.findByUserId(userId);
-        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
+        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
 
         Dog dog = saveDogRequestDto.toEntity(member, dogImageURL);
         dogRepository.save(dog);
