@@ -1,7 +1,7 @@
 package com.meongcare.domain.member.presentation.controller;
 
 import com.meongcare.common.jwt.JwtValidation;
-import com.meongcare.domain.member.presentation.dto.response.GetProfileResponseDto;
+import com.meongcare.domain.member.presentation.dto.response.GetProfileResponse;
 import com.meongcare.domain.member.application.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,9 +19,9 @@ public class MemberController {
 
     @Operation(description = "나의 정보 조회")
     @GetMapping("/profile")
-    public ResponseEntity<GetProfileResponseDto> getProfile(@JwtValidation Long userId){
-        GetProfileResponseDto getProfileResponseDto = memberService.getProfile(userId);
-        return ResponseEntity.ok().body(getProfileResponseDto);
+    public ResponseEntity<GetProfileResponse> getProfile(@JwtValidation Long userId){
+        GetProfileResponse getProfileResponse = memberService.getProfile(userId);
+        return ResponseEntity.ok().body(getProfileResponse);
     }
 
     @Operation(description = "알림 설정")

@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class GetDogResponseDto {
+public class GetDogResponse {
     @Schema(description = "강아지 고유 번호")
     private Long dogId;
     @Schema(description = "강아지 이름")
@@ -31,8 +31,8 @@ public class GetDogResponseDto {
     private double weight;
 
     @Builder
-    public GetDogResponseDto(Long dogId, String name, String imageUrl, String type, String sex, boolean castrate,
-                             LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
+    public GetDogResponse(Long dogId, String name, String imageUrl, String type, String sex, boolean castrate,
+                          LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
         this.dogId = dogId;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -45,8 +45,8 @@ public class GetDogResponseDto {
         this.weight = weight;
     }
 
-    public static GetDogResponseDto from(Dog dog) {
-        return GetDogResponseDto
+    public static GetDogResponse from(Dog dog) {
+        return GetDogResponse
                 .builder()
                 .dogId(dog.getId())
                 .name(dog.getName())

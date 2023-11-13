@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class GetProfileResponseDto {
+public class GetProfileResponse {
 
     @Schema(description = "유저 이메일")
     private String email;
@@ -13,13 +13,13 @@ public class GetProfileResponseDto {
     private String imageUrl;
 
     @Builder
-    public GetProfileResponseDto(String email, String imageUrl) {
+    public GetProfileResponse(String email, String imageUrl) {
         this.email = email;
         this.imageUrl = imageUrl;
     }
 
-    public static GetProfileResponseDto of(String email, String imageUrl) {
-        return GetProfileResponseDto
+    public static GetProfileResponse of(String email, String imageUrl) {
+        return GetProfileResponse
                 .builder()
                 .email(email)
                 .imageUrl(imageUrl)

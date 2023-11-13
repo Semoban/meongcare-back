@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class LoginRequestDto {
+public class LoginRequest {
 
     @Schema(description = "소셜 로그인 고유 ID")
     @NotNull

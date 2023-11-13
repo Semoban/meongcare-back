@@ -1,10 +1,10 @@
 package com.meongcare.domain.dog.presentation.controller;
 
 import com.meongcare.common.jwt.JwtValidation;
-import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
-import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
-import com.meongcare.domain.dog.presentation.dto.response.GetDogResponseDto;
-import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponseDto;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
+import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequest;
+import com.meongcare.domain.dog.presentation.dto.response.GetDogResponse;
+import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponse;
 import com.meongcare.domain.dog.application.DogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,26 +29,26 @@ public class DogController {
     @PostMapping
     public ResponseEntity saveDog(
             @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid SaveDogRequestDto saveDogRequestDto,
+            @RequestPart(value = "dto") @Valid SaveDogRequest saveDogRequest,
             @JwtValidation Long userId) {
-        dogService.saveDog(multipartFile, saveDogRequestDto, userId);
+        dogService.saveDog(multipartFile, saveDogRequest, userId);
         return ResponseEntity.ok().build();
     }
 
     @Operation(description = "반려동물 목록")
     @GetMapping
-    public ResponseEntity<GetDogsResponseDto> getDogs(@JwtValidation Long userId) {
-        GetDogsResponseDto getDogsResponseDto = dogService.getDogs(userId);
-        return ResponseEntity.ok().body(getDogsResponseDto);
+    public ResponseEntity<GetDogsResponse> getDogs(@JwtValidation Long userId) {
+        GetDogsResponse getDogsResponse = dogService.getDogs(userId);
+        return ResponseEntity.ok().body(getDogsResponse);
     }
 
     @Operation(description = "반려동물 상세 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/{dogId}")
-    public ResponseEntity<GetDogResponseDto> getDog(
+    public ResponseEntity<GetDogResponse> getDog(
             @PathVariable Long dogId) {
-        GetDogResponseDto getDogResponseDto = dogService.getDog(dogId);
-        return ResponseEntity.ok().body(getDogResponseDto);
+        GetDogResponse getDogResponse = dogService.getDog(dogId);
+        return ResponseEntity.ok().body(getDogResponse);
     }
 
     @Operation(description = "강아지 저장")
@@ -56,9 +56,9 @@ public class DogController {
     @PutMapping("/{dogId}")
     public ResponseEntity updateDog(
             @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid PutDogRequestDto putDogRequestDto,
+            @RequestPart(value = "dto") @Valid PutDogRequest putDogRequest,
             @PathVariable Long dogId) {
-        dogService.updateDog(multipartFile, putDogRequestDto, dogId);
+        dogService.updateDog(multipartFile, putDogRequest, dogId);
         return ResponseEntity.ok().build();
     }
 

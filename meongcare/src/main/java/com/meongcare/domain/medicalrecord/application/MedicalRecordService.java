@@ -7,10 +7,10 @@ import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordQueryRepository;
 import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordRepository;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
-import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
-import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
-import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponseDto;
-import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordsResponseDto;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequest;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequest;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponse;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordsResponse;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.AllArgsConstructor;
@@ -32,19 +32,19 @@ public class MedicalRecordService {
     private final MedicalRecordQueryRepository medicalRecordQueryRepository;
 
     @Transactional
-    public void save(MultipartFile multipartFile, SaveMedicalRecordRequestDto saveMedicalRecordRequestDto) {
-        Dog dog = dogRepository.getById(saveMedicalRecordRequestDto.getDogId());
+    public void save(MultipartFile multipartFile, SaveMedicalRecordRequest saveMedicalRecordRequest) {
+        Dog dog = dogRepository.getById(saveMedicalRecordRequest.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
 
-        medicalRecordRepository.save(saveMedicalRecordRequestDto.toEntity(dog, imageURL));
+        medicalRecordRepository.save(saveMedicalRecordRequest.toEntity(dog, imageURL));
     }
 
     @Transactional
-    public void update(MultipartFile multipartFile, PutMedicalRecordRequestDto putMedicalRecordRequestDto) {
-        MedicalRecord medicalRecord = medicalRecordRepository.getById(putMedicalRecordRequestDto.getMedicalRecordId());
+    public void update(MultipartFile multipartFile, PutMedicalRecordRequest putMedicalRecordRequest) {
+        MedicalRecord medicalRecord = medicalRecordRepository.getById(putMedicalRecordRequest.getMedicalRecordId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
 
-        medicalRecord.updateMedicalRecord(putMedicalRecordRequestDto, imageURL);
+        medicalRecord.updateMedicalRecord(putMedicalRecordRequest, imageURL);
     }
 
     @Transactional
@@ -58,19 +58,19 @@ public class MedicalRecordService {
     }
 
 
-    public GetMedicalRecordResponseDto get(Long medicalRecordId) {
+    public GetMedicalRecordResponse get(Long medicalRecordId) {
         MedicalRecord medicalRecord = medicalRecordRepository.getById(medicalRecordId);
-        return GetMedicalRecordResponseDto.of(medicalRecord);
+        return GetMedicalRecordResponse.of(medicalRecord);
     }
 
-    public GetMedicalRecordsResponseDto getMedicalRecords(Long dogId, LocalDateTime dateTime) {
+    public GetMedicalRecordsResponse getMedicalRecords(Long dogId, LocalDateTime dateTime) {
         Dog dog = dogRepository.getById(dogId);
         List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(
                 dog,
                 LocalDateTimeUtils.createNowMidnight(dateTime),
                 LocalDateTimeUtils.createNextMidnight(dateTime)
         );
-        return GetMedicalRecordsResponseDto.of(getMedicalRecordsVos);
+        return GetMedicalRecordsResponse.of(getMedicalRecordsVos);
 
     }
 }

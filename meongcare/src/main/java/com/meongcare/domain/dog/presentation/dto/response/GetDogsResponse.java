@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class GetDogsResponseDto {
+public class GetDogsResponse {
 
     @Schema(description = "강아지 고유 번호")
     private Long dogId;
@@ -15,14 +15,14 @@ public class GetDogsResponseDto {
     private String imageUrl;
 
     @Builder
-    public GetDogsResponseDto(Long dogId, String name, String imageUrl) {
+    public GetDogsResponse(Long dogId, String name, String imageUrl) {
         this.dogId = dogId;
         this.name = name;
         this.imageUrl = imageUrl;
     }
 
-    public static GetDogsResponseDto of(Long dogId, String name, String imageUrl) {
-        return GetDogsResponseDto
+    public static GetDogsResponse of(Long dogId, String name, String imageUrl) {
+        return GetDogsResponse
                 .builder()
                 .dogId(dogId)
                 .name(name)

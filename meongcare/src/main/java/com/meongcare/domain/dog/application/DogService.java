@@ -4,10 +4,10 @@ import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
-import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
-import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequestDto;
-import com.meongcare.domain.dog.presentation.dto.response.GetDogResponseDto;
-import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponseDto;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
+import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequest;
+import com.meongcare.domain.dog.presentation.dto.response.GetDogResponse;
+import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponse;
 import com.meongcare.domain.weight.domain.entity.Weight;
 import com.meongcare.domain.weight.domain.repository.WeightRepository;
 import com.meongcare.infra.image.ImageDirectory;
@@ -29,38 +29,38 @@ public class DogService {
     private final ImageHandler imageHandler;
 
     @Transactional
-    public void saveDog(MultipartFile multipartFile, SaveDogRequestDto saveDogRequestDto, Long userId) {
+    public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
         Member member = memberRepository.findByUserId(userId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
 
-        Dog dog = saveDogRequestDto.toEntity(member, dogImageURL);
+        Dog dog = saveDogRequest.toEntity(member, dogImageURL);
         dogRepository.save(dog);
 
         Weight weight = Weight.createWeight(dog.getWeight(), userId);
         weightRepository.save(weight);
     }
 
-    public GetDogsResponseDto getDogs(Long userId) {
+    public GetDogsResponse getDogs(Long userId) {
         Dog dog = dogRepository.getById(userId);
-        return GetDogsResponseDto.of(
+        return GetDogsResponse.of(
                 dog.getId(),
                 dog.getName(),
                 dog.getImageUrl()
         );
     }
 
-    public GetDogResponseDto getDog(Long dogId) {
+    public GetDogResponse getDog(Long dogId) {
         Dog dog = dogRepository.getById(dogId);
 
-        return GetDogResponseDto.from(dog);
+        return GetDogResponse.from(dog);
 
     }
 
     @Transactional
-    public void updateDog(MultipartFile multipartFile, PutDogRequestDto putDogRequestDto, Long dogId) {
+    public void updateDog(MultipartFile multipartFile, PutDogRequest putDogRequest, Long dogId) {
         Dog dog = dogRepository.getById(dogId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
-        dog.updateAll(putDogRequestDto, dogImageURL);
+        dog.updateAll(putDogRequest, dogImageURL);
     }
 
     @Transactional

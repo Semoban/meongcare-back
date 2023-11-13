@@ -1,7 +1,7 @@
 package com.meongcare.domain.dog.domain.entity;
 
 import com.meongcare.domain.member.domain.entity.Member;
-import com.meongcare.domain.dog.presentation.dto.request.PutDogRequestDto;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,15 +70,15 @@ public class Dog {
         this.weight = weight;
     }
 
-    public void updateAll(PutDogRequestDto putDogRequestDto, String dogImageURL) {
-        this.name = putDogRequestDto.getName();
-        this.type = putDogRequestDto.getType();
+    public void updateAll(PutDogRequest putDogRequest, String dogImageURL) {
+        this.name = putDogRequest.getName();
+        this.type = putDogRequest.getType();
         this.imageUrl = dogImageURL;
-        this.sex = Sex.of(putDogRequestDto.getSex());
-        this.castrate = putDogRequestDto.isCastrate();
-        this.birthDate = putDogRequestDto.getBirthDate();
-        this.neckRound = putDogRequestDto.getNeckRound();
-        this.chestRound = putDogRequestDto.getChestRound();
-        this.weight = putDogRequestDto.getWeight();
+        this.sex = Sex.of(putDogRequest.getSex());
+        this.castrate = putDogRequest.isCastrate();
+        this.birthDate = putDogRequest.getBirthDate();
+        this.neckRound = putDogRequest.getNeckRound();
+        this.chestRound = putDogRequest.getChestRound();
+        this.weight = putDogRequest.getWeight();
     }
 }

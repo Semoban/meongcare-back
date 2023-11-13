@@ -1,8 +1,8 @@
 package com.meongcare.domain.auth.presentation.controller;
 
-import com.meongcare.domain.auth.presentation.dto.request.LoginRequestDto;
-import com.meongcare.domain.auth.presentation.dto.response.LoginResponseDto;
-import com.meongcare.domain.auth.presentation.dto.response.ReissueResponseDto;
+import com.meongcare.domain.auth.presentation.dto.request.LoginRequest;
+import com.meongcare.domain.auth.presentation.dto.response.LoginResponse;
+import com.meongcare.domain.auth.presentation.dto.response.ReissueResponse;
 import com.meongcare.domain.auth.application.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,18 +22,16 @@ public class AuthController {
 
     @Operation(description = "회원가입/로그인 (토큰 발급)")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
-        LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
-
-        return ResponseEntity.ok().body(loginResponseDto);
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = authService.login(loginRequest);
+        return ResponseEntity.ok().body(loginResponse);
     }
 
     @Operation(description = "엑세스 토큰 재발급")
     @GetMapping("/reissue")
-    public ResponseEntity<ReissueResponseDto> reissue(@RequestHeader("RefreshToken") String refreshToken) {
-         ReissueResponseDto reissueResponseDto = authService.reissue(refreshToken);
-
-        return ResponseEntity.ok().body(reissueResponseDto);
+    public ResponseEntity<ReissueResponse> reissue(@RequestHeader("RefreshToken") String refreshToken) {
+         ReissueResponse reissueResponse = authService.reissue(refreshToken);
+        return ResponseEntity.ok().body(reissueResponse);
     }
 
     @Operation(description = "로그아웃 (엑세스 토큰 삭제)")

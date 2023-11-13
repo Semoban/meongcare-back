@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SaveDogRequestDto {
+public class SaveDogRequest {
 
     @Schema(description = "강아지 이름", example = "김먼지")
     @NotNull

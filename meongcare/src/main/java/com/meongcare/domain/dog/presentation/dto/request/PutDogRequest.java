@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
-public class PutDogRequestDto {
+public class PutDogRequest {
     @Schema(description = "강아지 이름", example = "김먼지")
     @NotNull
     private String name;
