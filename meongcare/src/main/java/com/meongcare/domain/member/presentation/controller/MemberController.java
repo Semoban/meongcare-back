@@ -26,7 +26,7 @@ public class MemberController {
 
     @Operation(description = "알림 설정")
     @PatchMapping("/alarm")
-    public ResponseEntity updateAlarm(@JwtValidation Long userId,
+    public ResponseEntity<Void> updateAlarm(@JwtValidation Long userId,
                                      @RequestParam("pushAgreement") boolean pushAgreement) {
         memberService.updateAlarm(userId, pushAgreement);
         return ResponseEntity.ok().build();
@@ -34,7 +34,7 @@ public class MemberController {
 
     @Operation(description = "회원 탈퇴")
     @DeleteMapping
-    public ResponseEntity deleteMember(@JwtValidation Long userId){
+    public ResponseEntity<Void> deleteMember(@JwtValidation Long userId){
         memberService.deleteMember(userId);
         return ResponseEntity.ok().build();
     }
