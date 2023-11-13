@@ -2,6 +2,7 @@ package com.meongcare.domain.notice.presentation.controller;
 
 import com.meongcare.domain.notice.application.NoticeService;
 import com.meongcare.domain.notice.presentation.dto.request.SaveNoticeRequest;
+import com.meongcare.domain.notice.presentation.dto.response.GetNoticesResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -24,5 +25,13 @@ public class NoticeController {
         noticeService.saveNotice(saveNoticeRequest);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "공지사항 조회")
+    @GetMapping
+    public ResponseEntity<GetNoticesResponse> getNotices(@RequestParam("type") String noticeType){
+        GetNoticesResponse getNoticesResponse = noticeService.getNotices(noticeType);
+        return ResponseEntity.ok().body(getNoticesResponse);
+    }
+
 
 }
