@@ -59,7 +59,7 @@ public class DogService {
     @Transactional
     public void updateDog(MultipartFile multipartFile, PutDogRequestDto putDogRequestDto, Long dogId) {
         Dog dog = dogRepository.getById(dogId);
-        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
+        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
         dog.updateAll(putDogRequestDto, dogImageURL);
     }
 
