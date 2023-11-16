@@ -12,7 +12,7 @@ import static com.meongcare.common.util.LocalDateTimeUtils.createAMPMTime;
 
 @AllArgsConstructor
 @Getter
-public class GetMedicalRecordsResponseDto {
+public class GetMedicalRecordsResponse {
 
     private List<Record> records;
 
@@ -25,7 +25,7 @@ public class GetMedicalRecordsResponseDto {
         private String time;
     }
 
-    public static GetMedicalRecordsResponseDto of(List<GetMedicalRecordsVo> getMedicalRecordsVos) {
+    public static GetMedicalRecordsResponse of(List<GetMedicalRecordsVo> getMedicalRecordsVos) {
         List<Record> records = getMedicalRecordsVos.stream()
                 .map(medicalRecord -> new Record(
                         medicalRecord.getMedicalRecordsId(),
@@ -33,6 +33,6 @@ public class GetMedicalRecordsResponseDto {
                 ))
                 .collect(Collectors.toUnmodifiableList());
 
-        return new GetMedicalRecordsResponseDto(records);
+        return new GetMedicalRecordsResponse(records);
     }
 }

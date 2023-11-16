@@ -1,10 +1,10 @@
 package com.meongcare.domain.medicalrecord.presentation;
 
 import com.meongcare.domain.medicalrecord.application.MedicalRecordService;
-import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
-import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequestDto;
-import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponseDto;
-import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordsResponseDto;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequest;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequest;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponse;
+import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ public class MedicalRecordController {
     @PostMapping
     public ResponseEntity<Void> saveMedicalRecord(
             @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid SaveMedicalRecordRequestDto saveMedicalRecordRequestDto) {
-        medicalRecordService.save(multipartFile, saveMedicalRecordRequestDto);
+            @RequestPart(value = "dto") @Valid SaveMedicalRecordRequest saveMedicalRecordRequest) {
+        medicalRecordService.save(multipartFile, saveMedicalRecordRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -40,8 +40,8 @@ public class MedicalRecordController {
     @PutMapping
     public ResponseEntity<Void> updateMedicalRecord(
             @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid PutMedicalRecordRequestDto putMedicalRecordRequestDto) {
-        medicalRecordService.update(multipartFile, putMedicalRecordRequestDto);
+            @RequestPart(value = "dto") @Valid PutMedicalRecordRequest putMedicalRecordRequest) {
+        medicalRecordService.update(multipartFile, putMedicalRecordRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -54,18 +54,18 @@ public class MedicalRecordController {
 
     @Operation(description = "진료기록 상세 조회")
     @GetMapping("/{medicalRecordId}")
-    public ResponseEntity<GetMedicalRecordResponseDto> getMedicalRecord(@PathVariable Long medicalRecordId) {
-        GetMedicalRecordResponseDto getMedicalRecordResponseDto = medicalRecordService.get(medicalRecordId);
-        return ResponseEntity.ok().body(getMedicalRecordResponseDto);
+    public ResponseEntity<GetMedicalRecordResponse> getMedicalRecord(@PathVariable Long medicalRecordId) {
+        GetMedicalRecordResponse getMedicalRecordResponse = medicalRecordService.get(medicalRecordId);
+        return ResponseEntity.ok().body(getMedicalRecordResponse);
     }
 
     @Operation(description = "진료기록 조회")
     @GetMapping
-    public ResponseEntity<GetMedicalRecordsResponseDto> getMedicalRecords(
+    public ResponseEntity<GetMedicalRecordsResponse> getMedicalRecords(
             @RequestParam("dogId") Long dogId,
             @RequestParam("dateTime") @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime) {
-        GetMedicalRecordsResponseDto getMedicalRecordsResponseDto = medicalRecordService.getMedicalRecords(dogId, dateTime);
-        return ResponseEntity.ok().body(getMedicalRecordsResponseDto);
+        GetMedicalRecordsResponse getMedicalRecordsResponse = medicalRecordService.getMedicalRecords(dogId, dateTime);
+        return ResponseEntity.ok().body(getMedicalRecordsResponse);
     }
 
 }

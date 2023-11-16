@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class GetMedicalRecordResponseDto {
+public class GetMedicalRecordResponse {
 
     @Schema(description = "진료기록 ID", example = "1")
     private Long medicalRecordId;
@@ -29,7 +29,7 @@ public class GetMedicalRecordResponseDto {
     private String imageUrl;
 
     @Builder
-    public GetMedicalRecordResponseDto(Long medicalRecordId, LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl) {
+    public GetMedicalRecordResponse(Long medicalRecordId, LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl) {
         this.medicalRecordId = medicalRecordId;
         this.dateTime = dateTime;
         this.hospitalName = hospitalName;
@@ -38,8 +38,8 @@ public class GetMedicalRecordResponseDto {
         this.imageUrl = imageUrl;
     }
 
-    public static GetMedicalRecordResponseDto of(MedicalRecord medicalRecord) {
-        return GetMedicalRecordResponseDto
+    public static GetMedicalRecordResponse of(MedicalRecord medicalRecord) {
+        return GetMedicalRecordResponse
                 .builder()
                 .medicalRecordId(medicalRecord.getId())
                 .dateTime(medicalRecord.getDateTime())

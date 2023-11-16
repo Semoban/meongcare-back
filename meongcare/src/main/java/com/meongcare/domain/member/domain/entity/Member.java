@@ -1,5 +1,6 @@
-package com.meongcare.domain.auth.domain.entity;
+package com.meongcare.domain.member.domain.entity;
 
+import com.meongcare.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -31,7 +32,7 @@ public class Member {
     private Provider provider;
 
     @NotNull
-    private String profileImage;
+    private String profileImageUrl;
 
     @NotNull
     private boolean pushAgreement;
@@ -42,15 +43,23 @@ public class Member {
 
 
     @Builder
-    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImage, boolean pushAgreement, String fcmToken) {
+    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImageUrl, boolean pushAgreement, String fcmToken) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.providerId = providerId;
         this.provider = provider;
-        this.profileImage = profileImage;
+        this.profileImageUrl = profileImageUrl;
         this.pushAgreement = pushAgreement;
         this.fcmToken = fcmToken;
+    }
+
+    public void updatePushAgreement(boolean pushAgreement) {
+        this.pushAgreement = pushAgreement;
+    }
+
+    public void deleteMember() {
+        delete();
     }
 
 }

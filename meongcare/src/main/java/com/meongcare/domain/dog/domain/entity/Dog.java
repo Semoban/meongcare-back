@@ -1,6 +1,7 @@
 package com.meongcare.domain.dog.domain.entity;
 
-import com.meongcare.domain.auth.domain.entity.Member;
+import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,10 +32,11 @@ public class Dog {
     private String type;
 
     @NotNull
-    private String profileImage;
+    private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String sex;
+    private Sex sex;
 
     @NotNull
     private boolean castrate;
@@ -50,12 +52,12 @@ public class Dog {
     private double weight;
 
     @Builder
-    public Dog(Member member, String name, String type, String profileImage, String sex,
+    public Dog(Member member, String name, String type, String imageUrl, Sex sex,
                boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
         this.member = member;
         this.name = name;
         this.type = type;
-        this.profileImage = profileImage;
+        this.imageUrl = imageUrl;
         this.sex = sex;
         this.castrate = castrate;
         this.birthDate = birthDate;
@@ -66,5 +68,17 @@ public class Dog {
 
     public void updateWeight(double weight) {
         this.weight = weight;
+    }
+
+    public void updateAll(PutDogRequest putDogRequest, String dogImageURL) {
+        this.name = putDogRequest.getName();
+        this.type = putDogRequest.getType();
+        this.imageUrl = dogImageURL;
+        this.sex = Sex.of(putDogRequest.getSex());
+        this.castrate = putDogRequest.isCastrate();
+        this.birthDate = putDogRequest.getBirthDate();
+        this.neckRound = putDogRequest.getNeckRound();
+        this.chestRound = putDogRequest.getChestRound();
+        this.weight = putDogRequest.getWeight();
     }
 }

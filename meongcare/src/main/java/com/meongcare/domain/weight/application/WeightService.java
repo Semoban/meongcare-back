@@ -83,6 +83,8 @@ public class WeightService {
             weights.get(TODAY_WEIGHT).modifyTodayWeight(kg);
         }
         weightJdbcRepository.saveWeight(weights);
+        Dog dog = dogRepository.getById(dogId);
+        dog.updateWeight(kg);
     }
 
     public double getDayWeight(Long dogId, LocalDateTime dateTime) {

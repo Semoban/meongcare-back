@@ -1,7 +1,7 @@
 package com.meongcare.domain.medicalrecord.domain.entity;
 
 import com.meongcare.domain.dog.domain.entity.Dog;
-import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequestDto;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,11 +59,11 @@ public class MedicalRecord {
                 .build();
     }
 
-    public void updateMedicalRecord(PutMedicalRecordRequestDto putMedicalRecordRequestDto, String imageUrl){
-        this.dateTime = putMedicalRecordRequestDto.getDateTime();
-        this.hospitalName = putMedicalRecordRequestDto.getHospitalName();
-        this.doctorName = putMedicalRecordRequestDto.getDoctorName();
-        this.note = putMedicalRecordRequestDto.getNote();
+    public void updateMedicalRecord(PutMedicalRecordRequest putMedicalRecordRequest, String imageUrl){
+        this.dateTime = putMedicalRecordRequest.getDateTime();
+        this.hospitalName = putMedicalRecordRequest.getHospitalName();
+        this.doctorName = putMedicalRecordRequest.getDoctorName();
+        this.note = putMedicalRecordRequest.getNote();
         this.imageUrl = imageUrl;
     }
 }
