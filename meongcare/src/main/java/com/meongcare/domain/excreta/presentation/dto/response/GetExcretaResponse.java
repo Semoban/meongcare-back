@@ -19,13 +19,16 @@ public class GetExcretaResponse {
     private int fecesCount;
     @Schema(description = "소변 횟수", example = "3")
     private int urineCount;
-    private List<Record> recordList;
+    private List<ExcretaRecord> excretaRecords;
 
     @AllArgsConstructor
     @Getter
-    static class Record {
+    static class ExcretaRecord {
+        @Schema(description = "대소변 ID", example = "1")
         private Long excretaId;
+        @Schema(description = "시간", example = "오전 08:00")
         private String time;
+        @Schema(description = "대소변 타입", example = "FECES")
         private ExcretaType excretaType;
     }
 
@@ -35,14 +38,14 @@ public class GetExcretaResponse {
                 .count();
         int urineCount = excretaVO.size() - fecesCount;
 
-        List<Record> records = excretaVO.stream()
-                .map(excreta -> new Record(
+        List<ExcretaRecord> excretaRecords = excretaVO.stream()
+                .map(excreta -> new ExcretaRecord(
                         excreta.getExcretaId(),
                         createAMPMTime(excreta.getDateTime()),
                         excreta.getExcretaType()
                 ))
                 .collect(Collectors.toUnmodifiableList());
 
-        return new GetExcretaResponse(fecesCount, urineCount, records);
+        return new GetExcretaResponse(fecesCount, urineCount, excretaRecords);
     }
 }
