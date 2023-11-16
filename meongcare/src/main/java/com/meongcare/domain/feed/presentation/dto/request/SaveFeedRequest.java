@@ -1,6 +1,8 @@
 package com.meongcare.domain.feed.presentation.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.feed.domain.entity.Feed;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -46,4 +48,20 @@ public class SaveFeedRequest {
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = COMMON_PATTERN, timezone = "Asia/Seoul")
     private LocalDateTime dateTime;
+
+    public Feed toEntity(String imageURL, Dog dog) {
+        return Feed.builder()
+                .brand(brand)
+                .feedName(feedName)
+                .protein(protein)
+                .fat(fat)
+                .crudeAsh(crudeAsh)
+                .moisture(moisture)
+                .kcal(kcal)
+                .recommendIntake(recommendIntake)
+                .imageURL(imageURL)
+                .dateTime(dateTime)
+                .dog(dog)
+                .build();
+    }
 }

@@ -2,7 +2,6 @@ package com.meongcare.domain.feed.domain.entity;
 
 import com.meongcare.common.BaseEntity;
 import com.meongcare.domain.dog.domain.entity.Dog;
-import com.meongcare.domain.feed.presentation.dto.request.SaveFeedRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -64,21 +63,5 @@ public class Feed extends BaseEntity {
         this.imageURL = imageURL;
         this.dateTime = dateTime;
         this.dog = dog;
-    }
-
-    public static Feed of(SaveFeedRequest request, String imageURL, Dog dog) {
-        return Feed.builder()
-                .brand(request.getBrand())
-                .feedName(request.getFeedName())
-                .protein(request.getProtein())
-                .fat(request.getFat())
-                .crudeAsh(request.getCrudeAsh())
-                .moisture(request.getMoisture())
-                .kcal(request.getKcal())
-                .recommendIntake(request.getRecommendIntake())
-                .imageURL(imageURL)
-                .dateTime(request.getDateTime())
-                .dog(dog)
-                .build();
     }
 }

@@ -45,7 +45,7 @@ public class FeedService {
         Dog dog = dogRepository.getById(request.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
 
-        Feed feed = Feed.of(request, imageURL, dog);
+        Feed feed = request.toEntity(imageURL, dog);
         feedRepository.save(feed);
         //기획에 따라 추가될 수도 있는 부분
 //        feedRecordRepository.save(FeedRecord.of(feed, dog.getId()));
