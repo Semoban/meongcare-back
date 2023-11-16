@@ -10,12 +10,16 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LocalDateTimeUtils {
 
     private static final DateTimeFormatter AM_PM_Formatter = DateTimeFormatter.ofPattern("a hh:mm");
     private static final String PERIOD_DATE_FORMAT = "%02d.%02d ~ %02d.%02d";
+    private static final String PERIOD_DATE_WITH_YEAR_FORMAT = "%d년 %02d월 %02d일 ~ %02d월 %02d일";
+    private static final String PERIOD_DATE_WITH_DIFFERENT_YEAR_FORMAT = "%d년 %02d월 %02d일 ~ %d년 %02d월 %02d일";
+    private static final String PERIOD_DATE_WITH_NULL_END_DATE = "%d년 %02d월 %02d일 ~";
     private static final int FIRST_DAY_OF_MONTH = 1;
 
     public static LocalDateTime createNowMidnight(LocalDateTime dateTime) {
@@ -76,5 +80,23 @@ public class LocalDateTimeUtils {
 
     public static long getBetweenDays(LocalDateTime startDay, LocalDateTime lastDay) {
         return Math.abs(ChronoUnit.DAYS.between(startDay, lastDay));
+    }
+
+    public static String getPeriodDateWithYearFormat(LocalDateTime startDay, LocalDateTime lastDay) {
+        if (Objects.isNull(lastDay)) {
+            return String.format(PERIOD_DATE_WITH_NULL_END_DATE,
+                    startDay.getYear(), startDay.getMonthValue(), startDay.getDayOfMonth()
+            );
+        }
+        if (startDay.getYear() == lastDay.getYear()) {
+            return String.format(PERIOD_DATE_WITH_YEAR_FORMAT, startDay.getYear(),
+                    startDay.getMonthValue(), startDay.getDayOfMonth(),
+                    lastDay.getMonthValue(), lastDay.getDayOfMonth()
+            );
+        }
+        return String.format(PERIOD_DATE_WITH_DIFFERENT_YEAR_FORMAT,
+                startDay.getYear(), startDay.getMonthValue(), startDay.getDayOfMonth(),
+                lastDay.getYear(), lastDay.getMonthValue(), lastDay.getDayOfMonth()
+        );
     }
 }
