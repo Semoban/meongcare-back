@@ -16,6 +16,7 @@ import java.util.Objects;
 public class LocalDateTimeUtils {
 
     private static final DateTimeFormatter AM_PM_Formatter = DateTimeFormatter.ofPattern("a hh:mm");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
     private static final String PERIOD_DATE_FORMAT = "%02d.%02d ~ %02d.%02d";
     private static final String PERIOD_DATE_WITH_YEAR_FORMAT = "%d년 %02d월 %02d일 ~ %02d월 %02d일";
     private static final String PERIOD_DATE_WITH_DIFFERENT_YEAR_FORMAT = "%d년 %02d월 %02d일 ~ %d년 %02d월 %02d일";
@@ -98,5 +99,9 @@ public class LocalDateTimeUtils {
                 startDay.getYear(), startDay.getMonthValue(), startDay.getDayOfMonth(),
                 lastDay.getYear(), lastDay.getMonthValue(), lastDay.getDayOfMonth()
         );
+    }
+
+    public static String getDate(LocalDateTime dateTime) {
+        return dateTime.format(DATE_FORMATTER);
     }
 }
