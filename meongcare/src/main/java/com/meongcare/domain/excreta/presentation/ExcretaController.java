@@ -3,6 +3,7 @@ package com.meongcare.domain.excreta.presentation;
 import com.meongcare.domain.excreta.application.ExcretaService;
 import com.meongcare.domain.excreta.presentation.dto.request.SaveExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.request.PatchExcretaRequest;
+import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaDetailResponse;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -80,5 +81,12 @@ public class ExcretaController {
     @GetMapping("/image/{excretaId}")
     public ResponseEntity<String> getExcretaImage(@PathVariable Long excretaId) {
         return ResponseEntity.ok(excretaService.getExcretaImage(excretaId));
+    }
+
+    @Operation(description = "대소변 상세 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/detail/{excretaId}")
+    public ResponseEntity<GetExcretaDetailResponse> getExcretaDetail(@PathVariable Long excretaId) {
+        return ResponseEntity.ok(excretaService.getExcretaDetail(excretaId));
     }
 }
