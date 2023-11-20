@@ -18,13 +18,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
           
-  notification:
-    name: Slack 배포 알림
-    runs-on: ubuntu-latest
-    if: ${{ always() }} 
-    needs: [CI-CD]
-    steps:
-      - name: action-slack
+      - name: CI/CD 결과 Slack 알림
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -32,4 +26,4 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+        if: always() 
