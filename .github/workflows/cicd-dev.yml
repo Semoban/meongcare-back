@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "feature/32" ]
 
 jobs:
   CI-CD:
@@ -83,3 +83,20 @@ jobs:
             chmod 777 ./deploy.sh
             ./deploy.sh
             docker image prune -f
+  notification:
+    name: Slack 배포 알림
+    runs-on: ubuntu-latest
+    if: ${{ always() }} 
+    needs: [CI-CD]
+    steps:
+      - uses: martialonline/workflow-status@v3
+        id: check
+      - name: action-slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ steps.check.outputs.status }} #workflow의 결과를 받아옴
+          author_name: Github Action Bot
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
