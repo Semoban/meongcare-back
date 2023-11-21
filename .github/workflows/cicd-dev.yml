@@ -17,7 +17,7 @@ jobs:
               ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
-
+          
       - uses: actions/checkout@v3
       - name: java코드 빌드 jdk 11 설정
         uses: actions/setup-java@v3
@@ -83,3 +83,13 @@ jobs:
             chmod 777 ./deploy.sh
             ./deploy.sh
             docker image prune -f
+          
+      - name: CI/CD 결과 Slack 알림
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: Github Action Bot
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always() 
