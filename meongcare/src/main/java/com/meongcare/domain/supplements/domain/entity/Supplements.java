@@ -38,14 +38,14 @@ public class Supplements extends BaseEntity {
     private boolean stopStatus;
 
     @Builder
-    public Supplements(Dog dog, String name, String brand, String imageUrl, int intakeCycle, String intakeUnit,LocalDate startDate) {
+    public Supplements(Dog dog, String name, String brand, String imageUrl, int intakeCycle, String intakeUnit, LocalDate startDate) {
         this.dog = dog;
         this.name = name;
         this.brand = brand;
         this.imageUrl = imageUrl;
         this.intakeCycle = intakeCycle;
         this.startDate = startDate;
-        this.intakeUnit= intakeUnit;
+        this.intakeUnit = intakeUnit;
         this.stopStatus = false;
     }
 }

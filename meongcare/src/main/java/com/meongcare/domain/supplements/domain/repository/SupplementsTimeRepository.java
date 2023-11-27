@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SupplementsTimeRepository extends JpaRepository<SupplementsTime, Long> {
 
-    default SupplementsTime getById(Long id){
+    default SupplementsTime getById(Long id) {
         return this.findById(id)
                 .orElseThrow(RuntimeException::new);
     }

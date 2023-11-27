@@ -31,7 +31,7 @@ public class SupplementsController {
     @PostMapping
     public ResponseEntity<Void> saveSupplements(
             @RequestPart(value = "dto") @Valid SaveSupplementsRequest saveSupplementsRequest,
-            @RequestPart(value = "file") MultipartFile multipartFile){
+            @RequestPart(value = "file") MultipartFile multipartFile) {
         supplementsService.saveSupplements(saveSupplementsRequest, multipartFile);
         return ResponseEntity.ok().build();
     }
@@ -45,6 +45,5 @@ public class SupplementsController {
     ) {
         GetSupplementsRoutineResponse getSupplementsRoutineResponse = supplementsService.getSupplementsRoutine(date, dogId);
         return ResponseEntity.ok().body(getSupplementsRoutineResponse);
-
     }
 }
