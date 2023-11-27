@@ -39,4 +39,8 @@ public class SupplementsTime {
                 .intakeCount(intakeCount)
                 .build();
     }
+
+    public void updateIntakeTIme(LocalTime updateIntakeTime){
+        this.intakeTime = updateIntakeTime;
+    }
 }

@@ -16,8 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static com.meongcare.common.DateTimePattern.DATE_PATTERN;
+import static com.meongcare.common.DateTimePattern.TIME_PATTERN;
 
 @Tag(name = "영양제 API")
 @RestController
@@ -66,6 +68,17 @@ public class SupplementsController {
             @RequestParam("supplementsRecordId") Long supplementsRecordId
     ) {
         supplementsService.updateSupplementsIntakeStatus(supplementsRecordId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "섭취 시간 수정")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PatchMapping("/time")
+    public ResponseEntity<Void> updateSupplementsTime(
+            @RequestParam("supplementsTimeId") Long supplementsTimeId,
+            @RequestParam("intakeTime") @DateTimeFormat(pattern = TIME_PATTERN) LocalTime updateIntakeTime
+    ) {
+        supplementsService.updateSupplementsTime(supplementsTimeId,updateIntakeTime);
         return ResponseEntity.ok().build();
     }
 }

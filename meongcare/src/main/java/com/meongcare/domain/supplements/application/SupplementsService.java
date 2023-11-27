@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,5 +137,11 @@ public class SupplementsService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public void updateSupplementsTime(Long supplementsTimeId, LocalTime updateIntakeTime) {
+        SupplementsTime supplementsTime = supplementsTimeRepository.getById(supplementsTimeId);
+        supplementsTime.updateIntakeTIme(updateIntakeTime);
     }
 }
