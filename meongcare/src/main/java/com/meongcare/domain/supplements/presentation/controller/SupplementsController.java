@@ -3,6 +3,7 @@ package com.meongcare.domain.supplements.presentation.controller;
 import com.meongcare.domain.supplements.application.SupplementsService;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
+import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,6 +49,16 @@ public class SupplementsController {
     ) {
         GetSupplementsRoutineResponse getSupplementsRoutineResponse = supplementsService.getSupplementsRoutine(date, dogId);
         return ResponseEntity.ok().body(getSupplementsRoutineResponse);
+    }
+
+    @Operation(description = "영양제 상세 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/{supplementsId}")
+    public ResponseEntity<GetSupplementsResponse> getSupplementsInfo(
+            @PathVariable Long supplementsId
+    ) {
+        GetSupplementsResponse getSupplementsResponse = supplementsService.getSupplementsInfo(supplementsId);
+        return ResponseEntity.ok().body(getSupplementsResponse);
     }
 
     @Operation(description = "섭취 완료율 조회")

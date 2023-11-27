@@ -28,7 +28,7 @@ public class GetSupplementsRoutineResponse {
         @Schema(description = "영양제 제품명", example = "밥이보약 하루양갱")
         private String name;
 
-        @Schema(description = "섭취 시간 리스트", example = "13:00:00")
+        @Schema(description = "섭취 시간 리스트", example = "오후 12:00")
         @NotNull
         private LocalTime intakeTime;
 

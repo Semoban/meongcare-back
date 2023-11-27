@@ -11,6 +11,7 @@ import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRouti
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
+import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
@@ -63,7 +64,7 @@ public class SupplementsService {
     }
 
     public GetSupplementsRateResponse getSupplementsRate(LocalDate date, Long dogId) {
-        if (date.isAfter(LocalDate.now())){
+        if (date.isAfter(LocalDate.now())) {
             return GetSupplementsRateResponse.from(0);
         }
         int supplementsRate = supplementsRecordQueryRepository.calSupplementsRate(dogId, date);
@@ -74,6 +75,18 @@ public class SupplementsService {
     public void updateSupplementsIntakeStatus(Long supplementsRecordId) {
         SupplementsRecord supplementsRecord = supplementsRecordRepository.getById(supplementsRecordId);
         supplementsRecord.updateIntakeStatus();
+    }
+
+    @Transactional
+    public void updateSupplementsTime(Long supplementsTimeId, LocalTime updateIntakeTime) {
+        SupplementsTime supplementsTime = supplementsTimeRepository.getById(supplementsTimeId);
+        supplementsTime.updateIntakeTIme(updateIntakeTime);
+    }
+
+    public GetSupplementsResponse getSupplementsInfo(Long supplementsId) {
+        Supplements supplements = supplementsRepository.getById(supplementsId);
+        List<SupplementsTime> supplementsTimes = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
+        return GetSupplementsResponse.of(supplements, supplementsTimes);
     }
 
     private int calSupplementsRate(List<SupplementsRecord> supplementsRecords) {
@@ -101,7 +114,7 @@ public class SupplementsService {
         List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
         List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
         for (Supplements supplementInfo : supplements) {
-            if (checkIntakeDate(supplementInfo.getStartDate(), date)){
+            if (checkIntakeDate(supplementInfo.getStartDate(), date)) {
                 List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVO = supplementsTimeQueryRepository.findBySupplementsId(supplementInfo.getId());
                 getSupplementsRoutineWithoutStatusVOs.addAll(getSupplementsRoutineWithoutStatusVO);
             }
@@ -133,15 +146,10 @@ public class SupplementsService {
         while (!now.isEqual(checkDate) && now.isAfter(checkDate)) {
             checkDate = checkDate.plusDays(3);
         }
-        if (now.isEqual(checkDate)){
+        if (now.isEqual(checkDate)) {
             return true;
         }
         return false;
     }
 
-    @Transactional
-    public void updateSupplementsTime(Long supplementsTimeId, LocalTime updateIntakeTime) {
-        SupplementsTime supplementsTime = supplementsTimeRepository.getById(supplementsTimeId);
-        supplementsTime.updateIntakeTIme(updateIntakeTime);
-    }
 }
