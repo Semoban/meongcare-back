@@ -30,7 +30,7 @@ public class SupplementsRecordQueryRepository {
                 ))
                 .from(supplementsRecord)
                 .where(
-                        dogIdEq(dogId), dateEq(date), isStopStatus()
+                        dogIdEq(dogId), dateEq(date), isActive()
                 )
                 .fetch();
     }
@@ -60,8 +60,8 @@ public class SupplementsRecordQueryRepository {
         return supplementsRecord.date.eq(date);
     }
 
-    private BooleanExpression isStopStatus() {
-        return supplementsRecord.supplements.stopStatus.isFalse();
+    private BooleanExpression isActive() {
+        return supplementsRecord.supplements.isActive.isTrue();
     }
 
     private BooleanExpression isIntakeStatus() { return supplementsRecord.intakeStatus.isTrue();}

@@ -92,4 +92,15 @@ public class SupplementsController {
         supplementsService.updateSupplementsTime(supplementsTimeId,updateIntakeTime);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "루틴 활성화 체크")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PatchMapping("/active")
+    public ResponseEntity<Void> stopSupplementsRoutine(
+            @RequestParam("supplementsId") Long supplementsId,
+            @RequestParam("isActive") boolean isActive
+    ) {
+        supplementsService.stopSupplementsRoutine(supplementsId, isActive);
+        return ResponseEntity.ok().build();
+    }
 }

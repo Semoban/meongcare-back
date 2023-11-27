@@ -36,7 +36,7 @@ public class Supplements extends BaseEntity {
 
     private LocalDate startDate;
 
-    private boolean stopStatus;
+    private boolean isActive;
 
     @Builder
     public Supplements(Dog dog, String name, String brand, String imageUrl, int intakeCycle, String intakeUnit, LocalDate startDate) {
@@ -47,6 +47,10 @@ public class Supplements extends BaseEntity {
         this.intakeCycle = intakeCycle;
         this.startDate = startDate;
         this.intakeUnit = intakeUnit;
-        this.stopStatus = false;
+        this.isActive = true;
+    }
+
+    public void updateActive(boolean isActive) {
+        this.isActive = isActive;
     }
 }
