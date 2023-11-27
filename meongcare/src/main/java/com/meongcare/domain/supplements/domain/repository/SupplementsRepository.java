@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupplementsRepository extends JpaRepository<Supplements, Long> {
+    default Supplements getById(Long id){
+        return this.findById(id)
+                .orElseThrow(RuntimeException::new);
+    }
 }
