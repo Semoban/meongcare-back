@@ -38,6 +38,8 @@ public class Supplements extends BaseEntity {
 
     private boolean isActive;
 
+    private boolean pushAgreement;
+
     @Builder
     public Supplements(Dog dog, String name, String brand, String imageUrl, int intakeCycle, String intakeUnit, LocalDate startDate) {
         this.dog = dog;
@@ -48,9 +50,14 @@ public class Supplements extends BaseEntity {
         this.startDate = startDate;
         this.intakeUnit = intakeUnit;
         this.isActive = true;
+        this.pushAgreement = true;
     }
 
     public void updateActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public void updatePushAgreement(boolean pushAgreement) {
+        this.pushAgreement = pushAgreement;
     }
 }

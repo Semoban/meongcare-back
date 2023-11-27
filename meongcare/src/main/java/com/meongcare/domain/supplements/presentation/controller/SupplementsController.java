@@ -105,6 +105,17 @@ public class SupplementsController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(description = "푸시 알람 체크")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PatchMapping("/alarm")
+    public ResponseEntity<Void> activePushAgreement(
+            @RequestParam("supplementsId") Long supplementsId,
+            @RequestParam("pushAgreement") boolean pushAgreement
+    ) {
+        supplementsService.updatePushAgreement(supplementsId, pushAgreement);
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(description = "영양제 삭제")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping("/{supplementsId}")

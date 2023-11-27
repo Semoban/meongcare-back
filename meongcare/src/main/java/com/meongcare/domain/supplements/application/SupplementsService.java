@@ -171,4 +171,10 @@ public class SupplementsService {
             supplements.delete();
         }
     }
+
+    @Transactional
+    public void updatePushAgreement(Long supplementsId, boolean pushAgreement) {
+        Supplements supplements = supplementsRepository.getById(supplementsId);
+        supplements.updatePushAgreement(pushAgreement);
+    }
 }
