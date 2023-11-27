@@ -10,5 +10,11 @@ import java.util.Optional;
 @Repository
 public interface SupplementsRepository extends JpaRepository<Supplements, Long> {
     List<Supplements> findAllByDogId(Long dogId);
+    Optional<Supplements> findByDogId(Long dogId);
+
+    default Supplements getByDogId(Long dogId){
+        return this.findByDogId(dogId)
+                .orElseThrow(RuntimeException::new);
+    }
 
 }

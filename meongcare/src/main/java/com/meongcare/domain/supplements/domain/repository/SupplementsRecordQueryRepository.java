@@ -34,7 +34,6 @@ public class SupplementsRecordQueryRepository {
                 )
                 .fetch();
     }
-
     private BooleanExpression dogIdEq(Long dogId) {
         return supplementsRecord.supplements.dog.id.eq(dogId);
     }
@@ -46,4 +45,5 @@ public class SupplementsRecordQueryRepository {
     private BooleanExpression isStopStatus() {
         return supplementsRecord.supplements.stopStatus.isFalse();
     }
+
 }

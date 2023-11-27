@@ -10,6 +10,7 @@ import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsAndTi
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
+import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
@@ -58,6 +59,32 @@ public class SupplementsService {
             return createAfterRecord(date, dogId);
         }
         return createBeforeRecord(date, dogId);
+    }
+
+    public GetSupplementsRateResponse getSupplementsRate(LocalDate date, Long dogId) {
+        if (date.isAfter(LocalDate.now())){
+            return GetSupplementsRateResponse.from(0);
+        }
+        Supplements supplements = supplementsRepository.getByDogId(dogId);
+        List<SupplementsRecord> supplementsRecords = supplementsRecordRepository.findAllBySupplementsId(supplements.getId());
+        int supplementsRate = calSupplementsRate(supplementsRecords);
+        return GetSupplementsRateResponse.from(supplementsRate);
+    }
+
+    private int calSupplementsRate(List<SupplementsRecord> supplementsRecords) {
+        int intakeStatusCount = calIntakeStatusCount(supplementsRecords);
+        int supplementsRate = (intakeStatusCount * 100) / supplementsRecords.size();
+        return supplementsRate;
+    }
+
+    private int calIntakeStatusCount(List<SupplementsRecord> supplementsRecords) {
+        int intakeStatusCount = 0;
+        for (SupplementsRecord supplementsRecord : supplementsRecords) {
+            if (supplementsRecord.isIntakeStatus()) {
+                intakeStatusCount++;
+            }
+        }
+        return intakeStatusCount;
     }
 
     private GetSupplementsRoutineResponse createBeforeRecord(LocalDate date, Long dogId) {
