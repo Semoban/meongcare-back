@@ -8,6 +8,7 @@ import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import com.meongcare.domain.supplements.domain.repository.*;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsAndTimeVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
+import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
 import com.meongcare.infra.image.ImageDirectory;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,9 +32,9 @@ public class SupplementsService {
 
     private final SupplementsRepository supplementsRepository;
     private final SupplementsTimeRepository supplementsTimeRepository;
-    private final SupplementsQueryRepository supplementsQueryRepository;
     private final SupplementsTimeQueryRepository supplementsTimeQueryRepository;
     private final SupplementsRecordRepository supplementsRecordRepository;
+    private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final DogRepository dogRepository;
     private final ImageHandler imageHandler;
 
@@ -52,9 +54,27 @@ public class SupplementsService {
     }
 
     public GetSupplementsRoutineResponse getSupplementsRoutine(LocalDate date, Long dogId) {
-        List<GetSupplementsRoutineVO> supplementsRoutineVOs = supplementsQueryRepository.getByDogId(dogId);
+        if (date.isAfter(LocalDate.now())) {
+            return createAfterRecord(date, dogId);
+        }
+        return createBeforeRecord(date, dogId);
+    }
 
-        return new GetSupplementsRoutineResponse();
+    private GetSupplementsRoutineResponse createBeforeRecord(LocalDate date, Long dogId) {
+        List<GetSupplementsRoutineVO> getSupplementsRoutineVOs = supplementsRecordQueryRepository.getByDogIdAndDate(dogId, date);
+        return GetSupplementsRoutineResponse.createBeforeRecord(getSupplementsRoutineVOs);
+    }
+
+    private GetSupplementsRoutineResponse createAfterRecord(LocalDate date, Long dogId) {
+        List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
+        List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
+        for (Supplements supplementInfo : supplements) {
+            if (checkIntakeDate(supplementInfo.getStartDate(), date)){
+                List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVO = supplementsTimeQueryRepository.findBySupplementsId(supplementInfo.getId());
+                getSupplementsRoutineWithoutStatusVOs.addAll(getSupplementsRoutineWithoutStatusVO);
+            }
+        }
+        return GetSupplementsRoutineResponse.createAfterRecord(getSupplementsRoutineWithoutStatusVOs);
     }
 
     @Transactional
