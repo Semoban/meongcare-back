@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static com.meongcare.domain.supplements.domain.entity.QSupplements.supplements;
+import static com.meongcare.domain.supplements.domain.entity.QSupplementsRecord.supplementsRecord;
 import static com.meongcare.domain.supplements.domain.entity.QSupplementsTime.supplementsTime;
 
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class SupplementsTimeQueryRepository {
                 ))
                 .from(supplementsTime)
                 .innerJoin(supplementsTime.supplements, supplements)
+                .where(isNotDeleted())
                 .fetch();
     }
 
@@ -41,11 +43,15 @@ public class SupplementsTimeQueryRepository {
                         supplementsTime.intakeTime
                 ))
                 .from(supplementsTime)
-                .where(supplementsIdEq(supplementsId))
+                .where(supplementsIdEq(supplementsId), isNotDeleted())
                 .fetch();
     }
 
     private BooleanExpression supplementsIdEq(Long supplementsId) {
         return supplementsTime.supplements.id.eq(supplementsId);
     }
+
+    private BooleanExpression isNotDeleted() { return supplementsTime.supplements.deleted.isFalse(); }
+
+    private BooleanExpression isActive() { return supplementsTime.supplements.isActive.isTrue(); }
 }

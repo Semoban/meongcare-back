@@ -30,7 +30,7 @@ public class SupplementsRecordQueryRepository {
                 ))
                 .from(supplementsRecord)
                 .where(
-                        dogIdEq(dogId), dateEq(date), isActive()
+                        dogIdEq(dogId), dateEq(date), isActive(), isNotDeleted()
                 )
                 .fetch();
     }
@@ -39,14 +39,18 @@ public class SupplementsRecordQueryRepository {
         Long totalRecordCount = queryFactory
                 .select(supplementsRecord.count())
                 .from(supplementsRecord)
-                .where(dogIdEq(dogId), dateEq(date))
+                .where(dogIdEq(dogId), dateEq(date), isNotDeleted())
                 .fetchOne();
+
+        if (totalRecordCount == 0) {
+            return 0;
+        }
 
         Long intakeRecordCount = queryFactory
                 .select(supplementsRecord.count())
                 .from(supplementsRecord)
                 .where(
-                        dogIdEq(dogId), dateEq(date), isIntakeStatus())
+                        dogIdEq(dogId), dateEq(date), isIntakeStatus(), isNotDeleted())
                 .fetchOne();
 
         return Long.valueOf(intakeRecordCount * 100 / totalRecordCount).intValue();
@@ -65,5 +69,7 @@ public class SupplementsRecordQueryRepository {
     }
 
     private BooleanExpression isIntakeStatus() { return supplementsRecord.intakeStatus.isTrue();}
+
+    private BooleanExpression isNotDeleted() { return supplementsRecord.supplements.deleted.isFalse();}
 
 }

@@ -114,16 +114,12 @@ public class SupplementsService {
         List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
         List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
         for (Supplements supplementInfo : supplements) {
-            if (isActive(date, supplementInfo)) {
+            if (checkIntakeDate(supplementInfo.getStartDate(), date)) {
                 List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVO = supplementsTimeQueryRepository.findBySupplementsId(supplementInfo.getId());
                 getSupplementsRoutineWithoutStatusVOs.addAll(getSupplementsRoutineWithoutStatusVO);
             }
         }
         return GetSupplementsRoutineResponse.createAfterRecord(getSupplementsRoutineWithoutStatusVOs);
-    }
-
-    private boolean isActive(LocalDate date, Supplements supplementInfo) {
-        return supplementInfo.isActive() && checkIntakeDate(supplementInfo.getStartDate(), date);
     }
 
     @Transactional
@@ -160,5 +156,19 @@ public class SupplementsService {
     public void stopSupplementsRoutine(Long supplementsId, boolean isActive) {
         Supplements supplements = supplementsRepository.getById(supplementsId);
         supplements.updateActive(isActive);
+    }
+
+    @Transactional
+    public void deleteSupplements(Long supplementsId) {
+        Supplements supplements = supplementsRepository.getById(supplementsId);
+        supplements.delete();
+    }
+
+    @Transactional
+    public void deleteSupplements(List<Long> supplementsIds) {
+        for (Long supplementsId : supplementsIds) {
+            Supplements supplements = supplementsRepository.getById(supplementsId);
+            supplements.delete();
+        }
     }
 }

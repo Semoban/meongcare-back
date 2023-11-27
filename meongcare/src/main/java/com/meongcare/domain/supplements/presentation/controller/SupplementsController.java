@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import static com.meongcare.common.DateTimePattern.DATE_PATTERN;
 import static com.meongcare.common.DateTimePattern.TIME_PATTERN;
@@ -96,11 +97,33 @@ public class SupplementsController {
     @Operation(description = "루틴 활성화 체크")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/active")
-    public ResponseEntity<Void> stopSupplementsRoutine(
+    public ResponseEntity<Void> activeSupplementsRoutine(
             @RequestParam("supplementsId") Long supplementsId,
             @RequestParam("isActive") boolean isActive
     ) {
         supplementsService.stopSupplementsRoutine(supplementsId, isActive);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "영양제 삭제")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @DeleteMapping("/{supplementsId}")
+    public ResponseEntity<Void> deleteSupplements(
+            @PathVariable Long supplementsId
+    ) {
+        supplementsService.deleteSupplements(supplementsId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "영양제 삭제")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @DeleteMapping
+    public ResponseEntity<Void> deleteSupplements(
+            @RequestParam("supplementsIds") List<Long> supplementsIds
+    ) {
+        supplementsService.deleteSupplements(supplementsIds);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
