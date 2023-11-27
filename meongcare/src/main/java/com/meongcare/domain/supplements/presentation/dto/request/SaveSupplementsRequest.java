@@ -1,6 +1,5 @@
 package com.meongcare.domain.supplements.presentation.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
 import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
@@ -16,7 +15,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.meongcare.common.DateTimePattern.*;
 
 @Getter
 public class SaveSupplementsRequest {
@@ -39,11 +37,6 @@ public class SaveSupplementsRequest {
     @Schema(description = "섭취 단위", example = "포")
     private String intakeUnit;
 
-    @Schema(description = "섭취 시작 일자", example = "2023-10-17")
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
-    private LocalDate startDate;
-
     private List<IntakeInfo> intakeInfos;
     @AllArgsConstructor
     @Getter
@@ -61,9 +54,9 @@ public class SaveSupplementsRequest {
                 .brand(brand)
                 .name(name)
                 .intakeUnit(intakeUnit)
+                .startDate(LocalDate.now())
                 .imageUrl(imageUrl)
                 .intakeCycle(intakeCycle)
-                .startDate(startDate)
                 .build();
     }
 
