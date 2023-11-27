@@ -65,10 +65,14 @@ public class SupplementsService {
         if (date.isAfter(LocalDate.now())){
             return GetSupplementsRateResponse.from(0);
         }
-        Supplements supplements = supplementsRepository.getByDogId(dogId);
-        List<SupplementsRecord> supplementsRecords = supplementsRecordRepository.findAllBySupplementsId(supplements.getId());
-        int supplementsRate = calSupplementsRate(supplementsRecords);
+        int supplementsRate = supplementsRecordQueryRepository.calSupplementsRate(dogId, date);
         return GetSupplementsRateResponse.from(supplementsRate);
+    }
+
+    @Transactional
+    public void updateSupplementsIntakeStatus(Long supplementsRecordId) {
+        SupplementsRecord supplementsRecord = supplementsRecordRepository.getById(supplementsRecordId);
+        supplementsRecord.updateIntakeStatus();
     }
 
     private int calSupplementsRate(List<SupplementsRecord> supplementsRecords) {

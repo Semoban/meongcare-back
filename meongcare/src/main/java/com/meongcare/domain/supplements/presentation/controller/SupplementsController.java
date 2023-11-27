@@ -58,4 +58,14 @@ public class SupplementsController {
         GetSupplementsRateResponse getSupplementsRateResponse = supplementsService.getSupplementsRate(date, dogId);
         return ResponseEntity.ok().body(getSupplementsRateResponse);
     }
+
+    @Operation(description = "섭취 여부 체크")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PatchMapping("/check")
+    public ResponseEntity<Void> updateSupplementsIntakeStatus(
+            @RequestParam("supplementsRecordId") Long supplementsRecordId
+    ) {
+        supplementsService.updateSupplementsIntakeStatus(supplementsRecordId);
+        return ResponseEntity.ok().build();
+    }
 }

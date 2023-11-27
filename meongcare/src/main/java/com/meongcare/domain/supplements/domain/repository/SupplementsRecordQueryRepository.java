@@ -34,6 +34,24 @@ public class SupplementsRecordQueryRepository {
                 )
                 .fetch();
     }
+
+    public int calSupplementsRate(Long dogId, LocalDate date) {
+        Long totalRecordCount = queryFactory
+                .select(supplementsRecord.count())
+                .from(supplementsRecord)
+                .where(dogIdEq(dogId), dateEq(date))
+                .fetchOne();
+
+        Long intakeRecordCount = queryFactory
+                .select(supplementsRecord.count())
+                .from(supplementsRecord)
+                .where(
+                        dogIdEq(dogId), dateEq(date), isIntakeStatus())
+                .fetchOne();
+
+        return Long.valueOf(intakeRecordCount * 100 / totalRecordCount).intValue();
+
+    }
     private BooleanExpression dogIdEq(Long dogId) {
         return supplementsRecord.supplements.dog.id.eq(dogId);
     }
@@ -45,5 +63,7 @@ public class SupplementsRecordQueryRepository {
     private BooleanExpression isStopStatus() {
         return supplementsRecord.supplements.stopStatus.isFalse();
     }
+
+    private BooleanExpression isIntakeStatus() { return supplementsRecord.intakeStatus.isTrue();}
 
 }

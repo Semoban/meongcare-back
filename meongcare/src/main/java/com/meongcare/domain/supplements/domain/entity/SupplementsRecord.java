@@ -44,4 +44,8 @@ public class SupplementsRecord {
                 .date(date)
                 .build();
     }
+
+    public void updateIntakeStatus() {
+        this.intakeStatus = !this.intakeStatus;
+    }
 }
