@@ -58,7 +58,7 @@ public class SupplementsService {
     }
 
     @Transactional
-    @Scheduled(cron = "10,30,50 34 0 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 55 23 * * *", zone = "Asia/Seoul")
     public void createAllSupplements() {
         List<GetSupplementsAndTimeVO> supplementsAndTimeVOS = supplementsTimeQueryRepository.findAll();
         for (GetSupplementsAndTimeVO supplementsAndTimeVO : supplementsAndTimeVOS) {
