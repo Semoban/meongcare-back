@@ -38,23 +38,12 @@ public class SupplementsService {
         Dog dog = dogRepository.getById(saveSupplementsRequest.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
 
-        Supplements supplements = saveSupplementsRequest.toEntity(dog, imageURL);
+        Supplements supplements = saveSupplementsRequest.toSupplements(dog, imageURL);
         supplementsRepository.save(supplements);
 
-        List<LocalTime> intakeTimes = saveSupplementsRequest.getIntakeTimes();
-        for (LocalTime intakeTime : intakeTimes) {
-            SupplementsTime supplementsTime = SupplementsTime.of(supplements, intakeTime);
+        List<SupplementsTime> supplementsTimes = saveSupplementsRequest.toSupplementsTimes(supplements);
+        for (SupplementsTime supplementsTime : supplementsTimes) {
             supplementsTimeRepository.save(supplementsTime);
-
-            List<LocalDate> intakeDays = createIntakeDays(
-                    supplements.getStartDate(),
-                    supplements.getEndDate(),
-                    supplements.getIntakeCycle());
-
-            for (LocalDate intakeDate : intakeDays) {
-                SupplementsRecord supplementsRecord = SupplementsRecord.of(supplements, supplementsTime, intakeDate);
-                supplementsRecordRepository.save(supplementsRecord);
-            }
         }
     }
 

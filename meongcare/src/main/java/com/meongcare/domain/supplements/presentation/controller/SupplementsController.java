@@ -29,7 +29,6 @@ public class SupplementsController {
             @RequestPart(value = "file") MultipartFile multipartFile){
         supplementsService.saveSupplements(saveSupplementsRequest, multipartFile);
         return ResponseEntity.ok().build();
-
     }
     
 }

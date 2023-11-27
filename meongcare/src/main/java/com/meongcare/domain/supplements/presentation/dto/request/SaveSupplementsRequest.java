@@ -3,14 +3,17 @@ package com.meongcare.domain.supplements.presentation.dto.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
+import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.meongcare.common.DateTimePattern.*;
@@ -33,9 +36,6 @@ public class SaveSupplementsRequest {
     @Schema(description = "섭취 주기", example = "3")
     private int intakeCycle;
 
-    @Schema(description = "섭취량", example = "3")
-    private int intakeCount;
-
     @Schema(description = "섭취 단위", example = "포")
     private String intakeUnit;
 
@@ -44,27 +44,36 @@ public class SaveSupplementsRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
     private LocalDate startDate;
 
-    @Schema(description = "섭취 종료 일자", example = "2023-10-26")
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
-    private LocalDate endDate;
+    private List<IntakeInfo> intakeInfos;
+    @AllArgsConstructor
+    @Getter
+    static class IntakeInfo{
+        @Schema(description = "섭취 시간 리스트", example = "13:00:00")
+        @NotNull
+        private LocalTime intakeTime;
+        @Schema(description = "섭취량", example = "3")
+        private int intakeCount;
+    }
 
-    @Schema(description = "섭취 시간 리스트", example = "[\"13:00:00\", \"18:00:00\"]")
-    @NotNull
-    private List<LocalTime> intakeTimes;
-
-    public Supplements toEntity(Dog dog, String imageUrl) {
+    public Supplements toSupplements(Dog dog, String imageUrl) {
         return Supplements.builder()
                 .dog(dog)
                 .brand(brand)
                 .name(name)
+                .intakeUnit(intakeUnit)
                 .imageUrl(imageUrl)
                 .intakeCycle(intakeCycle)
-                .intakeCount(intakeCount)
-                .intakeUnit(intakeUnit)
                 .startDate(startDate)
-                .endDate(endDate)
                 .build();
-
     }
+
+    public List<SupplementsTime> toSupplementsTimes(Supplements supplements){
+        List<SupplementsTime> supplementsTimes = new ArrayList<>();
+        for (IntakeInfo intakeInfo : intakeInfos) {
+            SupplementsTime supplementsTime = SupplementsTime.of(supplements, intakeInfo.intakeTime, intakeInfo.intakeCount);
+            supplementsTimes.add(supplementsTime);
+        }
+        return supplementsTimes;
+    }
+
 }
