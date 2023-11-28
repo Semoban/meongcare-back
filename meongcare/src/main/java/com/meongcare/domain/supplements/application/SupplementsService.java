@@ -89,37 +89,30 @@ public class SupplementsService {
         return GetSupplementsResponse.of(supplements, supplementsTimes);
     }
 
-    private int calSupplementsRate(List<SupplementsRecord> supplementsRecords) {
-        int intakeStatusCount = calIntakeStatusCount(supplementsRecords);
-        int supplementsRate = (intakeStatusCount * 100) / supplementsRecords.size();
-        return supplementsRate;
+    @Transactional
+    public void stopSupplementsRoutine(Long supplementsId, boolean isActive) {
+        Supplements supplements = supplementsRepository.getById(supplementsId);
+        supplements.updateActive(isActive);
     }
 
-    private int calIntakeStatusCount(List<SupplementsRecord> supplementsRecords) {
-        int intakeStatusCount = 0;
-        for (SupplementsRecord supplementsRecord : supplementsRecords) {
-            if (supplementsRecord.isIntakeStatus()) {
-                intakeStatusCount++;
-            }
+    @Transactional
+    public void deleteSupplements(Long supplementsId) {
+        Supplements supplements = supplementsRepository.getById(supplementsId);
+        supplements.delete();
+    }
+
+    @Transactional
+    public void deleteSupplements(List<Long> supplementsIds) {
+        for (Long supplementsId : supplementsIds) {
+            Supplements supplements = supplementsRepository.getById(supplementsId);
+            supplements.delete();
         }
-        return intakeStatusCount;
     }
 
-    private GetSupplementsRoutineResponse createBeforeRecord(LocalDate date, Long dogId) {
-        List<GetSupplementsRoutineVO> getSupplementsRoutineVOs = supplementsRecordQueryRepository.getByDogIdAndDate(dogId, date);
-        return GetSupplementsRoutineResponse.createBeforeRecord(getSupplementsRoutineVOs);
-    }
-
-    private GetSupplementsRoutineResponse createAfterRecord(LocalDate date, Long dogId) {
-        List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
-        List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
-        for (Supplements supplementInfo : supplements) {
-            if (checkIntakeDate(supplementInfo.getStartDate(), date)) {
-                List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVO = supplementsTimeQueryRepository.findBySupplementsId(supplementInfo.getId());
-                getSupplementsRoutineWithoutStatusVOs.addAll(getSupplementsRoutineWithoutStatusVO);
-            }
-        }
-        return GetSupplementsRoutineResponse.createAfterRecord(getSupplementsRoutineWithoutStatusVOs);
+    @Transactional
+    public void updatePushAgreement(Long supplementsId, boolean pushAgreement) {
+        Supplements supplements = supplementsRepository.getById(supplementsId);
+        supplements.updatePushAgreement(pushAgreement);
     }
 
     @Transactional
@@ -152,29 +145,36 @@ public class SupplementsService {
         return false;
     }
 
-    @Transactional
-    public void stopSupplementsRoutine(Long supplementsId, boolean isActive) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
-        supplements.updateActive(isActive);
+    private int calSupplementsRate(List<SupplementsRecord> supplementsRecords) {
+        int intakeStatusCount = calIntakeStatusCount(supplementsRecords);
+        int supplementsRate = (intakeStatusCount * 100) / supplementsRecords.size();
+        return supplementsRate;
     }
 
-    @Transactional
-    public void deleteSupplements(Long supplementsId) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
-        supplements.delete();
-    }
-
-    @Transactional
-    public void deleteSupplements(List<Long> supplementsIds) {
-        for (Long supplementsId : supplementsIds) {
-            Supplements supplements = supplementsRepository.getById(supplementsId);
-            supplements.delete();
+    private int calIntakeStatusCount(List<SupplementsRecord> supplementsRecords) {
+        int intakeStatusCount = 0;
+        for (SupplementsRecord supplementsRecord : supplementsRecords) {
+            if (supplementsRecord.isIntakeStatus()) {
+                intakeStatusCount++;
+            }
         }
+        return intakeStatusCount;
     }
 
-    @Transactional
-    public void updatePushAgreement(Long supplementsId, boolean pushAgreement) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
-        supplements.updatePushAgreement(pushAgreement);
+    private GetSupplementsRoutineResponse createBeforeRecord(LocalDate date, Long dogId) {
+        List<GetSupplementsRoutineVO> getSupplementsRoutineVOs = supplementsRecordQueryRepository.getByDogIdAndDate(dogId, date);
+        return GetSupplementsRoutineResponse.createBeforeRecord(getSupplementsRoutineVOs);
+    }
+
+    private GetSupplementsRoutineResponse createAfterRecord(LocalDate date, Long dogId) {
+        List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
+        List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
+        for (Supplements supplementInfo : supplements) {
+            if (checkIntakeDate(supplementInfo.getStartDate(), date)) {
+                List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVO = supplementsTimeQueryRepository.findBySupplementsId(supplementInfo.getId());
+                getSupplementsRoutineWithoutStatusVOs.addAll(getSupplementsRoutineWithoutStatusVO);
+            }
+        }
+        return GetSupplementsRoutineResponse.createAfterRecord(getSupplementsRoutineWithoutStatusVOs);
     }
 }
