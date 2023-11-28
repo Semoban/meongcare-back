@@ -30,7 +30,7 @@ public class DogService {
 
     @Transactional
     public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
-        Member member = memberRepository.findByUserId(userId);
+        Member member = memberRepository.getById(userId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
 
         Dog dog = saveDogRequest.toEntity(member, dogImageURL);

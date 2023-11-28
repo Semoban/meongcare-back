@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByProviderId(String providerId);
 
-    default Member findByUserId(Long userId) {
-        return this.findById(userId).orElseThrow(RuntimeException::new);
+    default Member getById(Long id) {
+        return this.findById(id).orElseThrow(RuntimeException::new);
     }
 
 }

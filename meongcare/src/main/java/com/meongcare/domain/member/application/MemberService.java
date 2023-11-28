@@ -15,7 +15,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public GetProfileResponse getProfile(Long userId) {
-        Member member = memberRepository.findByUserId(userId);
+        Member member = memberRepository.getById(userId);
         return GetProfileResponse.of(
                 member.getEmail(),
                 member.getProfileImageUrl());
@@ -23,13 +23,13 @@ public class MemberService {
 
     @Transactional
     public void updateAlarm(Long userId, boolean pushAgreement) {
-        Member member = memberRepository.findByUserId(userId);
+        Member member = memberRepository.getById(userId);
         member.updatePushAgreement(pushAgreement);
     }
 
     @Transactional
     public void deleteMember(Long userId) {
-        Member member = memberRepository.findByUserId(userId);
+        Member member = memberRepository.getById(userId);
         member.deleteMember();
     }
 }
