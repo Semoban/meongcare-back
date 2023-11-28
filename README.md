@@ -42,4 +42,4 @@ infra
 ```
 
 ## 📄 ERD
-<img width="1544" alt="image" src="https://github.com/meongCare/meongcare-back/assets/62296495/9af284f5-6fb8-46ee-aa54-7c0a7ef4dbf5">
+<img width="1533" alt="image" src="https://github.com/meongCare/meongcare-back/assets/62296495/1ca51f6d-a5f1-4cb8-8084-d8178766bb4b">
