@@ -67,7 +67,9 @@ public class SupplementsService {
         if (date.isAfter(LocalDate.now())) {
             return GetSupplementsRateResponse.from(0);
         }
-        int supplementsRate = supplementsRecordQueryRepository.calSupplementsRate(dogId, date);
+        int intakeRecordCount = supplementsRecordQueryRepository.getIntakeRecordCount(dogId, date);
+        int totalRecordCount = supplementsRecordQueryRepository.getTotalRecordCount(dogId, date);
+        int supplementsRate = calSupplementsRate(intakeRecordCount, totalRecordCount);
         return GetSupplementsRateResponse.from(supplementsRate);
     }
 
@@ -145,20 +147,11 @@ public class SupplementsService {
         return false;
     }
 
-    private int calSupplementsRate(List<SupplementsRecord> supplementsRecords) {
-        int intakeStatusCount = calIntakeStatusCount(supplementsRecords);
-        int supplementsRate = (intakeStatusCount * 100) / supplementsRecords.size();
-        return supplementsRate;
-    }
-
-    private int calIntakeStatusCount(List<SupplementsRecord> supplementsRecords) {
-        int intakeStatusCount = 0;
-        for (SupplementsRecord supplementsRecord : supplementsRecords) {
-            if (supplementsRecord.isIntakeStatus()) {
-                intakeStatusCount++;
-            }
+    private int calSupplementsRate(int intakeStatusCount, int totalRecordCount){
+        if (totalRecordCount == 0){
+            return 0;
         }
-        return intakeStatusCount;
+        return (intakeStatusCount * 100) / totalRecordCount;
     }
 
     private GetSupplementsRoutineResponse createBeforeRecord(LocalDate date, Long dogId) {

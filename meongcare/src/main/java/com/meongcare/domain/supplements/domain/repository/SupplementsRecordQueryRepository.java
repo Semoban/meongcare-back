@@ -35,27 +35,23 @@ public class SupplementsRecordQueryRepository {
                 .fetch();
     }
 
-    public int calSupplementsRate(Long dogId, LocalDate date) {
-        Long totalRecordCount = queryFactory
+    public int getTotalRecordCount(Long dogId, LocalDate date) {
+        return queryFactory
                 .select(supplementsRecord.count())
                 .from(supplementsRecord)
                 .where(dogIdEq(dogId), dateEq(date), isNotDeleted())
-                .fetchOne();
+                .fetchOne().intValue();
+    }
 
-        if (totalRecordCount == 0) {
-            return 0;
-        }
-
-        Long intakeRecordCount = queryFactory
+    public int getIntakeRecordCount(Long dogId, LocalDate date) {
+        return queryFactory
                 .select(supplementsRecord.count())
                 .from(supplementsRecord)
                 .where(
                         dogIdEq(dogId), dateEq(date), isIntakeStatus(), isNotDeleted())
-                .fetchOne();
-
-        return Long.valueOf(intakeRecordCount * 100 / totalRecordCount).intValue();
-
+                .fetchOne().intValue();
     }
+
     private BooleanExpression dogIdEq(Long dogId) {
         return supplementsRecord.supplements.dog.id.eq(dogId);
     }
