@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -61,12 +62,13 @@ public class SaveSupplementsRequest {
     }
 
     public List<SupplementsTime> toSupplementsTimes(Supplements supplements){
-        List<SupplementsTime> supplementsTimes = new ArrayList<>();
-        for (IntakeInfo intakeInfo : intakeInfos) {
-            SupplementsTime supplementsTime = SupplementsTime.of(supplements, intakeInfo.intakeTime, intakeInfo.intakeCount);
-            supplementsTimes.add(supplementsTime);
-        }
-        return supplementsTimes;
+        return intakeInfos.stream()
+                .map(intakeInfo -> SupplementsTime.of(
+                        supplements,
+                        intakeInfo.intakeTime,
+                        intakeInfo.intakeCount))
+                .collect(Collectors.toUnmodifiableList());
+
     }
 
 }
