@@ -37,21 +37,21 @@ public class SupplementsScheduler {
     }
 
     private SupplementsRecord createSupplementsRecord(GetSupplementsAndTimeVO supplementsAndTimeVO) {
-        LocalDate createSupplementsDate = LocalDate.now().plusDays(1);
+        LocalDate createDate = LocalDate.now().plusDays(1);
         Supplements supplements = supplementsAndTimeVO.getSupplements();
         SupplementsTime supplementsTime = supplementsAndTimeVO.getSupplementsTime();
 
-        if (checkIntakeDate(supplements.getStartDate(), createSupplementsDate, supplements.getIntakeCycle())) {
-            return SupplementsRecord.of(supplements, supplementsTime, createSupplementsDate);
+        if (checkIntakeDate(supplements.getStartDate(), createDate, supplements.getIntakeCycle())) {
+            return SupplementsRecord.of(supplements, supplementsTime, createDate);
         }
         return null;
     }
 
-    private boolean checkIntakeDate(LocalDate checkDate, LocalDate createSupplementsDate, int intakeCycle) {
-        while (!createSupplementsDate.isEqual(checkDate) && createSupplementsDate.isAfter(checkDate)) {
+    private boolean checkIntakeDate(LocalDate checkDate, LocalDate createDate, int intakeCycle) {
+        while (!createDate.isEqual(checkDate) && createDate.isAfter(checkDate)) {
             checkDate = checkDate.plusDays(intakeCycle);
         }
-        if (createSupplementsDate.isEqual(checkDate)) {
+        if (createDate.isEqual(checkDate)) {
             return true;
         }
         return false;
