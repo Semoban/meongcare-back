@@ -126,20 +126,20 @@ public class SupplementsService {
     }
 
     private void createSupplements(GetSupplementsAndTimeVO supplementsAndTimeVO) {
-        LocalDate now = LocalDate.now().plusDays(1);
+        LocalDate createSupplementsDate = LocalDate.now().plusDays(1);
         Supplements supplements = supplementsAndTimeVO.getSupplements();
         SupplementsTime supplementsTime = supplementsAndTimeVO.getSupplementsTime();
 
-        if (checkIntakeDate(supplements.getStartDate(), now)) {
-            supplementsRecordRepository.save(SupplementsRecord.of(supplements, supplementsTime, now));
+        if (checkIntakeDate(supplements.getStartDate(), createSupplementsDate)) {
+            supplementsRecordRepository.save(SupplementsRecord.of(supplements, supplementsTime, createSupplementsDate));
         }
     }
 
-    private boolean checkIntakeDate(LocalDate checkDate, LocalDate now) {
-        while (!now.isEqual(checkDate) && now.isAfter(checkDate)) {
+    private boolean checkIntakeDate(LocalDate checkDate, LocalDate createSupplementsDate) {
+        while (!createSupplementsDate.isEqual(checkDate) && createSupplementsDate.isAfter(checkDate)) {
             checkDate = checkDate.plusDays(3);
         }
-        if (now.isEqual(checkDate)) {
+        if (createSupplementsDate.isEqual(checkDate)) {
             return true;
         }
         return false;
