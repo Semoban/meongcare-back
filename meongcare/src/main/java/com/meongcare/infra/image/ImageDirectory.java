@@ -8,7 +8,8 @@ public enum ImageDirectory {
     SYMPTOM("meongcare/symptom/"),
     MEDICAL_RECORD("meongcare/medical-record/"),
     DOG("meongcare/dog/"),
-    FEED("meongcare/feed/")
+    FEED("meongcare/feed/"),
+    SUPPLEMENTS("meongcare/supplements/")
     ;
 
     private final String baseDirectory;

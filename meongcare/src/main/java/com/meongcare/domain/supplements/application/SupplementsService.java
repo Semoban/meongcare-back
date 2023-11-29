@@ -44,7 +44,7 @@ public class SupplementsService {
     @Transactional
     public void saveSupplements(SaveSupplementsRequest saveSupplementsRequest, MultipartFile multipartFile) {
         Dog dog = dogRepository.getById(saveSupplementsRequest.getDogId());
-        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
+        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.SUPPLEMENTS);
 
         Supplements supplements = saveSupplementsRequest.toSupplements(dog, imageURL);
         supplementsRepository.save(supplements);
