@@ -132,14 +132,14 @@ public class SupplementsService {
         Supplements supplements = supplementsAndTimeVO.getSupplements();
         SupplementsTime supplementsTime = supplementsAndTimeVO.getSupplementsTime();
 
-        if (checkIntakeDate(supplements.getStartDate(), createSupplementsDate)) {
+        if (checkIntakeDate(supplements.getStartDate(), createSupplementsDate, supplements.getIntakeCycle())) {
             supplementsRecordRepository.save(SupplementsRecord.of(supplements, supplementsTime, createSupplementsDate));
         }
     }
 
-    private boolean checkIntakeDate(LocalDate checkDate, LocalDate createSupplementsDate) {
+    private boolean checkIntakeDate(LocalDate checkDate, LocalDate createSupplementsDate, int intakeCycle) {
         while (!createSupplementsDate.isEqual(checkDate) && createSupplementsDate.isAfter(checkDate)) {
-            checkDate = checkDate.plusDays(3);
+            checkDate = checkDate.plusDays(intakeCycle);
         }
         if (createSupplementsDate.isEqual(checkDate)) {
             return true;
@@ -163,7 +163,7 @@ public class SupplementsService {
         List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
         List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
         for (Supplements supplementInfo : supplements) {
-            if (checkIntakeDate(supplementInfo.getStartDate(), date)) {
+            if (checkIntakeDate(supplementInfo.getStartDate(), date, supplementInfo.getIntakeCycle())) {
                 List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVO = supplementsTimeQueryRepository.findBySupplementsId(supplementInfo.getId());
                 getSupplementsRoutineWithoutStatusVOs.addAll(getSupplementsRoutineWithoutStatusVO);
             }
