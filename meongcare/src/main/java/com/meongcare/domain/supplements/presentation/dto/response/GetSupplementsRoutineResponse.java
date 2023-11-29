@@ -19,6 +19,8 @@ public class GetSupplementsRoutineResponse {
 
     private List<Routine> routines;
 
+    @Builder(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @Getter
     static class Routine {
 
@@ -40,16 +42,6 @@ public class GetSupplementsRoutineResponse {
 
         @Schema(description = "섭취 여부", example = "true")
         private boolean intakeStatus;
-
-        @Builder(access = AccessLevel.PRIVATE)
-        private Routine(Long supplementsRecordId, String name, LocalTime intakeTime, int intakeCount, String intakeUnit, boolean intakeStatus) {
-            this.supplementsRecordId = supplementsRecordId;
-            this.name = name;
-            this.intakeTime = intakeTime;
-            this.intakeCount = intakeCount;
-            this.intakeUnit = intakeUnit;
-            this.intakeStatus = intakeStatus;
-        }
 
     }
 
