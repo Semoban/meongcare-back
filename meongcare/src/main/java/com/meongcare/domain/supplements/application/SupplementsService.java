@@ -6,7 +6,6 @@ import com.meongcare.domain.supplements.domain.entity.Supplements;
 import com.meongcare.domain.supplements.domain.entity.SupplementsRecord;
 import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import com.meongcare.domain.supplements.domain.repository.*;
-import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsAndTimeVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
@@ -16,8 +15,6 @@ import com.meongcare.domain.supplements.presentation.dto.response.GetSupplements
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +24,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -115,26 +111,6 @@ public class SupplementsService {
     public void updatePushAgreement(Long supplementsId, boolean pushAgreement) {
         Supplements supplements = supplementsRepository.getById(supplementsId);
         supplements.updatePushAgreement(pushAgreement);
-    }
-
-    @Transactional
-    @Scheduled(cron = "0 55 23 * * *", zone = "Asia/Seoul")
-    public void createAllSupplements() {
-        List<GetSupplementsAndTimeVO> supplementsAndTimeVOS = supplementsTimeQueryRepository.findAll();
-        for (GetSupplementsAndTimeVO supplementsAndTimeVO : supplementsAndTimeVOS) {
-            createSupplements(supplementsAndTimeVO);
-        }
-        log.info("영양제 당일 데이터 추가 성공");
-    }
-
-    private void createSupplements(GetSupplementsAndTimeVO supplementsAndTimeVO) {
-        LocalDate createSupplementsDate = LocalDate.now().plusDays(1);
-        Supplements supplements = supplementsAndTimeVO.getSupplements();
-        SupplementsTime supplementsTime = supplementsAndTimeVO.getSupplementsTime();
-
-        if (checkIntakeDate(supplements.getStartDate(), createSupplementsDate, supplements.getIntakeCycle())) {
-            supplementsRecordRepository.save(SupplementsRecord.of(supplements, supplementsTime, createSupplementsDate));
-        }
     }
 
     private boolean checkIntakeDate(LocalDate checkDate, LocalDate createSupplementsDate, int intakeCycle) {
