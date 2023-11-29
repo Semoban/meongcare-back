@@ -25,7 +25,7 @@ public class SupplementsScheduler {
     private final SupplementsRecordJdbcRepository supplementsRecordJdbcRepository;
 
     @Transactional
-    @Scheduled(cron = "10,30,50 * * * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 55 23 * * *", zone = "Asia/Seoul")
     public void createAllSupplements() {
         List<GetSupplementsAndTimeVO> supplementsAndTimeVOS = supplementsTimeQueryRepository.findAll();
         List<SupplementsRecord> supplementsRecords = supplementsAndTimeVOS.stream()
