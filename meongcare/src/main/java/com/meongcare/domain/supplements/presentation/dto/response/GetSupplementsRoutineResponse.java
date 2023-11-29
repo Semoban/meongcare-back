@@ -42,7 +42,7 @@ public class GetSupplementsRoutineResponse {
         private boolean intakeStatus;
 
         @Builder(access = AccessLevel.PRIVATE)
-        public Routine(Long supplementsRecordId, String name, LocalTime intakeTime, int intakeCount, String intakeUnit, boolean intakeStatus) {
+        private Routine(Long supplementsRecordId, String name, LocalTime intakeTime, int intakeCount, String intakeUnit, boolean intakeStatus) {
             this.supplementsRecordId = supplementsRecordId;
             this.name = name;
             this.intakeTime = intakeTime;
@@ -51,15 +51,6 @@ public class GetSupplementsRoutineResponse {
             this.intakeStatus = intakeStatus;
         }
 
-        @Builder(access = AccessLevel.PRIVATE)
-        public Routine(String name, LocalTime intakeTime, int intakeCount, String intakeUnit) {
-            this.supplementsRecordId = null;
-            this.name = name;
-            this.intakeTime = intakeTime;
-            this.intakeCount = intakeCount;
-            this.intakeUnit = intakeUnit;
-            this.intakeStatus = false;
-        }
     }
 
     public static GetSupplementsRoutineResponse createBeforeRecord(List<GetSupplementsRoutineVO> getSupplementsRoutineVOs) {
