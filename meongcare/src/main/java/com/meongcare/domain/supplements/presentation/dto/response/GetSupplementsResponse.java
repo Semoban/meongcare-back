@@ -3,6 +3,7 @@ package com.meongcare.domain.supplements.presentation.dto.response;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
 import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +12,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Builder
-@AllArgsConstructor
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class GetSupplementsResponse {
 
@@ -33,7 +34,7 @@ public class GetSupplementsResponse {
 
     List<IntakeInfo> intakeInfos;
 
-    @AllArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @Getter
     static class IntakeInfo{
         @Schema(description = "섭취 시간", example = "13:00:00")

@@ -3,7 +3,9 @@ package com.meongcare.domain.supplements.presentation.dto.response;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
@@ -11,14 +13,12 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class GetSupplementsRoutineResponse {
 
     private List<Routine> routines;
 
-    @AllArgsConstructor
     @Getter
     static class Routine {
 
@@ -40,18 +40,40 @@ public class GetSupplementsRoutineResponse {
 
         @Schema(description = "섭취 여부", example = "true")
         private boolean intakeStatus;
+
+        @Builder(access = AccessLevel.PRIVATE)
+        public Routine(Long supplementsRecordId, String name, LocalTime intakeTime, int intakeCount, String intakeUnit, boolean intakeStatus) {
+            this.supplementsRecordId = supplementsRecordId;
+            this.name = name;
+            this.intakeTime = intakeTime;
+            this.intakeCount = intakeCount;
+            this.intakeUnit = intakeUnit;
+            this.intakeStatus = intakeStatus;
+        }
+
+        @Builder(access = AccessLevel.PRIVATE)
+        public Routine(String name, LocalTime intakeTime, int intakeCount, String intakeUnit) {
+            this.supplementsRecordId = null;
+            this.name = name;
+            this.intakeTime = intakeTime;
+            this.intakeCount = intakeCount;
+            this.intakeUnit = intakeUnit;
+            this.intakeStatus = false;
+        }
     }
 
     public static GetSupplementsRoutineResponse createBeforeRecord(List<GetSupplementsRoutineVO> getSupplementsRoutineVOs) {
         List<Routine> routines = getSupplementsRoutineVOs.stream()
-                .map(routine -> new GetSupplementsRoutineResponse.Routine(
-                        routine.getSupplementsRecordId(),
-                        routine.getName(),
-                        routine.getIntakeTime(),
-                        routine.getIntakeCount(),
-                        routine.getIntakeUnit(),
-                        routine.isIntakeStatus()
-                ))
+                .map(routine ->
+                        Routine.builder()
+                        .supplementsRecordId(routine.getSupplementsRecordId())
+                        .name(routine.getName())
+                        .intakeTime(routine.getIntakeTime())
+                        .intakeCount(routine.getIntakeCount())
+                        .intakeUnit(routine.getIntakeUnit())
+                        .intakeStatus(routine.isIntakeStatus())
+                        .build()
+                )
                 .collect(Collectors.toUnmodifiableList());
 
         return new GetSupplementsRoutineResponse(routines);
@@ -59,14 +81,14 @@ public class GetSupplementsRoutineResponse {
 
     public static GetSupplementsRoutineResponse createAfterRecord(List<GetSupplementsRoutineWithoutStatusVO> GetSupplementsRoutineWithoutStatusVO) {
         List<Routine> routines = GetSupplementsRoutineWithoutStatusVO.stream()
-                .map(routine -> new GetSupplementsRoutineResponse.Routine(
-                        null,
-                        routine.getName(),
-                        routine.getIntakeTime(),
-                        routine.getIntakeCount(),
-                        routine.getIntakeUnit(),
-                        false
-                ))
+                .map(routine ->
+                        Routine.builder()
+                        .name(routine.getName())
+                        .intakeTime(routine.getIntakeTime())
+                        .intakeCount(routine.getIntakeCount())
+                        .intakeUnit(routine.getIntakeUnit())
+                        .build()
+                )
                 .collect(Collectors.toUnmodifiableList());
 
         return new GetSupplementsRoutineResponse(routines);

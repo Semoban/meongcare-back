@@ -1,10 +1,11 @@
 package com.meongcare.domain.supplements.presentation.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class GetSupplementsRateResponse {
 
