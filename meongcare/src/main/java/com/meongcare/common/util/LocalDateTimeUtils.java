@@ -41,6 +41,10 @@ public class LocalDateTimeUtils {
         return dateTime.format(AM_PM_Formatter);
     }
 
+    public static String createAMPMTime(LocalTime dateTime) {
+        return dateTime.format(AM_PM_Formatter);
+    }
+
     public static LocalDateTime createLastMonthDateTime(LocalDateTime dateTime) {
         LocalDateTime lastMonthDateTime = dateTime.minusMonths(1);
         return LocalDateTime.of(

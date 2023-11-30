@@ -4,6 +4,8 @@ import com.meongcare.common.jwt.JwtValidation;
 import com.meongcare.domain.member.presentation.dto.response.GetProfileResponse;
 import com.meongcare.domain.member.application.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @Operation(description = "나의 정보 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/profile")
     public ResponseEntity<GetProfileResponse> getProfile(@JwtValidation Long userId){
         GetProfileResponse getProfileResponse = memberService.getProfile(userId);
@@ -25,6 +28,7 @@ public class MemberController {
     }
 
     @Operation(description = "알림 설정")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/alarm")
     public ResponseEntity<Void> updateAlarm(@JwtValidation Long userId,
                                      @RequestParam("pushAgreement") boolean pushAgreement) {
@@ -33,6 +37,7 @@ public class MemberController {
     }
 
     @Operation(description = "회원 탈퇴")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping
     public ResponseEntity<Void> deleteMember(@JwtValidation Long userId){
         memberService.deleteMember(userId);
