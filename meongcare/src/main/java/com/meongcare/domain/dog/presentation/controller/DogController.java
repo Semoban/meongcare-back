@@ -37,6 +37,7 @@ public class DogController {
     }
 
     @Operation(description = "반려동물 목록")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping
     public ResponseEntity<GetDogsResponse> getDogs(@JwtValidation Long userId) {
         GetDogsResponse getDogsResponse = dogService.getDogs(userId);
