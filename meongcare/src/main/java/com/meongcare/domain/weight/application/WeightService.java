@@ -38,6 +38,7 @@ public class WeightService {
     private final WeightJdbcRepository weightJdbcRepository;
 
     private static final int TODAY_WEIGHT = 0;
+    private static final Double DEFAULT_WEIGHT = 0.0;
 
     public GetWeekWeightResponse getWeekWeight(Long dogId, LocalDateTime dateTime) {
         List<GetWeekWeightVO> weekWeightVO = weightQueryRepository.getWeekWeightByDogIdAndDateTime(
@@ -92,6 +93,6 @@ public class WeightService {
                 dogId,
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
-        );
+        ).orElse(DEFAULT_WEIGHT);
     }
 }
