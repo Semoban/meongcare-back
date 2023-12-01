@@ -18,7 +18,7 @@ import static com.meongcare.domain.symptom.domain.entity.QSymptom.symptom;
 public class SymptomQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<GetSymptomVO> getSymptomByDogIdAndDatetime(
+    public List<GetSymptomVO> getSymptomByDogIdAndSelectedDate(
             Long dogId, LocalDateTime nowDateTime, LocalDateTime nextDateTime
     ) {
         return queryFactory
