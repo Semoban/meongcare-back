@@ -45,6 +45,9 @@ public class DogService {
     private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final ImageHandler imageHandler;
 
+    private static final Double DEFAULT_WEIGHT = 0.0;
+    private static final Integer DEFAULT_RECOMMEND_INTAKE = 0;
+
     @Transactional
     public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
         Member member = memberRepository.getById(userId);
@@ -96,17 +99,19 @@ public class DogService {
                 LocalDateTimeUtils.createNowMidnight(dateTime),
                 LocalDateTimeUtils.createNextMidnight(dateTime)
         );
-        double weight = weightQueryRepository.getDayWeightByDogIdAndDateTime(
+        Double weight = weightQueryRepository.getDayWeightByDogIdAndDateTime(
                 dogId,
                 LocalDateTimeUtils.createNowMidnight(dateTime),
                 LocalDateTimeUtils.createNextMidnight(dateTime)
-        );
-        Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, dateTime);
+        ).orElse(DEFAULT_WEIGHT);
+
+        Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, dateTime)
+                .orElse(DEFAULT_RECOMMEND_INTAKE);
 
         int totalRecordCount = supplementsRecordQueryRepository.getTotalRecordCount(dogId, dateTime.toLocalDate());
-        int intakeRecordCount = supplementsRecordQueryRepository.getIntakeRecordCount(dogId, dateTime.toLocalDate());
+        int isIntakeRecordCount = supplementsRecordQueryRepository.getIntakeRecordCount(dogId, dateTime.toLocalDate());
         return GetAllRecordOfDogResponse.of(
-                symptomVO, excretaVO, weight, recommendIntake, intakeRecordCount, totalRecordCount
+                symptomVO, excretaVO, weight, recommendIntake, isIntakeRecordCount, totalRecordCount
         );
     }
 }
