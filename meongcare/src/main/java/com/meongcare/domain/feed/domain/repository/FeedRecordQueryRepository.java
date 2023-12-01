@@ -10,7 +10,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static com.meongcare.domain.feed.domain.entity.QFeed.feed;
 import static com.meongcare.domain.feed.domain.entity.QFeedRecord.feedRecord;
@@ -30,6 +32,19 @@ public class FeedRecordQueryRepository {
                         feedRecord.endDate.isNull()
                 )
                 .fetchFirst();
+    }
+
+    public Optional<Integer> getFeedRecordByDogIdAndDate(Long dogId, LocalDateTime selectedDate) {
+        return Optional.ofNullable(queryFactory
+                .select(feed.recommendIntake)
+                .from(feedRecord)
+                .innerJoin(feedRecord.feed, feed)
+                .where(
+                        dogIdEq(dogId),
+                        startDateLoeSelectedDate(selectedDate),
+                        endDateGoeSelectedDate(selectedDate).or(feedRecord.endDate.isNull())
+                )
+                .fetchFirst());
     }
 
     public List<GetFeedRecordsVO> getFeedRecordsByDogId(Long dogId) {
@@ -66,5 +81,13 @@ public class FeedRecordQueryRepository {
 
     private BooleanExpression dogIdEq(Long dogId) {
         return feedRecord.dogId.eq(dogId);
+    }
+
+    private BooleanExpression startDateLoeSelectedDate(LocalDateTime selectedDate) {
+        return feedRecord.startDate.loe(selectedDate);
+    }
+
+    private BooleanExpression endDateGoeSelectedDate(LocalDateTime selectedDate) {
+        return feedRecord.endDate.goe(selectedDate);
     }
 }
