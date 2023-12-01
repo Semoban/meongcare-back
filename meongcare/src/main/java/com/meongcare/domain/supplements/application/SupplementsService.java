@@ -123,8 +123,8 @@ public class SupplementsService {
         return false;
     }
 
-    private int calSupplementsRate(int intakeStatusCount, int totalRecordCount){
-        if (totalRecordCount == 0){
+    private int calSupplementsRate(int intakeStatusCount, int totalRecordCount) {
+        if (totalRecordCount == 0) {
             return 0;
         }
         return (intakeStatusCount * 100) / totalRecordCount;
