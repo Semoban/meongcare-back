@@ -3,6 +3,7 @@ package com.meongcare.domain.dog.presentation.controller;
 import com.meongcare.common.jwt.JwtValidation;
 import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequest;
+import com.meongcare.domain.dog.presentation.dto.response.GetAllRecordOfDogResponse;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogResponse;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponse;
 import com.meongcare.domain.dog.application.DogService;
@@ -11,11 +12,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+
+import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
 
 @Tag(name = "강아지 API")
 @RestController
@@ -70,5 +75,15 @@ public class DogController {
     public ResponseEntity<Void> updateDog(@PathVariable Long dogId) {
         dogService.deleteDog(dogId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "날짜별 강아지 기록 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/home/{dogId}")
+    public ResponseEntity<GetAllRecordOfDogResponse> getDogRecord(
+            @PathVariable Long dogId,
+            @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+    ) {
+        return ResponseEntity.ok(dogService.getDogRecord(dogId, dateTime));
     }
 }
