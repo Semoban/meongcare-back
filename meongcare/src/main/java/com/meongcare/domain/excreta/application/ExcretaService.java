@@ -47,7 +47,7 @@ public class ExcretaService {
     public GetExcretaResponse getExcreta(Long dogId, LocalDateTime dateTime) {
         Dog dog = dogRepository.getById(dogId);
 
-        List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogId(
+        List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogIdAndSelectedDate(
                 dog.getId(),
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)

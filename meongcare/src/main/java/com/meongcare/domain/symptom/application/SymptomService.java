@@ -46,7 +46,7 @@ public class SymptomService {
     public GetSymptomResponse getSymptom(Long dogId, LocalDateTime dateTime) {
         Dog dog = dogRepository.getById(dogId);
 
-        List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndDatetime(
+        List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndSelectedDate(
                 dog.getId(),
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
