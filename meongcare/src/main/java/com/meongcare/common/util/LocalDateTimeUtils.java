@@ -45,6 +45,14 @@ public class LocalDateTimeUtils {
         return dateTime.format(AM_PM_Formatter);
     }
 
+    public static LocalTime createNowWithZeroSecond() {
+        return LocalTime.now().withSecond(0);
+    }
+
+    public static LocalTime createFiftyNineSecondsLater(LocalTime now) {
+        return now.plusSeconds(59);
+    }
+
     public static LocalDateTime createLastMonthDateTime(LocalDateTime dateTime) {
         LocalDateTime lastMonthDateTime = dateTime.minusMonths(1);
         return LocalDateTime.of(
