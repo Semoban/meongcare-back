@@ -1,10 +1,5 @@
 package com.meongcare.domain.dog.application;
 
-import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.presentation.dto.response.GetAllRecordOfDogResponse;
-import com.meongcare.domain.excreta.domain.repository.ExcretaQueryRepository;
-import com.meongcare.domain.excreta.domain.repository.vo.GetExcretaVO;
-import com.meongcare.domain.feed.domain.repository.FeedRecordQueryRepository;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.dog.domain.DogRepository;
@@ -13,11 +8,7 @@ import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequest;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogResponse;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponse;
-import com.meongcare.domain.supplements.domain.repository.SupplementsRecordQueryRepository;
-import com.meongcare.domain.symptom.domain.repository.SymptomQueryRepository;
-import com.meongcare.domain.symptom.domain.repository.vo.GetSymptomVO;
 import com.meongcare.domain.weight.domain.entity.Weight;
-import com.meongcare.domain.weight.domain.repository.WeightQueryRepository;
 import com.meongcare.domain.weight.domain.repository.WeightRepository;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
@@ -25,10 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -38,15 +25,7 @@ public class DogService {
     private final MemberRepository memberRepository;
     private final DogRepository dogRepository;
     private final WeightRepository weightRepository;
-    private final SymptomQueryRepository symptomQueryRepository;
-    private final WeightQueryRepository weightQueryRepository;
-    private final ExcretaQueryRepository excretaQueryRepository;
-    private final FeedRecordQueryRepository feedRecordQueryRepository;
-    private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final ImageHandler imageHandler;
-
-    private static final Double DEFAULT_WEIGHT = 0.0;
-    private static final Integer DEFAULT_RECOMMEND_INTAKE = 0;
 
     @Transactional
     public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
@@ -88,30 +67,4 @@ public class DogService {
         dogRepository.deleteById(dogId);
     }
 
-    public GetAllRecordOfDogResponse getDogRecord(Long dogId, LocalDateTime dateTime) {
-        List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndSelectedDate(
-                dogId,
-                LocalDateTimeUtils.createNowMidnight(dateTime),
-                LocalDateTimeUtils.createNextMidnight(dateTime)
-        );
-        List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogIdAndSelectedDate(
-                dogId,
-                LocalDateTimeUtils.createNowMidnight(dateTime),
-                LocalDateTimeUtils.createNextMidnight(dateTime)
-        );
-        Double weight = weightQueryRepository.getDayWeightByDogIdAndDateTime(
-                dogId,
-                LocalDateTimeUtils.createNowMidnight(dateTime),
-                LocalDateTimeUtils.createNextMidnight(dateTime)
-        ).orElse(DEFAULT_WEIGHT);
-
-        Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, dateTime)
-                .orElse(DEFAULT_RECOMMEND_INTAKE);
-
-        int totalRecordCount = supplementsRecordQueryRepository.getTotalRecordCount(dogId, dateTime.toLocalDate());
-        int isIntakeRecordCount = supplementsRecordQueryRepository.getIntakeRecordCount(dogId, dateTime.toLocalDate());
-        return GetAllRecordOfDogResponse.of(
-                symptomVO, excretaVO, weight, recommendIntake, isIntakeRecordCount, totalRecordCount
-        );
-    }
 }
