@@ -51,7 +51,7 @@ public class SupplementsScheduler {
     }
 
     @Transactional(readOnly = true)
-    @Scheduled(cron = "5 * * * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "2 * * * * *", zone = "Asia/Seoul")
     public void sendSupplementsAlarm() {
         LocalTime now = LocalDateTimeUtils.createNowWithZeroSecond();
         log.info(now.toString());
@@ -69,11 +69,9 @@ public class SupplementsScheduler {
 
     private void sendMessage(String title, String body, Message message) {
         try{
-            log.info("알림 보내기 시작 title = {}, body={}, time={}", title, body, LocalTime.now());
             firebaseMessaging.send(message);
-            log.info("성공. title = {}, body={}, time={}", title, body, LocalTime.now());
         } catch (FirebaseMessagingException e) {
-            log.error("알림 보내기를 실패하였습니다. errorMessage={}, title={}, body={}, time={}", e.getMessage(), title, body, LocalTime.now());
+            log.error("알림 보내기를 실패하였습니다. errorMessage={}", e.getMessage());
         }
     }
 
