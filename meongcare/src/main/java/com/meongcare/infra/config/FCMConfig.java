@@ -13,6 +13,8 @@ import java.io.InputStream;
 
 @Configuration
 public class FCMConfig {
+
+    private static final String FIREBASE_KEY_PATH = "firebase/meongcare-firebase-key.json";
     @Bean
     FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
         return FirebaseMessaging.getInstance(firebaseApp);
@@ -29,7 +31,7 @@ public class FCMConfig {
 
     @Bean
     GoogleCredentials googleCredentials() throws IOException {
-        ClassPathResource resource = new ClassPathResource("firebase/meongcare-firebase-adminsdk-luwg9-abfe65457a.json");
+        ClassPathResource resource = new ClassPathResource(FIREBASE_KEY_PATH);
         InputStream refreshToken = resource.getInputStream();
         return GoogleCredentials.fromStream(refreshToken);
     }
