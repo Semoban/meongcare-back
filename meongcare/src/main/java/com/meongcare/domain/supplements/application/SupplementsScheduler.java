@@ -54,7 +54,6 @@ public class SupplementsScheduler {
     @Scheduled(cron = "2 * * * * *", zone = "Asia/Seoul")
     public void sendSupplementsAlarm() {
         LocalTime now = LocalDateTimeUtils.createNowWithZeroSecond();
-        log.info(now.toString());
         LocalTime fiftyNineSecondsLater = LocalDateTimeUtils.createFiftyNineSecondsLater(now);
         List<GetAlarmSupplementsVO> alarmSupplementsVOS = supplementsRecordQueryRepository.findAllAlarmSupplementsByTime(now, fiftyNineSecondsLater);
 
