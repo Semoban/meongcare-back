@@ -11,6 +11,7 @@ import com.meongcare.domain.weight.domain.repository.vo.GetMonthWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetWeekWeightVO;
 import com.meongcare.domain.weight.presentation.dto.response.GetMonthWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetWeekWeightResponse;
+import com.meongcare.domain.weight.presentation.dto.response.GetWeightForHomeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,5 +95,15 @@ public class WeightService {
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
         ).orElse(DEFAULT_WEIGHT);
+    }
+
+    public GetWeightForHomeResponse getWeightForHome(Long dogId, LocalDateTime dateTime) {
+        Double weight = weightQueryRepository.getDayWeightByDogIdAndDateTime(
+                dogId,
+                LocalDateTimeUtils.createNowMidnight(dateTime),
+                LocalDateTimeUtils.createNextMidnight(dateTime)
+        ).orElse(DEFAULT_WEIGHT);
+
+        return GetWeightForHomeResponse.from(weight);
     }
 }

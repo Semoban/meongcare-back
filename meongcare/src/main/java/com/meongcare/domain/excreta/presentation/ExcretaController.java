@@ -89,4 +89,14 @@ public class ExcretaController {
     public ResponseEntity<GetExcretaDetailResponse> getExcretaDetail(@PathVariable Long excretaId) {
         return ResponseEntity.ok(excretaService.getExcretaDetail(excretaId));
     }
+
+    @Operation(description = "반려견 메인 홈 대소변 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/home/{dogId}")
+    public ResponseEntity<?> getExcretaForHome(
+            @PathVariable Long dogId,
+            @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+    ) {
+        return ResponseEntity.ok(excretaService.getExcretaForHome(dogId, dateTime));
+    }
 }

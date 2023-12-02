@@ -79,4 +79,14 @@ public class WeightController {
     ) {
         return ResponseEntity.ok(weightService.getDayWeight(dogId, dateTime));
     }
+
+    @Operation(description = "반려견 메인 홈 몸무게 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/home/{dogId}")
+    public ResponseEntity<?> getWeightForHome(
+            @PathVariable Long dogId,
+            @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+    ) {
+        return ResponseEntity.ok(weightService.getWeightForHome(dogId, dateTime));
+    }
 }

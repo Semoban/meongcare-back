@@ -9,6 +9,7 @@ import com.meongcare.domain.feed.domain.repository.FeedRecordQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRepository;
 import com.meongcare.domain.feed.presentation.dto.request.SaveFeedRequest;
+import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecommendIntakeForHomeResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedsPartResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecordsResponse;
@@ -39,6 +40,8 @@ public class FeedService {
     private final FeedRecordRepository feedRecordRepository;
     private final FeedRecordQueryRepository feedRecordQueryRepository;
     private final ImageHandler imageHandler;
+
+    private static final Integer DEFAULT_RECOMMEND_INTAKE = 0;
 
     @Transactional
     public void saveFeed(SaveFeedRequest request, MultipartFile multipartFile) {
@@ -81,5 +84,11 @@ public class FeedService {
     public GetFeedsResponse getFeeds(Long dogId) {
         List<GetFeedsVO> feedsVO = feedQueryRepository.getFeedsByDogId(dogId);
         return GetFeedsResponse.from(feedsVO);
+    }
+
+    public GetFeedRecommendIntakeForHomeResponse getFeedRecommendIntakeForHome(Long dogId, LocalDateTime dateTime) {
+        Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, dateTime)
+                .orElse(DEFAULT_RECOMMEND_INTAKE);
+        return GetFeedRecommendIntakeForHomeResponse.from(recommendIntake);
     }
 }

@@ -9,6 +9,7 @@ import com.meongcare.domain.supplements.domain.repository.*;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
+import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateForHomeResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
@@ -145,5 +146,12 @@ public class SupplementsService {
             }
         }
         return GetSupplementsRoutineResponse.createAfterRecord(getSupplementsRoutineWithoutStatusVOs);
+    }
+
+    public GetSupplementsRateForHomeResponse getSupplementsRateForHome(Long dogId, LocalDate date) {
+        int totalRecordCount = supplementsRecordQueryRepository.getTotalRecordCount(dogId, date);
+        int isIntakeRecordCount = supplementsRecordQueryRepository.getIntakeRecordCount(dogId, date);
+
+        return GetSupplementsRateForHomeResponse.of(isIntakeRecordCount, totalRecordCount);
     }
 }
