@@ -63,11 +63,11 @@ public class SupplementsScheduler {
             String body = createPushAlarmBody(alarmSupplementsVO.getDogName());
             Notification notification = createNotification(logoImageUrl, title, body);
             Message message = createMessage(alarmSupplementsVO.getFcmToken(), notification);
-            sendMessage(title, body, message);
+            sendMessage(message);
         }
     }
 
-    private void sendMessage(String title, String body, Message message) {
+    private void sendMessage(Message message) {
         try{
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
