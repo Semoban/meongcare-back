@@ -86,7 +86,7 @@ public class FeedController {
         return ResponseEntity.ok(feedService.getFeeds(dogId));
     }
 
-    @Operation(description = "반려견 메인 홈 영양제 섭취율 조회")
+    @Operation(description = "반려견 메인 홈 사료 권장 섭취량 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/home/{dogId}")
     public ResponseEntity<GetFeedRecommendIntakeForHomeResponse> getFeedRecommendIntakeForHome(
