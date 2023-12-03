@@ -34,6 +34,10 @@ public class LoginRequest {
     @NotNull
     private String profileImageUrl;
 
+    @Schema(description = "fcm 토큰", example = "12askjdb123nmn~~~")
+    @NotNull
+    private String fcmToken;
+
     public Member toMemberEntity() {
         return Member
                 .builder()
@@ -43,7 +47,7 @@ public class LoginRequest {
                 .pushAgreement(false)
                 .profileImageUrl(profileImageUrl)
                 .email(email)
-                .fcmToken("example")
+                .fcmToken(fcmToken)
                 .build();
 
     }

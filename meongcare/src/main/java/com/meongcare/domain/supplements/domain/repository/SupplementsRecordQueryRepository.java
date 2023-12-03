@@ -1,6 +1,11 @@
 package com.meongcare.domain.supplements.domain.repository;
 
+import com.meongcare.domain.dog.domain.entity.QDog;
+import com.meongcare.domain.member.domain.entity.QMember;
+import com.meongcare.domain.supplements.domain.entity.QSupplements;
+import com.meongcare.domain.supplements.domain.repository.vo.GetAlarmSupplementsVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
+import com.meongcare.domain.supplements.domain.repository.vo.QGetAlarmSupplementsVO;
 import com.meongcare.domain.supplements.domain.repository.vo.QGetSupplementsRoutineVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -8,8 +13,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
+import static com.meongcare.domain.dog.domain.entity.QDog.*;
+import static com.meongcare.domain.member.domain.entity.QMember.*;
+import static com.meongcare.domain.supplements.domain.entity.QSupplements.*;
 import static com.meongcare.domain.supplements.domain.entity.QSupplementsRecord.*;
 
 @RequiredArgsConstructor
@@ -52,6 +61,20 @@ public class SupplementsRecordQueryRepository {
                 .fetchOne().intValue();
     }
 
+    public List<GetAlarmSupplementsVO> findAllAlarmSupplementsByTime(LocalTime time, LocalTime fiftyNineSecondsLater) {
+        return queryFactory
+                .select(new QGetAlarmSupplementsVO(
+                        member.fcmToken,
+                        dog.name,
+                        supplements.name))
+                .from(supplementsRecord)
+                .innerJoin(supplementsRecord.supplements, supplements)
+                .innerJoin(supplements.dog, dog)
+                .innerJoin(dog.member, member)
+                .where(isActive(), isNotDeleted(), isNotIntakeStatus(), isTimeEQ(time, fiftyNineSecondsLater))
+                .fetch();
+    }
+
     private BooleanExpression dogIdEq(Long dogId) {
         return supplementsRecord.supplements.dog.id.eq(dogId);
     }
@@ -66,6 +89,12 @@ public class SupplementsRecordQueryRepository {
 
     private BooleanExpression isIntakeStatus() { return supplementsRecord.intakeStatus.isTrue();}
 
+    private BooleanExpression isNotIntakeStatus() { return supplementsRecord.intakeStatus.isFalse();}
+
     private BooleanExpression isNotDeleted() { return supplementsRecord.supplements.deleted.isFalse();}
+
+    private BooleanExpression isTimeEQ(LocalTime time, LocalTime fiftyNineSecondsLater) {
+        return supplementsRecord.supplementsTime.intakeTime.between(time, fiftyNineSecondsLater);
+    }
 
 }

@@ -11,6 +11,9 @@ import java.time.LocalTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "supplements_time", indexes = {
+        @Index(name = "idx_intake_time", columnList = "intake_time")
+})
 public class SupplementsTime {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,7 @@ public class SupplementsTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Supplements supplements;
 
+    @Column(name = "intake_time")
     private LocalTime intakeTime;
 
     private int intakeCount;
