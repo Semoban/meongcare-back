@@ -2,6 +2,7 @@ package com.meongcare.domain.supplements.presentation.controller;
 
 import com.meongcare.domain.supplements.application.SupplementsService;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
+import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateForHomeResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
@@ -136,5 +137,13 @@ public class SupplementsController {
         return ResponseEntity.ok().build();
     }
 
-
+    @Operation(description = "반려견 메인 홈 영양제 섭취율 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/home/{dogId}")
+    public ResponseEntity<GetSupplementsRateForHomeResponse> getSupplementsRateForHome(
+            @PathVariable Long dogId,
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
+    ) {
+        return ResponseEntity.ok(supplementsService.getSupplementsRateForHome(dogId, date));
+    }
 }

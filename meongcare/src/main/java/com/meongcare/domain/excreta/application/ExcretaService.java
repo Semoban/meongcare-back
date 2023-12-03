@@ -1,5 +1,6 @@
 package com.meongcare.domain.excreta.application;
 
+import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.excreta.domain.entity.Excreta;
@@ -7,6 +8,7 @@ import com.meongcare.domain.excreta.domain.repository.vo.GetExcretaVO;
 import com.meongcare.domain.excreta.presentation.dto.request.SaveExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.request.PatchExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaDetailResponse;
+import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaForHomeResponse;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse;
 import com.meongcare.domain.excreta.domain.entity.ExcretaType;
 import com.meongcare.domain.excreta.domain.repository.ExcretaQueryRepository;
@@ -47,7 +49,7 @@ public class ExcretaService {
     public GetExcretaResponse getExcreta(Long dogId, LocalDateTime dateTime) {
         Dog dog = dogRepository.getById(dogId);
 
-        List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogId(
+        List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogIdAndSelectedDate(
                 dog.getId(),
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
@@ -85,5 +87,14 @@ public class ExcretaService {
     public GetExcretaDetailResponse getExcretaDetail(Long excretaId) {
         Excreta excreta = excretaRepository.getById(excretaId);
         return GetExcretaDetailResponse.from(excreta);
+    }
+
+    public Object getExcretaForHome(Long dogId, LocalDateTime dateTime) {
+        List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogIdAndSelectedDate(
+                dogId,
+                LocalDateTimeUtils.createNowMidnight(dateTime),
+                LocalDateTimeUtils.createNextMidnight(dateTime)
+        );
+        return GetExcretaForHomeResponse.from(excretaVO);
     }
 }

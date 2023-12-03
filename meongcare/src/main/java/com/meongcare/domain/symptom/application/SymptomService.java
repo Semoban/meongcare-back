@@ -1,5 +1,6 @@
 package com.meongcare.domain.symptom.application;
 
+import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.symptom.domain.entity.SymptomType;
@@ -9,6 +10,7 @@ import com.meongcare.domain.symptom.domain.entity.Symptom;
 import com.meongcare.domain.symptom.domain.repository.SymptomQueryRepository;
 import com.meongcare.domain.symptom.domain.repository.SymptomRepository;
 import com.meongcare.domain.symptom.presentation.dto.request.SaveSymptomRequest;
+import com.meongcare.domain.symptom.presentation.dto.response.GetSymptomForHomeResponse;
 import com.meongcare.domain.symptom.presentation.dto.response.GetSymptomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,7 @@ public class SymptomService {
     public GetSymptomResponse getSymptom(Long dogId, LocalDateTime dateTime) {
         Dog dog = dogRepository.getById(dogId);
 
-        List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndDatetime(
+        List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndSelectedDate(
                 dog.getId(),
                 createNowMidnight(dateTime),
                 createNextMidnight(dateTime)
@@ -65,5 +67,14 @@ public class SymptomService {
 
     public void deleteSymptom(List<Long> symptomIds) {
         symptomQueryRepository.deleteSymptomById(symptomIds);
+    }
+
+    public GetSymptomForHomeResponse getSymptomForHome(Long dogId, LocalDateTime dateTime) {
+        List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndSelectedDate(
+                dogId,
+                LocalDateTimeUtils.createNowMidnight(dateTime),
+                LocalDateTimeUtils.createNextMidnight(dateTime)
+        );
+        return GetSymptomForHomeResponse.from(symptomVO);
     }
 }

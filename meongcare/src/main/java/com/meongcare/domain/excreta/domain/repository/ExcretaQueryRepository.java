@@ -19,7 +19,7 @@ public class ExcretaQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<GetExcretaVO> getByDogId(
+    public List<GetExcretaVO> getByDogIdAndSelectedDate(
             Long dogId, LocalDateTime nowDateTime, LocalDateTime nextDateTime
     ) {
         return queryFactory

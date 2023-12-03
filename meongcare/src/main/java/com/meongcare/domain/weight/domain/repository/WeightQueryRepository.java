@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static com.meongcare.domain.weight.domain.entity.QWeight.weight;
 
@@ -73,15 +74,15 @@ public class WeightQueryRepository {
                 .fetchFirst();
     }
 
-    public double getDayWeightByDogIdAndDateTime(Long dogId, LocalDateTime nowMidnight, LocalDateTime nextMidnight) {
-        return queryFactory
+    public Optional<Double> getDayWeightByDogIdAndDateTime(Long dogId, LocalDateTime nowMidnight, LocalDateTime nextMidnight) {
+        return Optional.ofNullable(queryFactory
                 .select(weight.kg)
                 .from(weight)
                 .where(
                         dogIdEq(dogId),
                         dateTimeGoe(nowMidnight), dateTimeLt(nextMidnight)
                 )
-                .fetchFirst();
+                .fetchOne());
     }
 
     private BooleanExpression dateTimeLt(LocalDateTime dateTime) {

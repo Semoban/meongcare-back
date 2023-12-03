@@ -3,6 +3,7 @@ package com.meongcare.domain.symptom.presentation;
 import com.meongcare.domain.symptom.application.SymptomService;
 import com.meongcare.domain.symptom.presentation.dto.request.EditSymptomRequest;
 import com.meongcare.domain.symptom.presentation.dto.request.SaveSymptomRequest;
+import com.meongcare.domain.symptom.presentation.dto.response.GetSymptomForHomeResponse;
 import com.meongcare.domain.symptom.presentation.dto.response.GetSymptomResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -66,5 +67,14 @@ public class SymptomController {
     public ResponseEntity<Void> deleteSymptom(@RequestParam List<Long> symptomIds) {
         symptomService.deleteSymptom(symptomIds);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "반려견 메인 홈 이상증상 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/home/{dogId}")
+    public ResponseEntity<GetSymptomForHomeResponse> getSymptomForHome(
+            @PathVariable Long dogId,
+            @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime) {
+        return ResponseEntity.ok(symptomService.getSymptomForHome(dogId, dateTime));
     }
 }
