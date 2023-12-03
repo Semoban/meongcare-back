@@ -16,12 +16,12 @@ public class FCMConfig {
 
     private static final String FIREBASE_KEY_PATH = "firebase/meongcare-firebase-key.json";
     @Bean
-    FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
+    public FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
         return FirebaseMessaging.getInstance(firebaseApp);
     }
 
     @Bean
-    FirebaseApp firebaseApp(GoogleCredentials googleCredentials) {
+    public FirebaseApp firebaseApp(GoogleCredentials googleCredentials) {
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(googleCredentials)
                 .build();
@@ -30,7 +30,7 @@ public class FCMConfig {
     }
 
     @Bean
-    GoogleCredentials googleCredentials() throws IOException {
+    public GoogleCredentials googleCredentials() throws IOException {
         ClassPathResource resource = new ClassPathResource(FIREBASE_KEY_PATH);
         InputStream refreshToken = resource.getInputStream();
         return GoogleCredentials.fromStream(refreshToken);
