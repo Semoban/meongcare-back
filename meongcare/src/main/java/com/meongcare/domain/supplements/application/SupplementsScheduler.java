@@ -1,9 +1,5 @@
 package com.meongcare.domain.supplements.application;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
 import com.meongcare.domain.supplements.domain.entity.SupplementsRecord;
@@ -11,6 +7,7 @@ import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import com.meongcare.domain.supplements.domain.repository.*;
 import com.meongcare.domain.supplements.domain.repository.vo.GetAlarmSupplementsVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsAndTimeVO;
+import com.meongcare.infra.message.MessageHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +28,7 @@ public class SupplementsScheduler {
     @Value("${env.image-url.logo}")
     private String logoImageUrl;
 
-    private final FirebaseMessaging firebaseMessaging;
+    private final MessageHandler messageHandler;
     private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final SupplementsTimeQueryRepository supplementsTimeQueryRepository;
     private final SupplementsRecordJdbcRepository supplementsRecordJdbcRepository;
@@ -60,17 +57,8 @@ public class SupplementsScheduler {
         for (GetAlarmSupplementsVO alarmSupplementsVO : alarmSupplementsVOS) {
             String title = createPushAlarmTitle(alarmSupplementsVO.getDogName(), now, alarmSupplementsVO.getSupplementsName());
             String body = createPushAlarmBody(alarmSupplementsVO.getDogName());
-            Notification notification = createNotification(logoImageUrl, title, body);
-            Message message = createMessage(alarmSupplementsVO.getFcmToken(), notification);
-            sendMessage(message);
-        }
-    }
-
-    private void sendMessage(Message message) {
-        try{
-            firebaseMessaging.send(message);
-        } catch (FirebaseMessagingException e) {
-            log.error("알림 보내기를 실패하였습니다. errorMessage={}", e.getMessage());
+            String fcmToken = alarmSupplementsVO.getFcmToken();
+            messageHandler.sendMessage(title, body, logoImageUrl, fcmToken);
         }
     }
 
@@ -84,20 +72,6 @@ public class SupplementsScheduler {
         return title;
     }
 
-    private static Message createMessage(String fcmToken, Notification notification) {
-        return Message.builder()
-                .setToken(fcmToken)
-                .setNotification(notification)
-                .build();
-    }
-
-    private static Notification createNotification(String logoImageUrl, String title, String body) {
-        return Notification.builder()
-                .setTitle(title)
-                .setBody(body)
-                .setImage(logoImageUrl)
-                .build();
-    }
 
     private SupplementsRecord createSupplementsRecord(GetSupplementsAndTimeVO supplementsAndTimeVO) {
         LocalDate createDate = LocalDate.now().plusDays(1);
