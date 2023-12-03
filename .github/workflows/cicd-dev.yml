@@ -25,13 +25,18 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: application.yml 생성
+      - name: application.yml && firebase-key 생성
         run: |
           cd ./meongcare/src/main/resources 
           touch ./application.yml 
           echo "$APPLICATION_DEV" > ./application.yml
+          mkdir firebase
+          cd ./firebase
+          touch ./meongcare-firebase-key.json
+          echo "$MEONGCARE_FIREBASE_KEY" > ./meongcare-firebase-key.json
         env:
           APPLICATION_DEV: ${{ secrets.APPLICATION_DEV }}
+          MEONGCARE_FIREBASE_KEY: ${{ secrets.MEONGCARE_FIREBASE_KEY }}
       
       - name: Gradle 셋업
         uses: gradle/gradle-build-action@v2
