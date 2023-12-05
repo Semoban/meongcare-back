@@ -1,7 +1,7 @@
 package com.meongcare.domain.feed.domain.repository;
 
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedsVO;
-import com.meongcare.domain.feed.presentation.dto.response.vo.QGetFeedsVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
+import com.meongcare.domain.feed.domain.repository.vo.QGetFeedsVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

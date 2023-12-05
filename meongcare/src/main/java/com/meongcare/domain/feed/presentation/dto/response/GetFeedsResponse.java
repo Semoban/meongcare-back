@@ -1,6 +1,6 @@
 package com.meongcare.domain.feed.presentation.dto.response;
 
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedsVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

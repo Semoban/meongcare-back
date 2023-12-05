@@ -1,4 +1,4 @@
-package com.meongcare.domain.feed.presentation.dto.response.vo;
+package com.meongcare.domain.feed.domain.repository.vo;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
