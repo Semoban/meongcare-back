@@ -1,15 +1,11 @@
 package com.meongcare.domain.feed.presentation.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.feed.domain.entity.Feed;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-
-import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
 
 @Getter
 public class SaveFeedRequest {
@@ -44,11 +40,6 @@ public class SaveFeedRequest {
     @Schema(description = "권장 섭취량", example = "35")
     private int recommendIntake;
 
-    @Schema(description = "일자", example = "2023-08-12'T'13:00:12")
-    @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = COMMON_PATTERN, timezone = "Asia/Seoul")
-    private LocalDateTime dateTime;
-
     public Feed toEntity(String imageURL, Dog dog) {
         return Feed.builder()
                 .brand(brand)
@@ -60,7 +51,6 @@ public class SaveFeedRequest {
                 .kcal(kcal)
                 .recommendIntake(recommendIntake)
                 .imageURL(imageURL)
-                .dateTime(dateTime)
                 .dog(dog)
                 .build();
     }
