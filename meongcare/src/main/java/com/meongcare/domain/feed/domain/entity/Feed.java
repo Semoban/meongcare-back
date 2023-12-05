@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,15 +42,13 @@ public class Feed extends BaseEntity {
 
     private String imageURL;
 
-    private LocalDateTime dateTime;
-
     @JoinColumn(name = "dog_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Dog dog;
 
     @Builder
     public Feed(String brand, String feedName, double protein, double fat, double crudeAsh,
-                double moisture, double kcal, int recommendIntake, String imageURL, LocalDateTime dateTime, Dog dog) {
+                double moisture, double kcal, int recommendIntake, String imageURL, Dog dog) {
         this.brand = brand;
         this.feedName = feedName;
         this.protein = protein;
@@ -61,7 +58,6 @@ public class Feed extends BaseEntity {
         this.kcal = kcal;
         this.recommendIntake = recommendIntake;
         this.imageURL = imageURL;
-        this.dateTime = dateTime;
         this.dog = dog;
     }
 }
