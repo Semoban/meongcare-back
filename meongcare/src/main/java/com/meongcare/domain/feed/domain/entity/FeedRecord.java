@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,9 +23,9 @@ public class FeedRecord extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     private Long dogId;
 
@@ -35,7 +35,7 @@ public class FeedRecord extends BaseEntity {
 
 
     @Builder
-    public FeedRecord(LocalDateTime startDate, LocalDateTime endDate, Long dogId, Feed feed) {
+    public FeedRecord(LocalDate startDate, LocalDate endDate, Long dogId, Feed feed) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.dogId = dogId;
@@ -44,13 +44,13 @@ public class FeedRecord extends BaseEntity {
 
     public static FeedRecord of(Feed feed, Long dogId) {
         return FeedRecord.builder()
-                .startDate(LocalDateTime.now())
+                .startDate(LocalDate.now())
                 .dogId(dogId)
                 .feed(feed)
                 .build();
     }
 
     public void updateEndDate() {
-        this.endDate = LocalDateTime.now();
+        this.endDate = LocalDate.now();
     }
 }

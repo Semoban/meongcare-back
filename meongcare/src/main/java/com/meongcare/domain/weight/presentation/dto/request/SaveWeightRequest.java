@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
+import static com.meongcare.common.DateTimePattern.DATE_PATTERN;
 
 @Getter
 public class SaveWeightRequest {
@@ -16,9 +16,9 @@ public class SaveWeightRequest {
     @NotNull
     private Long dogId;
 
-    @Schema(description = "오늘 DateTime")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = COMMON_PATTERN, timezone = "Asia/Seoul")
-    private LocalDateTime dateTime;
+    @Schema(description = "오늘 DATE")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
+    private LocalDate date;
 
     @Schema(description = "몸무게 수정 시 수정한 몸무게", example = "23.5")
     private Double kg;

@@ -11,7 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,79 +25,83 @@ public class WeightQueryRepository {
 
     public List<GetMonthWeightVO> getMonthWeightByDogIdAndDateTime(
             Long dogId,
-            LocalDateTime beforeMonthDateTime,
-            LocalDateTime nowMonthDateTime
+            LocalDate lastMonthFirstDayDate,
+            LocalDate thisMonthLastDayDate
     ) {
         return queryFactory
                 .select(new QGetMonthWeightVO(
                         weight.kg.avg(),
-                        weight.dateTime.month()
+                        weight.date.month()
                 ))
                 .from(weight)
                 .where(
                         dogIdEq(dogId),
-                        dateTimeGoe(beforeMonthDateTime), dateTimeLoe(nowMonthDateTime)
+                        dateGoe(lastMonthFirstDayDate), dateLoe(thisMonthLastDayDate)
                 )
-                .groupBy(weight.dateTime.month())
+                .groupBy(weight.date.month())
                 .fetch();
     }
 
     public List<GetWeekWeightVO> getWeekWeightByDogIdAndDateTime(
             Long dogId,
-            LocalDateTime beforeDateTime,
-            LocalDateTime afterDateTime
+            LocalDate threeWeeksAgoStartDayDate,
+            LocalDate thisWeekLastDayDate
     ) {
         return queryFactory
                 .select(new QGetWeekWeightVO(
                         weight.kg,
-                        weight.dateTime
+                        weight.date
                 ))
                 .from(weight)
                 .where(
                         dogIdEq(dogId),
-                        dateTimeGoe(beforeDateTime), dateTimeLoe(afterDateTime)
+                        dateGoe(threeWeeksAgoStartDayDate), dateLoe(thisWeekLastDayDate)
                 )
                 .fetch();
     }
 
-    public GetLastDayWeightVO getRecentDayWeightByDogIdAndDateTime(Long dogId, LocalDateTime dateTime) {
+    public GetLastDayWeightVO getRecentDayWeightByDogIdAndDateTime(Long dogId, LocalDate date) {
         return queryFactory
                 .select(new QGetLastDayWeightVO(
-                        weight.dateTime,
+                        weight.date,
                         weight.kg
                 ))
                 .from(weight)
                 .where(dogIdEq(dogId),
-                        dateTimeLt(dateTime)
+                        dateTimeLt(date)
                 )
-                .orderBy(weight.dateTime.desc())
+                .orderBy(weight.date.desc())
                 .fetchFirst();
     }
 
-    public Optional<Double> getDayWeightByDogIdAndDateTime(Long dogId, LocalDateTime nowMidnight, LocalDateTime nextMidnight) {
+    public Optional<Double> getDayWeightByDogIdAndDateTime(Long dogId, LocalDate date) {
         return Optional.ofNullable(queryFactory
                 .select(weight.kg)
                 .from(weight)
                 .where(
                         dogIdEq(dogId),
-                        dateTimeGoe(nowMidnight), dateTimeLt(nextMidnight)
+                        dateEq(date)
                 )
                 .fetchOne());
     }
 
-    private BooleanExpression dateTimeLt(LocalDateTime dateTime) {
-        return weight.dateTime.lt(dateTime);
+    private BooleanExpression dateEq(LocalDate date) {
+        return weight.date.eq(date);
+    }
+
+    private BooleanExpression dateTimeLt(LocalDate date) {
+        return weight.date.lt(date);
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
         return weight.dogId.eq(dogId);
     }
 
-    private BooleanExpression dateTimeLoe(LocalDateTime dateTime) {
-        return weight.dateTime.loe(dateTime);
+    private BooleanExpression dateLoe(LocalDate date) {
+        return weight.date.loe(date);
     }
 
-    private BooleanExpression dateTimeGoe(LocalDateTime dateTime) {
-        return weight.dateTime.goe(dateTime);
+    private BooleanExpression dateGoe(LocalDate date) {
+        return weight.date.goe(date);
     }
 }

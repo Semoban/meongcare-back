@@ -9,6 +9,7 @@ import com.meongcare.domain.weight.domain.repository.WeightQueryRepository;
 import com.meongcare.domain.weight.domain.repository.vo.GetLastDayWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetMonthWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetWeekWeightVO;
+import com.meongcare.domain.weight.presentation.dto.response.GetDayWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetMonthWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetWeekWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetWeightForHomeResponse;
@@ -16,17 +17,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-import static com.meongcare.common.util.LocalDateTimeUtils.createNextMidnight;
-import static com.meongcare.common.util.LocalDateTimeUtils.createNowMidnight;
 import static com.meongcare.common.util.LocalDateTimeUtils.createThreeWeeksAgoStartDay;
-import static com.meongcare.common.util.LocalDateTimeUtils.createLastMonthDateTime;
-import static com.meongcare.common.util.LocalDateTimeUtils.createThisMonthDateTime;
+import static com.meongcare.common.util.LocalDateTimeUtils.createLastMonthFirstDayDate;
+import static com.meongcare.common.util.LocalDateTimeUtils.createThisMonthLastDayDate;
 import static com.meongcare.common.util.LocalDateTimeUtils.createThisWeekLastDay;
 
 @RequiredArgsConstructor
@@ -41,23 +40,23 @@ public class WeightService {
     private static final int TODAY_WEIGHT = 0;
     private static final Double DEFAULT_WEIGHT = 0.0;
 
-    public GetWeekWeightResponse getWeekWeight(Long dogId, LocalDateTime dateTime) {
+    public GetWeekWeightResponse getWeekWeight(Long dogId, LocalDate date) {
         List<GetWeekWeightVO> weekWeightVO = weightQueryRepository.getWeekWeightByDogIdAndDateTime(
                 dogId,
-                createThreeWeeksAgoStartDay(dateTime),
-                createThisWeekLastDay(dateTime)
+                createThreeWeeksAgoStartDay(date),
+                createThisWeekLastDay(date)
         );
 
-        return GetWeekWeightResponse.of(weekWeightVO, dateTime);
+        return GetWeekWeightResponse.of(weekWeightVO, date);
     }
 
-    public GetMonthWeightResponse getMonthWeight(Long dogId, LocalDateTime dateTime) {
+    public GetMonthWeightResponse getMonthWeight(Long dogId, LocalDate date) {
         List<GetMonthWeightVO> weightVO = weightQueryRepository.getMonthWeightByDogIdAndDateTime(
                 dogId,
-                createLastMonthDateTime(dateTime),
-                createThisMonthDateTime(dateTime)
+                createLastMonthFirstDayDate(date),
+                createThisMonthLastDayDate(date)
         );
-        return GetMonthWeightResponse.of(weightVO, dateTime);
+        return GetMonthWeightResponse.of(weightVO, date);
     }
 
     @Transactional
@@ -67,17 +66,17 @@ public class WeightService {
     }
 
     @Transactional
-    public void saveWeight(Long dogId, LocalDateTime dateTime, Double kg) {
+    public void saveWeight(Long dogId, LocalDate date, Double kg) {
         GetLastDayWeightVO weightVO = weightQueryRepository.getRecentDayWeightByDogIdAndDateTime(
                 dogId,
-                dateTime
+                date
         );
 
-        long betweenDays = LocalDateTimeUtils.getBetweenDays(dateTime, weightVO.getDateTime());
+        long betweenDays = LocalDateTimeUtils.getBetweenDays(date, weightVO.getDate());
 
         List<Weight> weights = LongStream.range(0, betweenDays)
                 .mapToObj(minusDays -> Weight.createBeforeWeight(
-                        dateTime, minusDays, weightVO.getKg(), dogId
+                        date, minusDays, weightVO.getKg(), dogId
                 ))
                 .collect(Collectors.toUnmodifiableList());
 
@@ -89,19 +88,19 @@ public class WeightService {
         dog.updateWeight(kg);
     }
 
-    public double getDayWeight(Long dogId, LocalDateTime dateTime) {
-        return weightQueryRepository.getDayWeightByDogIdAndDateTime(
-                dogId,
-                createNowMidnight(dateTime),
-                createNextMidnight(dateTime)
-        ).orElse(DEFAULT_WEIGHT);
-    }
-
-    public GetWeightForHomeResponse getWeightForHome(Long dogId, LocalDateTime dateTime) {
+    public GetDayWeightResponse getDayWeight(Long dogId, LocalDate date) {
         Double weight = weightQueryRepository.getDayWeightByDogIdAndDateTime(
                 dogId,
-                LocalDateTimeUtils.createNowMidnight(dateTime),
-                LocalDateTimeUtils.createNextMidnight(dateTime)
+                date
+        ).orElse(DEFAULT_WEIGHT);
+
+        return GetDayWeightResponse.from(weight);
+    }
+
+    public GetWeightForHomeResponse getWeightForHome(Long dogId, LocalDate date) {
+        Double weight = weightQueryRepository.getDayWeightByDogIdAndDateTime(
+                dogId,
+                date
         ).orElse(DEFAULT_WEIGHT);
 
         return GetWeightForHomeResponse.from(weight);
