@@ -1,20 +1,20 @@
-package com.meongcare.domain.feed.presentation.dto.response.vo;
+package com.meongcare.domain.feed.domain.repository.vo;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class GetFeedRecordsPartVO {
     private String brandName;
     private String feedName;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String feedImageURL;
 
     @QueryProjection
-    public GetFeedRecordsPartVO(String brandName, String feedName, LocalDateTime startDate, LocalDateTime endDate, String feedImageURL) {
+    public GetFeedRecordsPartVO(String brandName, String feedName, LocalDate startDate, LocalDate endDate, String feedImageURL) {
         this.brandName = brandName;
         this.feedName = feedName;
         this.startDate = startDate;

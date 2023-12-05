@@ -3,17 +3,17 @@ package com.meongcare.domain.weight.domain.repository.vo;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class GetLastDayWeightVO {
 
-    private LocalDateTime dateTime;
+    private LocalDate date;
     private double kg;
 
     @QueryProjection
-    public GetLastDayWeightVO(LocalDateTime dateTime, double kg) {
-        this.dateTime = dateTime;
+    public GetLastDayWeightVO(LocalDate date, double kg) {
+        this.date = date;
         this.kg = kg;
     }
 }

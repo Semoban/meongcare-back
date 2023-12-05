@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
+import static com.meongcare.common.DateTimePattern.DATE_PATTERN;
 
 @Tag(name = "사료 API")
 @RequiredArgsConstructor
@@ -91,8 +91,8 @@ public class FeedController {
     @GetMapping("/home/{dogId}")
     public ResponseEntity<GetFeedRecommendIntakeForHomeResponse> getFeedRecommendIntakeForHome(
             @PathVariable Long dogId,
-            @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
-        return ResponseEntity.ok(feedService.getFeedRecommendIntakeForHome(dogId, dateTime));
+        return ResponseEntity.ok(feedService.getFeedRecommendIntakeForHome(dogId, date));
     }
 }
