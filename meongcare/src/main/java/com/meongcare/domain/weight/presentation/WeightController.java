@@ -40,7 +40,7 @@ public class WeightController {
     @GetMapping("/week/{dogId}")
     public ResponseEntity<GetWeekWeightResponse> getWeekWeight(
             @PathVariable Long dogId,
-            @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
         return ResponseEntity.ok(weightService.getWeekWeight(dogId, date));
     }
@@ -50,7 +50,7 @@ public class WeightController {
     @GetMapping("/month/{dogId}")
     public ResponseEntity<GetMonthWeightResponse> getMonthWeight(
             @PathVariable Long dogId,
-            @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
         return ResponseEntity.ok(weightService.getMonthWeight(dogId, date));
     }
@@ -58,8 +58,11 @@ public class WeightController {
     @Operation(description = "몸무게 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/{dogId}")
-    public ResponseEntity<Void> updateWeight(@PathVariable Long dogId, @RequestParam double weight) {
-        weightService.updateWeight(dogId, weight);
+    public ResponseEntity<Void> updateWeight(
+            @PathVariable Long dogId,
+            @RequestParam double kg,
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date) {
+        weightService.updateWeight(dogId, kg, date);
         return ResponseEntity.ok().build();
     }
 
@@ -76,7 +79,7 @@ public class WeightController {
     @GetMapping("/day/{dogId}")
     public ResponseEntity<GetDayWeightResponse> getWeight(
             @PathVariable Long dogId,
-            @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
         return ResponseEntity.ok(weightService.getDayWeight(dogId, date));
     }
