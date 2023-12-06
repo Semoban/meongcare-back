@@ -35,7 +35,7 @@ public class DogService {
         Dog dog = saveDogRequest.toEntity(member, dogImageURL);
         dogRepository.save(dog);
 
-        Weight weight = Weight.createWeight(dog.getWeight(), userId);
+        Weight weight = Weight.createWeight(dog.getWeight(), dog.getId());
         weightRepository.save(weight);
     }
 
