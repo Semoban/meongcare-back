@@ -17,7 +17,7 @@ public class GetExcretaDetailResponse {
     @Schema(description = "대소변 이미지 URL", example = "https://s3.xxx.com")
     private String excretaImageURL;
 
-    @Schema(description = "대소변 날짜 및 시간", example = "2023년 10월 29일")
+    @Schema(description = "대소변 날짜 및 시간", example = "2023-10-29T13:00:12")
     private LocalDateTime dateTime;
 
     @Schema(description = "대소변 타입", example = "FECES")
