@@ -1,5 +1,6 @@
 package com.meongcare.domain.weight.domain.repository;
 
+import com.meongcare.domain.weight.domain.entity.Weight;
 import com.meongcare.domain.weight.domain.repository.vo.GetLastDayWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetMonthWeightVO;
 import com.meongcare.domain.weight.domain.repository.vo.GetWeekWeightVO;
@@ -78,6 +79,16 @@ public class WeightQueryRepository {
         return Optional.ofNullable(queryFactory
                 .select(weight.kg)
                 .from(weight)
+                .where(
+                        dogIdEq(dogId),
+                        dateEq(date)
+                )
+                .fetchOne());
+    }
+
+    public Optional<Weight> getWeightByDogIdAndDate(Long dogId, LocalDate date) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(weight)
                 .where(
                         dogIdEq(dogId),
                         dateEq(date)

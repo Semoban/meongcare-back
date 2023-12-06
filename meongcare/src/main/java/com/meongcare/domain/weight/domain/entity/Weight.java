@@ -52,7 +52,7 @@ public class Weight extends BaseEntity {
                 .build();
     }
 
-    public void modifyTodayWeight(Double kg) {
+    public void modifyWeight(Double kg) {
         this.kg = kg;
     }
 }
