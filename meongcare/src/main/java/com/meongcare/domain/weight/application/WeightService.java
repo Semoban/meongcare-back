@@ -60,9 +60,11 @@ public class WeightService {
     }
 
     @Transactional
-    public void updateWeight(Long dogId, double weight) {
-        Dog dog = dogRepository.getById(dogId);
-        dog.updateWeight(weight);
+    public void updateWeight(Long dogId, double kg, LocalDate date) {
+        Weight weight = weightQueryRepository.getWeightByDogIdAndDate(dogId, date)
+                .orElseThrow(IllegalArgumentException::new);
+
+        weight.modifyWeight(kg);
     }
 
     @Transactional
@@ -81,7 +83,7 @@ public class WeightService {
                 .collect(Collectors.toUnmodifiableList());
 
         if (Objects.nonNull(kg)) {
-            weights.get(TODAY_WEIGHT).modifyTodayWeight(kg);
+            weights.get(TODAY_WEIGHT).modifyWeight(kg);
         }
         weightJdbcRepository.saveWeight(weights);
         Dog dog = dogRepository.getById(dogId);
