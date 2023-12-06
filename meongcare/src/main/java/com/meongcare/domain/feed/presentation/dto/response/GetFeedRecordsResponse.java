@@ -1,14 +1,13 @@
 package com.meongcare.domain.feed.presentation.dto.response;
 
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedRecordsVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.meongcare.common.util.LocalDateTimeUtils.getPeriodDateWithYearFormat;
 
 @AllArgsConstructor
 @Getter
@@ -25,8 +24,11 @@ public class GetFeedRecordsResponse {
         @Schema(description = "사료명", example = "사료의 정석")
         private String feedName;
 
-        @Schema(description = "기간", example = "2023년 10월 24일 ~ 2024년 1월 12일")
-        private String period;
+        @Schema(description = "먹기 시작한 날짜", example = "2023-10-24")
+        private LocalDate startDate;
+
+        @Schema(description = "그만 먹은 날짜", example = "2024-03-22")
+        private LocalDate endDate;
     }
 
     public static GetFeedRecordsResponse from(List<GetFeedRecordsVO> getFeedRecordsVO) {
@@ -34,7 +36,8 @@ public class GetFeedRecordsResponse {
                 .map(vo -> new FeedRecord(
                         vo.getBrandName(),
                         vo.getFeedName(),
-                        getPeriodDateWithYearFormat(vo.getStartDate(), vo.getEndDate())
+                        vo.getStartDate(),
+                        vo.getEndDate()
                 ))
                 .collect(Collectors.toUnmodifiableList());
         return new GetFeedRecordsResponse(feedRecords);

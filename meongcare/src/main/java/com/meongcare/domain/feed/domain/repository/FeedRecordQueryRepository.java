@@ -1,16 +1,16 @@
 package com.meongcare.domain.feed.domain.repository;
 
 import com.meongcare.domain.feed.domain.entity.FeedRecord;
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedRecordsPartVO;
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedRecordsVO;
-import com.meongcare.domain.feed.presentation.dto.response.vo.QGetFeedRecordsPartVO;
-import com.meongcare.domain.feed.presentation.dto.response.vo.QGetFeedRecordsVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsPartVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsVO;
+import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsPartVO;
+import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public class FeedRecordQueryRepository {
                 .fetchFirst();
     }
 
-    public Optional<Integer> getFeedRecordByDogIdAndDate(Long dogId, LocalDateTime selectedDate) {
+    public Optional<Integer> getFeedRecordByDogIdAndDate(Long dogId, LocalDate selectedDate) {
         return Optional.ofNullable(queryFactory
                 .select(feed.recommendIntake)
                 .from(feedRecord)
@@ -83,11 +83,11 @@ public class FeedRecordQueryRepository {
         return feedRecord.dogId.eq(dogId);
     }
 
-    private BooleanExpression startDateLoeSelectedDate(LocalDateTime selectedDate) {
+    private BooleanExpression startDateLoeSelectedDate(LocalDate selectedDate) {
         return feedRecord.startDate.loe(selectedDate);
     }
 
-    private BooleanExpression endDateGoeSelectedDate(LocalDateTime selectedDate) {
+    private BooleanExpression endDateGoeSelectedDate(LocalDate selectedDate) {
         return feedRecord.endDate.goe(selectedDate);
     }
 }

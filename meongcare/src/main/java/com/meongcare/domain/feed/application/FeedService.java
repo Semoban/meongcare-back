@@ -14,9 +14,9 @@ import com.meongcare.domain.feed.presentation.dto.response.GetFeedResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedsPartResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecordsResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedsResponse;
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedRecordsPartVO;
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedRecordsVO;
-import com.meongcare.domain.feed.presentation.dto.response.vo.GetFeedsVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsPartVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsVO;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.meongcare.common.util.LocalDateTimeUtils.getBetweenDays;
@@ -58,7 +58,7 @@ public class FeedService {
         FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(dogId);
 
         return GetFeedResponse.of(
-                getBetweenDays(feedRecord.getStartDate(), LocalDateTime.now()),
+                getBetweenDays(feedRecord.getStartDate(), LocalDate.now()),
                 feedRecord.getFeed()
         );
     }
@@ -86,8 +86,8 @@ public class FeedService {
         return GetFeedsResponse.from(feedsVO);
     }
 
-    public GetFeedRecommendIntakeForHomeResponse getFeedRecommendIntakeForHome(Long dogId, LocalDateTime dateTime) {
-        Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, dateTime)
+    public GetFeedRecommendIntakeForHomeResponse getFeedRecommendIntakeForHome(Long dogId, LocalDate date) {
+        Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, date)
                 .orElse(DEFAULT_RECOMMEND_INTAKE);
         return GetFeedRecommendIntakeForHomeResponse.from(recommendIntake);
     }

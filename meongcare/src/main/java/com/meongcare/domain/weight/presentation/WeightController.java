@@ -2,8 +2,10 @@ package com.meongcare.domain.weight.presentation;
 
 import com.meongcare.domain.weight.application.WeightService;
 import com.meongcare.domain.weight.presentation.dto.request.SaveWeightRequest;
+import com.meongcare.domain.weight.presentation.dto.response.GetDayWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetWeekWeightResponse;
 import com.meongcare.domain.weight.presentation.dto.response.GetMonthWeightResponse;
+import com.meongcare.domain.weight.presentation.dto.response.GetWeightForHomeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -20,11 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.*;
 import javax.validation.Valid;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import static com.meongcare.common.DateTimePattern.COMMON_PATTERN;
+import static com.meongcare.common.DateTimePattern.DATE_PATTERN;
 
 @Tag(name = "몸무게 API")
 @RequiredArgsConstructor
@@ -39,9 +40,9 @@ public class WeightController {
     @GetMapping("/week/{dogId}")
     public ResponseEntity<GetWeekWeightResponse> getWeekWeight(
             @PathVariable Long dogId,
-            @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+            @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
-        return ResponseEntity.ok(weightService.getWeekWeight(dogId, dateTime));
+        return ResponseEntity.ok(weightService.getWeekWeight(dogId, date));
     }
 
     @Operation(description = "몸무게 월별 조회")
@@ -49,9 +50,9 @@ public class WeightController {
     @GetMapping("/month/{dogId}")
     public ResponseEntity<GetMonthWeightResponse> getMonthWeight(
             @PathVariable Long dogId,
-            @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+            @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
-        return ResponseEntity.ok(weightService.getMonthWeight(dogId, dateTime));
+        return ResponseEntity.ok(weightService.getMonthWeight(dogId, date));
     }
 
     @Operation(description = "몸무게 수정")
@@ -66,27 +67,27 @@ public class WeightController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity<Void> saveWeight(@RequestBody @Valid SaveWeightRequest request) {
-        weightService.saveWeight(request.getDogId(), request.getDateTime(), request.getKg());
+        weightService.saveWeight(request.getDogId(), request.getDate(), request.getKg());
         return ResponseEntity.ok().build();
     }
 
     @Operation(description = "당일 몸무게 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/day/{dogId}")
-    public ResponseEntity<Double> getWeight(
+    public ResponseEntity<GetDayWeightResponse> getWeight(
             @PathVariable Long dogId,
-            @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+            @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
-        return ResponseEntity.ok(weightService.getDayWeight(dogId, dateTime));
+        return ResponseEntity.ok(weightService.getDayWeight(dogId, date));
     }
 
     @Operation(description = "반려견 메인 홈 몸무게 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/home/{dogId}")
-    public ResponseEntity<?> getWeightForHome(
+    public ResponseEntity<GetWeightForHomeResponse> getWeightForHome(
             @PathVariable Long dogId,
-            @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
+            @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
-        return ResponseEntity.ok(weightService.getWeightForHome(dogId, dateTime));
+        return ResponseEntity.ok(weightService.getWeightForHome(dogId, date));
     }
 }

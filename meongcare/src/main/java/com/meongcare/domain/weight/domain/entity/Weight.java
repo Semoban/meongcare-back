@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,30 +23,30 @@ public class Weight extends BaseEntity {
 
     private double kg;
 
-    private LocalDateTime dateTime;
+    private LocalDate date;
 
     private Long dogId;
 
     @Builder
-    public Weight(Long id, double kg, LocalDateTime dateTime, Long dogId) {
+    public Weight(Long id, double kg, LocalDate date, Long dogId) {
         this.id = id;
         this.kg = kg;
-        this.dateTime = dateTime;
+        this.date = date;
         this.dogId = dogId;
     }
 
     public static Weight createWeight(double kg, Long dogId) {
         return Weight.builder()
-                .dateTime(LocalDateTime.now())
+                .date(LocalDate.now())
                 .kg(kg)
                 .dogId(dogId)
                 .build();
 
     }
 
-    public static Weight createBeforeWeight(LocalDateTime dateTime, long minusDays, double kg, Long dogId) {
+    public static Weight createBeforeWeight(LocalDate date, long minusDays, double kg, Long dogId) {
         return Weight.builder()
-                .dateTime(dateTime.minusDays(minusDays))
+                .date(date.minusDays(minusDays))
                 .kg(kg)
                 .dogId(dogId)
                 .build();

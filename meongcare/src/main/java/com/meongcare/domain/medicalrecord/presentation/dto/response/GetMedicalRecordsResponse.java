@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.meongcare.common.util.LocalDateTimeUtils.createAMPMTime;
-
 @AllArgsConstructor
 @Getter
 public class GetMedicalRecordsResponse {
@@ -30,7 +28,7 @@ public class GetMedicalRecordsResponse {
         List<Record> records = getMedicalRecordsVos.stream()
                 .map(medicalRecord -> new Record(
                         medicalRecord.getMedicalRecordsId(),
-                       medicalRecord.getDateTime()
+                        medicalRecord.getDateTime()
                 ))
                 .collect(Collectors.toUnmodifiableList());
 

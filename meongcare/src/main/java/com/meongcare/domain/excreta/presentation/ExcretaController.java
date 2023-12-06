@@ -4,6 +4,7 @@ import com.meongcare.domain.excreta.application.ExcretaService;
 import com.meongcare.domain.excreta.presentation.dto.request.SaveExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.request.PatchExcretaRequest;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaDetailResponse;
+import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaForHomeResponse;
 import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -93,7 +94,7 @@ public class ExcretaController {
     @Operation(description = "반려견 메인 홈 대소변 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/home/{dogId}")
-    public ResponseEntity<?> getExcretaForHome(
+    public ResponseEntity<GetExcretaForHomeResponse> getExcretaForHome(
             @PathVariable Long dogId,
             @RequestParam @DateTimeFormat(pattern = COMMON_PATTERN) LocalDateTime dateTime
     ) {

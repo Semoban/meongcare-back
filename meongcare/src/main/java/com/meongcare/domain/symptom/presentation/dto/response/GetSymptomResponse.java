@@ -1,28 +1,28 @@
 package com.meongcare.domain.symptom.presentation.dto.response;
 
-import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.symptom.domain.entity.SymptomType;
 import com.meongcare.domain.symptom.domain.repository.vo.GetSymptomVO;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetSymptomResponse {
 
     List<Record> records;
 
-    @AllArgsConstructor
     @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     static class Record {
         @Schema(description = "이상증상 ID", example = "1")
         private Long symptomId;
-        @Schema(description = "이상증상 시간", example = "오전 08:00")
-        private String dateTime;
+        @Schema(description = "이상증상 시간", example = "2023-10-27T08:13:22")
+        private LocalDateTime dateTime;
         @Schema(description = "이상증상 문자열", example = "weightLoss")
         private String symptomString;
         @Schema(description = "이상증상 기타 시 기록", example = "많이 아파 보임")
@@ -33,7 +33,7 @@ public class GetSymptomResponse {
         List<Record> records = symptomVO.stream()
                 .map(symptom -> new Record(
                         symptom.getSymptomId(),
-                        LocalDateTimeUtils.createAMPMTime(symptom.getDateTime()),
+                        symptom.getDateTime(),
                         symptom.getSymptomType().getSymptomString(),
                         symptom.getNote()
                 ))

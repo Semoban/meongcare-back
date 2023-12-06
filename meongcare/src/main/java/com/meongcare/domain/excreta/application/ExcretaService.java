@@ -89,7 +89,7 @@ public class ExcretaService {
         return GetExcretaDetailResponse.from(excreta);
     }
 
-    public Object getExcretaForHome(Long dogId, LocalDateTime dateTime) {
+    public GetExcretaForHomeResponse getExcretaForHome(Long dogId, LocalDateTime dateTime) {
         List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogIdAndSelectedDate(
                 dogId,
                 LocalDateTimeUtils.createNowMidnight(dateTime),

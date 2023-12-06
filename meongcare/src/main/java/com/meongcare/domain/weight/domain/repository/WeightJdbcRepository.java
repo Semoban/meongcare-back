@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,14 +15,14 @@ public class WeightJdbcRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public void saveWeight(List<Weight> weights) {
-        String saveWeightSql = "INSERT INTO weight (date_time, dog_id, kg) " +
+        String saveWeightSql = "INSERT INTO weight (date, dog_id, kg) " +
                 "VALUES (?, ?, ?)";
 
         jdbcTemplate.batchUpdate(saveWeightSql,
                 weights,
                 weights.size(),
                 (ps, weight) -> {
-                    ps.setTimestamp(1, Timestamp.valueOf(weight.getDateTime()));
+                    ps.setDate(1, Date.valueOf(weight.getDate()));
                     ps.setLong(2, weight.getDogId());
                     ps.setDouble(3, weight.getKg());
                 }
