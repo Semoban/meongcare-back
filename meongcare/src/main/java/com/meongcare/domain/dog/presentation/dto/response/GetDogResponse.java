@@ -5,8 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class GetDogResponse {
@@ -23,7 +22,7 @@ public class GetDogResponse {
     @Schema(description = "강아지 중성화 여부")
     private boolean castrate;
     @Schema(description = "강아지 생일")
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     @Schema(description = "강아지 등 둘레")
     private double backRound;
     @Schema(description = "강아지 목 둘레")
@@ -35,7 +34,7 @@ public class GetDogResponse {
 
     @Builder
     public GetDogResponse(Long dogId, String name, String imageUrl, String type, String sex, boolean castrate,
-                          LocalDateTime birthDate, double backRound, double neckRound, double chestRound, double weight) {
+                          LocalDate birthDate, double backRound, double neckRound, double chestRound, double weight) {
         this.dogId = dogId;
         this.name = name;
         this.imageUrl = imageUrl;

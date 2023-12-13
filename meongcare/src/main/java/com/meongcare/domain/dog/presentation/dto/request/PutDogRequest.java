@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class PutDogRequest {
@@ -20,8 +20,8 @@ public class PutDogRequest {
     @NotNull
     private String sex;
 
-    @Schema(description = "강아지 생일", example = "2023-08-13T11:00:00")
-    private LocalDateTime birthDate;
+    @Schema(description = "강아지 생일", example = "2023-08-13")
+    private LocalDate birthDate;
 
     @Schema(description = "중성화 수술 여부", example = "false")
     @NotNull
