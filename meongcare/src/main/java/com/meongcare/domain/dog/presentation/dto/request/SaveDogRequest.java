@@ -38,6 +38,10 @@ public class SaveDogRequest {
     @NotNull
     private double weight;
 
+    @Schema(description = "강아지 등 둘레", example = "10.9")
+    @NotNull
+    private double backRound;
+
     @Schema(description = "강아지 목 둘레", example = "3.3")
     @NotNull
     private double neckRound;
@@ -55,6 +59,7 @@ public class SaveDogRequest {
                 .birthDate(birthDate)
                 .imageUrl(dogImageURL)
                 .castrate(castrate)
+                .backRound(backRound)
                 .neckRound(neckRound)
                 .chestRound(chestRound)
                 .weight(weight)
