@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Entity
@@ -41,7 +41,10 @@ public class Dog {
     @NotNull
     private boolean castrate;
 
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
+
+    @NotNull
+    private double backRound;
 
     @NotNull
     private double neckRound;
@@ -53,7 +56,7 @@ public class Dog {
 
     @Builder
     public Dog(Member member, String name, String type, String imageUrl, Sex sex,
-               boolean castrate, LocalDateTime birthDate, double neckRound, double chestRound, double weight) {
+               boolean castrate, LocalDate birthDate, double backRound, double neckRound, double chestRound, double weight) {
         this.member = member;
         this.name = name;
         this.type = type;
@@ -61,6 +64,7 @@ public class Dog {
         this.sex = sex;
         this.castrate = castrate;
         this.birthDate = birthDate;
+        this.backRound = backRound;
         this.neckRound = neckRound;
         this.chestRound = chestRound;
         this.weight = weight;
@@ -77,6 +81,7 @@ public class Dog {
         this.sex = Sex.of(putDogRequest.getSex());
         this.castrate = putDogRequest.isCastrate();
         this.birthDate = putDogRequest.getBirthDate();
+        this.backRound = putDogRequest.getBackRound();
         this.neckRound = putDogRequest.getNeckRound();
         this.chestRound = putDogRequest.getChestRound();
         this.weight = putDogRequest.getWeight();

@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,8 +27,8 @@ public class SaveDogRequest {
     @NotNull
     private String sex;
 
-    @Schema(description = "강아지 생일", example = "2023-08-13T11:00:00")
-    private LocalDateTime birthDate;
+    @Schema(description = "강아지 생일", example = "2023-08-13")
+    private LocalDate birthDate;
 
     @Schema(description = "중성화 수술 여부", example = "false")
     @NotNull
@@ -37,6 +37,10 @@ public class SaveDogRequest {
     @Schema(description = "강아지 체중", example = "5.10")
     @NotNull
     private double weight;
+
+    @Schema(description = "강아지 등 둘레", example = "10.9")
+    @NotNull
+    private double backRound;
 
     @Schema(description = "강아지 목 둘레", example = "3.3")
     @NotNull
@@ -55,6 +59,7 @@ public class SaveDogRequest {
                 .birthDate(birthDate)
                 .imageUrl(dogImageURL)
                 .castrate(castrate)
+                .backRound(backRound)
                 .neckRound(neckRound)
                 .chestRound(chestRound)
                 .weight(weight)

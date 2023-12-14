@@ -28,9 +28,10 @@ public class DogController {
     @Operation(description = "강아지 저장")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
+    @Valid
     public ResponseEntity<Void> saveDog(
             @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid SaveDogRequest saveDogRequest,
+            @RequestPart(value = "dto") SaveDogRequest saveDogRequest,
             @JwtValidation Long userId) {
         dogService.saveDog(multipartFile, saveDogRequest, userId);
         return ResponseEntity.ok().build();
@@ -53,7 +54,7 @@ public class DogController {
         return ResponseEntity.ok().body(getDogResponse);
     }
 
-    @Operation(description = "강아지 저장")
+    @Operation(description = "강아지 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PutMapping("/{dogId}")
     public ResponseEntity<Void> updateDog(
