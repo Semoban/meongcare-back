@@ -1,11 +1,14 @@
 package com.meongcare.domain.feed.presentation.dto.response;
 
+import com.meongcare.common.util.LocalDateTimeUtils;
 import com.meongcare.domain.feed.domain.entity.Feed;
-import com.meongcare.domain.feed.domain.entity.FeedRecord;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
@@ -39,7 +42,15 @@ public class GetFeedResponse {
     @Schema(description = "사료 ID", example = "3")
     private Long feedId;
 
-    public static GetFeedResponse of(long days, Feed feed) {
+    @Schema(description = "사료 섭취기록 ID", example = "1")
+    private Long feedRecordId;
+
+    public static GetFeedResponse of(LocalDate startDate, LocalDate endDate, Long feedRecordId, Feed feed) {
+        long days = LocalDateTimeUtils.getBetweenDays(startDate, LocalDate.now());
+        if (Objects.nonNull(endDate)) {
+            days = LocalDateTimeUtils.getBetweenDays(startDate, endDate);
+        }
+
         return GetFeedResponse.builder()
                 .brand(feed.getBrand())
                 .feedName(feed.getFeedName())
@@ -50,6 +61,12 @@ public class GetFeedResponse {
                 .days(days)
                 .recommendIntake(feed.getRecommendIntake())
                 .feedId(feed.getId())
+                .feedRecordId(feedRecordId)
+                .build();
+    }
+
+    public static GetFeedResponse empty() {
+        return GetFeedResponse.builder()
                 .build();
     }
 }
