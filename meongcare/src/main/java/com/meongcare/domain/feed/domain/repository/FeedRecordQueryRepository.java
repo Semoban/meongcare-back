@@ -24,13 +24,11 @@ public class FeedRecordQueryRepository {
     private final JPAQueryFactory queryFactory;
 
 
-    public FeedRecord getFeedRecord(Long dogId) {
+    public FeedRecord getFeedRecord(Long feedId) {
         return queryFactory
                 .selectFrom(feedRecord)
-                .innerJoin(feedRecord.feed, feed)
-                .where(dogIdEq(dogId),
-                        feedRecord.endDate.isNull()
-                )
+                .where(feedIdEq(feedId))
+                .orderBy(feedRecord.id.desc())
                 .fetchFirst();
     }
 
@@ -47,36 +45,67 @@ public class FeedRecordQueryRepository {
                 .fetchFirst());
     }
 
-    public List<GetFeedRecordsVO> getFeedRecordsByDogId(Long dogId) {
+    public List<GetFeedRecordsVO> getFeedRecordsByDogId(Long dogId, Long feedRecordId) {
         return queryFactory
                 .select(new QGetFeedRecordsVO(
                         feed.brand,
                         feed.feedName,
                         feedRecord.startDate,
-                        feedRecord.endDate
+                        feedRecord.endDate,
+                        feedRecord.id
                 ))
                 .from(feedRecord)
                 .innerJoin(feedRecord.feed, feed)
-                .where(dogIdEq(dogId), feedRecord.endDate.isNotNull())
+                .where(
+                        dogIdEq(dogId),
+                        feedRecordIdNotEq(feedRecordId)
+                )
                 .orderBy(feedRecord.startDate.desc())
                 .fetch();
     }
 
-    public List<GetFeedRecordsPartVO> getFeedRecordsPartByDogId(Long dogId) {
+    public List<GetFeedRecordsPartVO> getFeedRecordsPartByDogId(Long dogId, Long feedRecordId) {
         return queryFactory
                 .select(new QGetFeedRecordsPartVO(
                         feed.brand,
                         feed.feedName,
                         feedRecord.startDate,
                         feedRecord.endDate,
-                        feed.imageURL
+                        feed.imageURL,
+                        feedRecord.id
                 ))
                 .from(feedRecord)
                 .innerJoin(feedRecord.feed, feed)
-                .where(dogIdEq(dogId), feedRecord.endDate.isNotNull())
+                .where(
+                        dogIdEq(dogId),
+                        feedRecordIdNotEq(feedRecordId)
+                )
                 .orderBy(feedRecord.startDate.desc())
                 .limit(2)
                 .fetch();
+    }
+
+    public FeedRecord getEndDateNullFeedRecord(Long feedId) {
+        return queryFactory
+                .selectFrom(feedRecord)
+                .where(feedIdEq(feedId), feedRecord.endDate.isNull())
+                .fetchFirst();
+    }
+
+    public void deleteFeedRecord(Long feedId) {
+        queryFactory
+                .update(feedRecord)
+                .set(feedRecord.deleted, true)
+                .where(feedIdEq(feedId))
+                .execute();
+    }
+
+    private BooleanExpression feedRecordIdNotEq(Long feedRecordId) {
+        return feedRecord.id.ne(feedRecordId);
+    }
+
+    private static BooleanExpression feedIdEq(Long feedId) {
+        return feedRecord.feed.id.eq(feedId);
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
