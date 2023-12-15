@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 public class SaveFeedRequest {
@@ -40,7 +41,14 @@ public class SaveFeedRequest {
     @Schema(description = "권장 섭취량", example = "35")
     private int recommendIntake;
 
-    public Feed toEntity(String imageURL, Dog dog) {
+    @Schema(description = "섭취 시작 날짜", example = "2023-10-13")
+    @NotNull
+    private LocalDate startDate;
+
+    @Schema(description = "섭취 종료 날짜", example = "2023-12-14")
+    private LocalDate endDate;
+
+    public Feed toEntity(String imageURL, Dog dog, boolean isFirstRegisterFeed) {
         return Feed.builder()
                 .brand(brand)
                 .feedName(feedName)
@@ -52,6 +60,7 @@ public class SaveFeedRequest {
                 .recommendIntake(recommendIntake)
                 .imageURL(imageURL)
                 .dog(dog)
+                .isActivate(isFirstRegisterFeed)
                 .build();
     }
 }
