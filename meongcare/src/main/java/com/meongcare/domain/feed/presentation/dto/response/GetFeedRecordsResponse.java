@@ -29,6 +29,9 @@ public class GetFeedRecordsResponse {
 
         @Schema(description = "그만 먹은 날짜", example = "2024-03-22")
         private LocalDate endDate;
+
+        @Schema(description = "섭취 기록 ID", example = "1")
+        private Long feedRecordId;
     }
 
     public static GetFeedRecordsResponse from(List<GetFeedRecordsVO> getFeedRecordsVO) {
@@ -37,7 +40,8 @@ public class GetFeedRecordsResponse {
                         vo.getBrandName(),
                         vo.getFeedName(),
                         vo.getStartDate(),
-                        vo.getEndDate()
+                        vo.getEndDate(),
+                        vo.getFeedRecordId()
                 ))
                 .collect(Collectors.toUnmodifiableList());
         return new GetFeedRecordsResponse(feedRecords);
