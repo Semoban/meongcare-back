@@ -8,6 +8,7 @@ import com.meongcare.domain.feed.domain.repository.FeedQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRepository;
+import com.meongcare.domain.feed.presentation.dto.request.EditFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.request.SaveFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecommendIntakeForHomeResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedResponse;
@@ -26,8 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static com.meongcare.common.util.LocalDateTimeUtils.getBetweenDays;
+import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -46,39 +47,72 @@ public class FeedService {
     @Transactional
     public void saveFeed(SaveFeedRequest request, MultipartFile multipartFile) {
         Dog dog = dogRepository.getById(request.getDogId());
+        boolean isFirstRegisterFeed = true;
+
+        if (feedQueryRepository.existsByDogId(request.getDogId())) {
+            isFirstRegisterFeed = false;
+        }
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
 
-        Feed feed = request.toEntity(imageURL, dog);
+        Feed feed = request.toEntity(imageURL, dog, isFirstRegisterFeed);
         feedRepository.save(feed);
-        //기획에 따라 추가될 수도 있는 부분
-//        feedRecordRepository.save(FeedRecord.of(feed, dog.getId()));
+
+        feedRecordRepository.save(FeedRecord.of(feed, dog.getId(), request.getStartDate(), request.getEndDate()));
     }
 
     public GetFeedResponse getFeed(Long dogId) {
-        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(dogId);
+        Optional<Feed> optionalFeed = feedQueryRepository.getActiveFeedByDogId(dogId);
+
+        if (optionalFeed.isEmpty()) {
+            return GetFeedResponse.empty();
+        }
+        Feed feed = optionalFeed.get();
+        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(feed.getId());
 
         return GetFeedResponse.of(
-                getBetweenDays(feedRecord.getStartDate(), LocalDate.now()),
-                feedRecord.getFeed()
+                feedRecord.getStartDate(),
+                feedRecord.getEndDate(),
+                feedRecord.getId(),
+                feed
         );
     }
 
-    public GetFeedsPartResponse getFeedRecordsPart(Long dogId) {
-        List<GetFeedRecordsPartVO> feedsPartVO = feedRecordQueryRepository.getFeedRecordsPartByDogId(dogId);
+    public GetFeedsPartResponse getFeedRecordsPart(Long dogId, Long feedRecordId) {
+        List<GetFeedRecordsPartVO> feedsPartVO = feedRecordQueryRepository.getFeedRecordsPartByDogId(dogId, feedRecordId);
         return GetFeedsPartResponse.from(feedsPartVO);
     }
 
-    public GetFeedRecordsResponse getFeedRecords(Long dogId) {
-        List<GetFeedRecordsVO> getFeedRecordsVO = feedRecordQueryRepository.getFeedRecordsByDogId(dogId);
+    public GetFeedRecordsResponse getFeedRecords(Long dogId, Long feedRecordId) {
+        List<GetFeedRecordsVO> getFeedRecordsVO = feedRecordQueryRepository.getFeedRecordsByDogId(dogId, feedRecordId);
         return GetFeedRecordsResponse.from(getFeedRecordsVO);
     }
 
     @Transactional
     public void changeFeed(Long dogId, Long newFeedId) {
-        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(dogId);
-        feedRecord.updateEndDate();
-        Feed feed = feedRepository.getById(newFeedId);
-        feedRecordRepository.save(FeedRecord.of(feed, dogId));
+        Feed feed = feedQueryRepository.getActiveFeedByDogId(dogId)
+                .orElseThrow(IllegalArgumentException::new);
+        feed.disActivate();
+
+        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(feed.getId());
+        if (Objects.isNull(feedRecord.getEndDate())) {
+            feedRecord.updateEndDate();
+        }
+
+        Feed newFeed = feedRepository.getById(newFeedId);
+        newFeed.activate();
+        FeedRecord endDateNullFeedRecord = feedRecordQueryRepository.getEndDateNullFeedRecord(newFeedId);
+        endDateNullFeedRecord.updateEndDate();
+        feedRecordRepository.save(FeedRecord.of(feed, dogId, LocalDate.now(), null));
+    }
+
+    @Transactional
+    public void editFeed(EditFeedRequest request, MultipartFile multipartFile) {
+        Feed feed = feedRepository.getById(request.getFeedId());
+        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
+        feed.updateInfo(request, imageURL);
+
+        FeedRecord feedRecord = feedRecordRepository.getById(request.getFeedRecordId());
+        feedRecord.updateDate(request.getStartDate(), request.getEndDate());
     }
 
     public GetFeedsResponse getFeeds(Long dogId) {
@@ -90,5 +124,10 @@ public class FeedService {
         Integer recommendIntake = feedRecordQueryRepository.getFeedRecordByDogIdAndDate(dogId, date)
                 .orElse(DEFAULT_RECOMMEND_INTAKE);
         return GetFeedRecommendIntakeForHomeResponse.from(recommendIntake);
+    }
+    @Transactional
+    public void deleteFeed(Long feedId) {
+        feedQueryRepository.deleteFeed(feedId);
+        feedRecordQueryRepository.deleteFeedRecord(feedId);
     }
 }
