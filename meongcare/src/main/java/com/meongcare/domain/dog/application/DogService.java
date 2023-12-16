@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -40,12 +42,9 @@ public class DogService {
     }
 
     public GetDogsResponse getDogs(Long userId) {
-        Dog dog = dogRepository.getById(userId);
-        return GetDogsResponse.of(
-                dog.getId(),
-                dog.getName(),
-                dog.getImageUrl()
-        );
+        Member member = memberRepository.getById(userId);
+        List<Dog> dogs = dogRepository.findAllByMember(member);
+        return GetDogsResponse.of(dogs);
     }
 
     public GetDogResponse getDog(Long dogId) {
