@@ -42,9 +42,10 @@ public class FeedRecord extends BaseEntity {
         this.feed = feed;
     }
 
-    public static FeedRecord of(Feed feed, Long dogId) {
+    public static FeedRecord of(Feed feed, Long dogId, LocalDate startDate, LocalDate endDate) {
         return FeedRecord.builder()
-                .startDate(LocalDate.now())
+                .startDate(startDate)
+                .endDate(endDate)
                 .dogId(dogId)
                 .feed(feed)
                 .build();
@@ -52,5 +53,10 @@ public class FeedRecord extends BaseEntity {
 
     public void updateEndDate() {
         this.endDate = LocalDate.now();
+    }
+
+    public void updateDate(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

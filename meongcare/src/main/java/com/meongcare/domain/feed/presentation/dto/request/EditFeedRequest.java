@@ -1,7 +1,5 @@
 package com.meongcare.domain.feed.presentation.dto.request;
 
-import com.meongcare.domain.dog.domain.entity.Dog;
-import com.meongcare.domain.feed.domain.entity.Feed;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -9,11 +7,10 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
-public class SaveFeedRequest {
-
-    @Schema(description = "강아지 ID", example = "1")
+public class EditFeedRequest {
+    @Schema(description = "사료 ID", example = "1")
     @NotNull
-    private Long dogId;
+    private Long feedId;
 
     @Schema(description = "브랜드명", example = "알포")
     @NotNull
@@ -48,19 +45,6 @@ public class SaveFeedRequest {
     @Schema(description = "섭취 종료 날짜", example = "2023-12-14")
     private LocalDate endDate;
 
-    public Feed toEntity(String imageURL, Dog dog, boolean isFirstRegisterFeed) {
-        return Feed.builder()
-                .brand(brand)
-                .feedName(feedName)
-                .protein(protein)
-                .fat(fat)
-                .crudeAsh(crudeAsh)
-                .moisture(moisture)
-                .kcal(kcal)
-                .recommendIntake(recommendIntake)
-                .imageURL(imageURL)
-                .dog(dog)
-                .isActivate(isFirstRegisterFeed)
-                .build();
-    }
+    @Schema(description = "사료 섭취기록 ID", example = "1")
+    private Long feedRecordId;
 }

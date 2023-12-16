@@ -2,6 +2,7 @@ package com.meongcare.domain.feed.domain.entity;
 
 import com.meongcare.common.BaseEntity;
 import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.feed.presentation.dto.request.EditFeedRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,13 +43,15 @@ public class Feed extends BaseEntity {
 
     private String imageURL;
 
+    private boolean isActivate;
+
     @JoinColumn(name = "dog_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Dog dog;
 
     @Builder
     public Feed(String brand, String feedName, double protein, double fat, double crudeAsh,
-                double moisture, double kcal, int recommendIntake, String imageURL, Dog dog) {
+                double moisture, double kcal, int recommendIntake, String imageURL, boolean isActivate, Dog dog) {
         this.brand = brand;
         this.feedName = feedName;
         this.protein = protein;
@@ -58,6 +61,27 @@ public class Feed extends BaseEntity {
         this.kcal = kcal;
         this.recommendIntake = recommendIntake;
         this.imageURL = imageURL;
+        this.isActivate = isActivate;
         this.dog = dog;
+    }
+
+    public void disActivate() {
+        this.isActivate = false;
+    }
+
+    public void activate() {
+        this.isActivate = true;
+    }
+
+    public void updateInfo(EditFeedRequest request, String imageURL) {
+        this.brand = request.getBrand();
+        this.feedName = request.getFeedName();
+        this.protein = request.getProtein();
+        this.fat = request.getFat();
+        this.crudeAsh = request.getCrudeAsh();
+        this.moisture = request.getMoisture();
+        this.kcal = request.getKcal();
+        this.recommendIntake = request.getRecommendIntake();
+        this.imageURL = imageURL;
     }
 }

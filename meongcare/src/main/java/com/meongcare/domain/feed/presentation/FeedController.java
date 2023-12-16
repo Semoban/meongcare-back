@@ -2,6 +2,7 @@ package com.meongcare.domain.feed.presentation;
 
 import com.meongcare.domain.feed.application.FeedService;
 import com.meongcare.domain.feed.presentation.dto.request.ChangeFeedRequest;
+import com.meongcare.domain.feed.presentation.dto.request.EditFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.request.SaveFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecommendIntakeForHomeResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedResponse;
@@ -15,10 +16,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,15 +63,19 @@ public class FeedController {
     @Operation(description = "이전에 먹은 사료 일부 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/part/{dogId}")
-    public ResponseEntity<GetFeedsPartResponse> getFeedRecordsPart(@PathVariable Long dogId) {
-        return ResponseEntity.ok(feedService.getFeedRecordsPart(dogId));
+    public ResponseEntity<GetFeedsPartResponse> getFeedRecordsPart(
+            @PathVariable Long dogId, @RequestParam Long feedRecordId
+    ) {
+        return ResponseEntity.ok(feedService.getFeedRecordsPart(dogId, feedRecordId));
     }
 
     @Operation(description = "이전에 먹은 사료 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/list/before/{dogId}")
-    public ResponseEntity<GetFeedRecordsResponse> getFeedRecords(@PathVariable Long dogId) {
-        return ResponseEntity.ok(feedService.getFeedRecords(dogId));
+    public ResponseEntity<GetFeedRecordsResponse> getFeedRecords(
+            @PathVariable Long dogId, @RequestParam Long feedRecordId
+    ) {
+        return ResponseEntity.ok(feedService.getFeedRecords(dogId, feedRecordId));
     }
 
     @Operation(description = "사료 변경")
@@ -76,6 +83,17 @@ public class FeedController {
     @PatchMapping
     public ResponseEntity<Void> changeFeed(@RequestBody @Valid ChangeFeedRequest request) {
         feedService.changeFeed(request.getDogId(), request.getNewFeedId());
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "사료 수정")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PutMapping
+    public ResponseEntity<Void> editFeed(
+            @RequestPart(value = "dto") @Valid EditFeedRequest request,
+            @RequestPart(value = "file") MultipartFile multipartFile
+    ) {
+        feedService.editFeed(request, multipartFile);
         return ResponseEntity.ok().build();
     }
 
@@ -94,5 +112,13 @@ public class FeedController {
             @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) LocalDate date
     ) {
         return ResponseEntity.ok(feedService.getFeedRecommendIntakeForHome(dogId, date));
+    }
+
+    @Operation(description = "사료 삭제")
+    @Parameter(name = "AccesToken", in = ParameterIn.HEADER, required = true)
+    @DeleteMapping("/{feedId}")
+    public ResponseEntity<Void> deleteFeed(@PathVariable Long feedId) {
+        feedService.deleteFeed(feedId);
+        return ResponseEntity.ok().build();
     }
 }
