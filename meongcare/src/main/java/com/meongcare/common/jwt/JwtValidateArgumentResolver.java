@@ -1,5 +1,6 @@
 package com.meongcare.common.jwt;
 
+import com.meongcare.common.error.ErrorCode;
 import com.meongcare.common.error.exception.InvalidTokenException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -31,7 +32,7 @@ public class JwtValidateArgumentResolver implements HandlerMethodArgumentResolve
         String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
 
         if (accessToken == null){
-            throw new InvalidTokenException();
+            throw new InvalidTokenException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 
         Long userIdx = jwtService.parseJwtToken(accessToken);

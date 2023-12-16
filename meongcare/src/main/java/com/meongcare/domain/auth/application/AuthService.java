@@ -1,5 +1,7 @@
 package com.meongcare.domain.auth.application;
 
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.InvalidTokenException;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
@@ -53,7 +55,7 @@ public class AuthService {
 
         refreshTokenRedisRepository
                 .findById(refreshToken)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN));
 
         String accessToken = jwtService.createAccessToken(userId);
         ReissueResponse reissueResponse = new ReissueResponse(accessToken);

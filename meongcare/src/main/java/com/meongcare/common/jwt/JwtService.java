@@ -1,5 +1,7 @@
 package com.meongcare.common.jwt;
 
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +69,7 @@ public class JwtService {
 
             return Long.valueOf((Integer)claims.get(ID_CLAIM));
         } catch (Exception e) {
-            throw e;
+            throw new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
     }
 
