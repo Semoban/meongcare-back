@@ -40,7 +40,8 @@ public class SymptomQueryRepository {
         queryFactory
                 .update(symptom)
                 .set(symptom.deleted, true)
-                .where(symptom.id.in(ids));
+                .where(symptom.id.in(ids))
+                .execute();
     }
 
     private Predicate dateTimeLt(LocalDateTime nextDateTime) {
