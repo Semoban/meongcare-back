@@ -1,5 +1,7 @@
 package com.meongcare.domain.dog.domain;
 
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.EntityNotFoundException;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.member.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +13,7 @@ import java.util.List;
 public interface DogRepository extends JpaRepository<Dog, Long> {
     default Dog getById(Long id) {
         return this.findById(id)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.DOG_ENTITY_NOT_FOUND));
     }
 
     List<Dog> findAllByMember(Member member);
