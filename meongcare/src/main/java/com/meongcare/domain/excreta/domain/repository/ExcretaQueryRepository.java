@@ -46,7 +46,8 @@ public class ExcretaQueryRepository {
         queryFactory
                 .update(excreta)
                 .set(excreta.deleted, true)
-                .where(excreta.id.in(excretaIds));
+                .where(excreta.id.in(excretaIds))
+                .execute();
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
