@@ -29,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwtService.parseJwtToken(accessToken);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
+            e.printStackTrace();
             setErrorResponse(response, ErrorCode.INVALID_ACCESS_TOKEN);
         }
     }
