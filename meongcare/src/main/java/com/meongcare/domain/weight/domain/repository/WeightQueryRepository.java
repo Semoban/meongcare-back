@@ -69,7 +69,7 @@ public class WeightQueryRepository {
                 ))
                 .from(weight)
                 .where(dogIdEq(dogId),
-                        dateTimeLt(date)
+                        dateLt(date)
                 )
                 .orderBy(weight.date.desc())
                 .fetchFirst();
@@ -100,7 +100,7 @@ public class WeightQueryRepository {
         return weight.date.eq(date);
     }
 
-    private BooleanExpression dateTimeLt(LocalDate date) {
+    private BooleanExpression dateLt(LocalDate date) {
         return weight.date.lt(date);
     }
 
