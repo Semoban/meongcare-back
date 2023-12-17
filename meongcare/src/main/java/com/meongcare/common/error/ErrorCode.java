@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     // 4xx
+    S3_FOLDER_PATH_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 S3 폴더경로 입니다."),
     SYMPTOM_ENTITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 이상증상 ID 입니다."),
     FEED_RECORD_ENTITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 사료 기록 ID 입니다."),
     FEED_ENTITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 사료 ID 입니다."),
@@ -26,6 +27,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰입니다."),
 
     // 5xx
+    FAILED_FILE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "파일이 업로드되지 않았습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다.");
 
     private final HttpStatus httpStatus;

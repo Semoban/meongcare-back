@@ -1,6 +1,7 @@
 package com.meongcare.common.error;
 
 import com.meongcare.common.error.exception.EntityNotFoundException;
+import com.meongcare.common.error.exception.FailedFileUploadException;
 import com.meongcare.common.error.exception.InvalidTokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<ErrorResponse> entityNotFoundException(EntityNotFoundException e) {
+        e.printStackTrace();
+        final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
+        return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(FailedFileUploadException.class)
+    protected ResponseEntity<ErrorResponse> failedFileUploadException(FailedFileUploadException e) {
         e.printStackTrace();
         final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
         return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
