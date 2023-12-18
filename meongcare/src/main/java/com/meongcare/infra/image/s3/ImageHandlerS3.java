@@ -1,6 +1,9 @@
 package com.meongcare.infra.image.s3;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.EntityNotFoundException;
+import com.meongcare.common.error.exception.FailedFileUploadException;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +37,7 @@ public class ImageHandlerS3 implements ImageHandler {
             final String fileName = createFileName(imageDirectory);
             return s3Api.uploadImage(bucket, fileName, inputStream, objectMetadata);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FailedFileUploadException(ErrorCode.FAILED_FILE_UPLOAD);
         }
     }
 
@@ -55,6 +58,6 @@ public class ImageHandlerS3 implements ImageHandler {
                 .filter(imageDirectory -> imageDirectory.equals(selectedDirectory))
                 .findAny()
                 .map(imageDirectory -> imageDirectory.getBaseDirectory().concat(UUID.randomUUID().toString()))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.S3_FOLDER_PATH_NOT_FOUND));
     }
 }

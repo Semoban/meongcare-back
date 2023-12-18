@@ -1,7 +1,11 @@
 package com.meongcare.common.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -13,7 +17,8 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final String ACCESS_TOKEN_HEADER = "AccessToken";
+    private static final String ACCESS_TOKEN_HEADER = "AccessToken";
+    private static final String ENCODING_TYPE = "UTF-8";
 
     private final JwtService jwtService;
 
@@ -22,9 +27,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
             jwtService.parseJwtToken(accessToken);
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+            e.printStackTrace();
+            setErrorResponse(response, ErrorCode.INVALID_ACCESS_TOKEN);
         }
-        filterChain.doFilter(request, response);
+    }
+
+    private void setErrorResponse(HttpServletResponse response, ErrorCode errorCode) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.setStatus(errorCode.getHttpStatus().value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(ENCODING_TYPE);
+        ErrorResponse errorResponse = new ErrorResponse(errorCode);
+        try{
+            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 }

@@ -1,5 +1,7 @@
 package com.meongcare.common.jwt;
 
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.InvalidTokenException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @AllArgsConstructor
 public class JwtValidateArgumentResolver implements HandlerMethodArgumentResolver {
+    private static final String ACCESS_TOKEN_HEADER = "AccessToken";
 
     private final JwtService jwtService;
 
@@ -26,10 +29,10 @@ public class JwtValidateArgumentResolver implements HandlerMethodArgumentResolve
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String accessToken = request.getHeader("AccessToken");
+        String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
 
         if (accessToken == null){
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+            throw new InvalidTokenException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 
         Long userIdx = jwtService.parseJwtToken(accessToken);
