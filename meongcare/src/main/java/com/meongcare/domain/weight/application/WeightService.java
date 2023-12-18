@@ -84,9 +84,6 @@ public class WeightService {
 
         if (Objects.nonNull(kg)) {
             weights.get(TODAY_WEIGHT).modifyWeight(kg);
-//            강아지 수정 API의 로직이 포함되어 있기에 일단 주석 처리 후 향후 문제 없을 시 제거 예정
-//            Dog dog = dogRepository.getById(dogId);
-//            dog.updateWeight(kg);
         }
         weightJdbcRepository.saveWeight(weights);
     }
