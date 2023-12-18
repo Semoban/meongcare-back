@@ -69,7 +69,7 @@ public class WeightQueryRepository {
                 ))
                 .from(weight)
                 .where(dogIdEq(dogId),
-                        dateLt(date)
+                        dateLoe(date)
                 )
                 .orderBy(weight.date.desc())
                 .fetchFirst();
@@ -94,6 +94,17 @@ public class WeightQueryRepository {
                         dateEq(date)
                 )
                 .fetchOne());
+    }
+
+    public boolean existRequestDateIsGoeLastWeightDate(Long dogId, LocalDate date) {
+        Weight fetchWeight = queryFactory
+                .selectFrom(weight)
+                .where(
+                        dogIdEq(dogId),
+                        dateGoe(date)
+                )
+                .fetchFirst();
+        return fetchWeight != null;
     }
 
     private BooleanExpression dateEq(LocalDate date) {
