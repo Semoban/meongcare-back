@@ -13,14 +13,28 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetSymptomForHomeResponse {
 
-    @Schema(description = "이상증상 타입 문자열", example = "weightLoss")
-    private List<String> symptoms;
+    @Schema(description = "이상증상 타입과 설명")
+    private List<SymptomRecord> symptomRecords;
 
+    @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    static class SymptomRecord {
+
+        @Schema(description = "이상증상 타입 문자열", example = "weightLoss")
+        private String symptomString;
+
+        @Schema(description = "이상증상 노트 기록", example = "쓰러질 정도로 지쳐있음")
+        private String note;
+
+    }
     public static GetSymptomForHomeResponse from(List<GetSymptomVO> symptomVO) {
-        List<String> symptoms = symptomVO.stream()
-                .map(vo -> vo.getSymptomType().getSymptomString())
+        List<SymptomRecord> symptomRecords = symptomVO.stream()
+                .map(vo -> new SymptomRecord(
+                        vo.getSymptomType().getSymptomString(),
+                        vo.getNote()
+                ))
                 .collect(Collectors.toList());
 
-        return new GetSymptomForHomeResponse(symptoms);
+        return new GetSymptomForHomeResponse(symptomRecords);
     }
 }
