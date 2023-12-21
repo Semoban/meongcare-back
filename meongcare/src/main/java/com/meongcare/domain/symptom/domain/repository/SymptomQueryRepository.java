@@ -31,7 +31,8 @@ public class SymptomQueryRepository {
                 .from(symptom)
                 .where(
                         dogIdEq(dogId),
-                        dateTimeGoe(nowDateTime), dateTimeLt(nextDateTime)
+                        dateTimeGoe(nowDateTime), dateTimeLt(nextDateTime),
+                        isNotDeleted()
                 )
                 .fetch();
     }
@@ -44,7 +45,11 @@ public class SymptomQueryRepository {
                 .execute();
     }
 
-    private Predicate dateTimeLt(LocalDateTime nextDateTime) {
+    private BooleanExpression isNotDeleted() {
+        return symptom.deleted.isFalse();
+    }
+
+    private BooleanExpression dateTimeLt(LocalDateTime nextDateTime) {
         return symptom.dateTime.lt(nextDateTime);
     }
 

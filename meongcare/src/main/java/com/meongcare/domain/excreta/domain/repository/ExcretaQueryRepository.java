@@ -31,14 +31,19 @@ public class ExcretaQueryRepository {
                 .from(excreta)
                 .where(
                         dogIdEq(dogId),
-                        dateTimeGoe(nowDateTime), dateTimeLt(nextDateTime))
+                        dateTimeGoe(nowDateTime), dateTimeLt(nextDateTime),
+                        isNotDeleted()
+                )
                 .fetch();
     }
 
     public List<Excreta> getByIds(List<Long> excretaIds) {
         return queryFactory
                 .selectFrom(excreta)
-                .where(excreta.id.in(excretaIds))
+                .where(
+                        excreta.id.in(excretaIds),
+                        isNotDeleted()
+                )
                 .fetch();
     }
 
@@ -48,6 +53,10 @@ public class ExcretaQueryRepository {
                 .set(excreta.deleted, true)
                 .where(excreta.id.in(excretaIds))
                 .execute();
+    }
+
+    private BooleanExpression isNotDeleted() {
+        return excreta.deleted.isFalse();
     }
 
     private BooleanExpression dogIdEq(Long dogId) {

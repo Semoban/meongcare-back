@@ -27,14 +27,20 @@ public class FeedQueryRepository {
                         feed.feedName
                 ))
                 .from(feed)
-                .where(dogIdEq(dogId))
+                .where(
+                        dogIdEq(dogId),
+                        isNotDeleted()
+                )
                 .fetch();
     }
 
     public boolean existsByDogId(Long dogId) {
         Feed fetchFirst = queryFactory
                 .selectFrom(feed)
-                .where(dogIdEq(dogId))
+                .where(
+                        dogIdEq(dogId),
+                        isNotDeleted()
+                )
                 .fetchFirst();
         return fetchFirst != null;
     }
@@ -42,7 +48,11 @@ public class FeedQueryRepository {
     public Optional<Feed> getActiveFeedByDogId(Long dogId) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(feed)
-                .where(dogIdEq(dogId), feed.isActivate.isTrue())
+                .where(
+                        dogIdEq(dogId),
+                        feed.isActivate.isTrue(),
+                        isNotDeleted()
+                )
                 .fetchFirst()
         );
     }
@@ -53,6 +63,10 @@ public class FeedQueryRepository {
                 .set(feed.deleted, true)
                 .where(feedIdEq(feedId))
                 .execute();
+    }
+
+    private BooleanExpression isNotDeleted() {
+        return feed.deleted.isFalse();
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
