@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -43,6 +44,9 @@ public class ImageHandlerS3 implements ImageHandler {
 
     @Override
     public void deleteImage(String imageURL) {
+        if (imageURL.isEmpty()) {
+            return;
+        }
         s3Api.removeImage(bucket, imageURL);
     }
 
