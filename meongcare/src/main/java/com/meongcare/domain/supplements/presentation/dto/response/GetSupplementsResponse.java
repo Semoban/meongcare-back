@@ -1,7 +1,6 @@
 package com.meongcare.domain.supplements.presentation.dto.response;
 
 import com.meongcare.domain.supplements.domain.entity.Supplements;
-import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
