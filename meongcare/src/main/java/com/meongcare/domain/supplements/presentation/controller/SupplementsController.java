@@ -2,10 +2,7 @@ package com.meongcare.domain.supplements.presentation.controller;
 
 import com.meongcare.domain.supplements.application.SupplementsService;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateForHomeResponse;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
+import com.meongcare.domain.supplements.presentation.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -42,6 +39,16 @@ public class SupplementsController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(description = "강아지 ID 영양제 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/dog/{dogId}")
+    public ResponseEntity<GetSupplementsResponse> getSupplementsRateForHome(
+            @PathVariable Long dogId
+    ) {
+        GetSupplementsResponse getSupplementsResponse = supplementsService.getSupplements(dogId);
+        return ResponseEntity.ok().body(getSupplementsResponse);
+    }
+
     @Operation(description = "날짜 별 영양제 루틴 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping
@@ -56,11 +63,11 @@ public class SupplementsController {
     @Operation(description = "영양제 상세 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/{supplementsId}")
-    public ResponseEntity<GetSupplementsResponse> getSupplementsInfo(
+    public ResponseEntity<GetSupplementsInfoResponse> getSupplementsInfo(
             @PathVariable Long supplementsId
     ) {
-        GetSupplementsResponse getSupplementsResponse = supplementsService.getSupplementsInfo(supplementsId);
-        return ResponseEntity.ok().body(getSupplementsResponse);
+        GetSupplementsInfoResponse getSupplementsInfoResponse = supplementsService.getSupplementsInfo(supplementsId);
+        return ResponseEntity.ok().body(getSupplementsInfoResponse);
     }
 
     @Operation(description = "섭취 완료율 조회")

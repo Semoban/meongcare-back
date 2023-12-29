@@ -9,10 +9,7 @@ import com.meongcare.domain.supplements.domain.repository.*;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineWithoutStatusVO;
 import com.meongcare.domain.supplements.presentation.dto.request.SaveSupplementsRequest;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateForHomeResponse;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
-import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
+import com.meongcare.domain.supplements.presentation.dto.response.*;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
@@ -82,10 +79,10 @@ public class SupplementsService {
         supplementsTime.updateIntakeTIme(updateIntakeTime);
     }
 
-    public GetSupplementsResponse getSupplementsInfo(Long supplementsId) {
+    public GetSupplementsInfoResponse getSupplementsInfo(Long supplementsId) {
         Supplements supplements = supplementsRepository.getById(supplementsId);
         List<SupplementsTime> supplementsTimes = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
-        return GetSupplementsResponse.of(supplements, supplementsTimes);
+        return GetSupplementsInfoResponse.of(supplements, supplementsTimes);
     }
 
     @Transactional
@@ -153,5 +150,10 @@ public class SupplementsService {
         int isIntakeRecordCount = supplementsRecordQueryRepository.getIntakeRecordCount(dogId, date);
 
         return GetSupplementsRateForHomeResponse.of(isIntakeRecordCount, totalRecordCount);
+    }
+
+    public GetSupplementsResponse getSupplements(Long dogId) {
+        List<Supplements> supplements = supplementsRepository.findAllByDogIdAndDeletedFalse(dogId);
+        return GetSupplementsResponse.of(supplements);
     }
 }

@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface SupplementsRepository extends JpaRepository<Supplements, Long> {
     List<Supplements> findAllByDogId(Long dogId);
+
+    List<Supplements> findAllByDogIdAndDeletedFalse(Long dogId);
     default Supplements getById(Long dogId){
         return this.findById(dogId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUPPLEMENTS_ENTITY_NOT_FOUND));
