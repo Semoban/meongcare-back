@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +32,7 @@ public class SupplementsController {
 
     @Operation(description = "영양제 등록")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> saveSupplements(
             @RequestPart(value = "dto", required = false) @Valid SaveSupplementsRequest saveSupplementsRequest,
             @RequestPart(value = "file") MultipartFile multipartFile) {
