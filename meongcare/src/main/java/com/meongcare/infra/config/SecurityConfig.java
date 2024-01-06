@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtService jwtService;
 
-    private static final String[] whiteList = {"/auth/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**", "/v3/api-docs/**", "/error/**", "/notice/**"};
+    private static final String[] whiteList = {"/auth/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**", "/v3/api-docs/**", "/error/**", "/notice/**", "/health"};
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
