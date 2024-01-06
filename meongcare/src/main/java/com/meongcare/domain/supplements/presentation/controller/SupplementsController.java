@@ -33,7 +33,7 @@ public class SupplementsController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity<Void> saveSupplements(
-            @RequestPart(value = "dto") @Valid SaveSupplementsRequest saveSupplementsRequest,
+            @RequestPart(value = "dto", required = false) @Valid SaveSupplementsRequest saveSupplementsRequest,
             @RequestPart(value = "file") MultipartFile multipartFile) {
         supplementsService.saveSupplements(saveSupplementsRequest, multipartFile);
         return ResponseEntity.ok().build();

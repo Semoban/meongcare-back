@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SaveSupplementsRequest {
 
     @Schema(description = "강아지 ID", example = "1")
@@ -40,6 +43,7 @@ public class SaveSupplementsRequest {
     private List<IntakeInfo> intakeInfos;
     @AllArgsConstructor
     @Getter
+    @NoArgsConstructor
     static class IntakeInfo{
         @Schema(description = "섭취 시간 리스트", example = "13:00:00")
         @NotNull
