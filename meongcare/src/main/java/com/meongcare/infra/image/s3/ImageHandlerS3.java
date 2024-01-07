@@ -28,6 +28,8 @@ public class ImageHandlerS3 implements ImageHandler {
     private final S3Api s3Api;
     private static final String EMPTY_IMAGE_URL = "";
     private static final String FILE_SEPARATOR = "/";
+    private static final int BUCKET_NAME_INDEX = 2;
+
 
     @Override
     public String uploadImage(MultipartFile multipartFile, ImageDirectory imageDirectory) {
@@ -69,7 +71,7 @@ public class ImageHandlerS3 implements ImageHandler {
     @Override
     public String getBucketNameFromUrl(String imageUrl) {
         String[] parsedUrl = imageUrl.split(FILE_SEPARATOR);
-        String bucketName = parsedUrl[2];
+        String bucketName = parsedUrl[BUCKET_NAME_INDEX];
         return bucketName;
     }
 }
