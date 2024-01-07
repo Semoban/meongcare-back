@@ -126,7 +126,7 @@ public class FeedController {
     @Operation(description = "사료 상세 정보 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/detail/{feedId}")
-    public ResponseEntity<GetFeedDetailResponse> getFeedDetail(@PathVariable Long feedId) {
-        return ResponseEntity.ok(feedService.getFeedDetail(feedId));
+    public ResponseEntity<GetFeedDetailResponse> getFeedDetail(@PathVariable Long feedId, @RequestParam Long feedRecordId) {
+        return ResponseEntity.ok(feedService.getFeedDetail(feedId, feedRecordId));
     }
 }

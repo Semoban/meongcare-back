@@ -136,8 +136,8 @@ public class FeedService {
         feedRecordQueryRepository.deleteFeedRecord(feedId);
     }
 
-    public GetFeedDetailResponse getFeedDetail(Long feedId) {
-        GetFeedDetailVO feedDetailVO = feedQueryRepository.getFeedDetailById(feedId);
+    public GetFeedDetailResponse getFeedDetail(Long feedId, Long feedRecordId) {
+        GetFeedDetailVO feedDetailVO = feedRecordQueryRepository.getFeedDetailById(feedRecordId);
         return GetFeedDetailResponse.from(feedDetailVO);
     }
 }

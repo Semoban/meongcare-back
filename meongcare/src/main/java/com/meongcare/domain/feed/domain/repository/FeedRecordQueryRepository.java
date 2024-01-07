@@ -1,8 +1,10 @@
 package com.meongcare.domain.feed.domain.repository;
 
 import com.meongcare.domain.feed.domain.entity.FeedRecord;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsPartVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsVO;
+import com.meongcare.domain.feed.domain.repository.vo.QGetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsPartVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -108,6 +110,34 @@ public class FeedRecordQueryRepository {
                 .set(feedRecord.deleted, true)
                 .where(feedIdEq(feedId))
                 .execute();
+    }
+
+    public GetFeedDetailVO getFeedDetailById(Long feedRecordId) {
+        return queryFactory
+                .select(new QGetFeedDetailVO(
+                        feed.brand,
+                        feed.feedName,
+                        feed.protein,
+                        feed.fat,
+                        feed.crudeAsh,
+                        feed.moisture,
+                        feed.kcal,
+                        feed.recommendIntake,
+                        feed.imageURL,
+                        feedRecord.startDate,
+                        feedRecord.endDate
+                ))
+                .from(feedRecord)
+                .innerJoin(feedRecord.feed, feed)
+                .where(
+                        feedRecordIdEq(feedRecordId),
+                        feedRecordIsNotDeleted()
+                )
+                .fetchFirst();
+    }
+
+    private BooleanExpression feedRecordIdEq(Long feedRecordId) {
+        return feedRecord.id.eq(feedRecordId);
     }
 
     private BooleanExpression feedRecordIsNotDeleted() {

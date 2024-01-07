@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class GetFeedDetailResponse {
@@ -37,6 +39,12 @@ public class GetFeedDetailResponse {
     @Schema(description = "사료 이미지 URL", example = "https://xxx.xxx.com")
     private String imageURL;
 
+    @Schema(description = "사료 섭취 시작날짜", example = "2024-01-02")
+    private LocalDate startDate;
+
+    @Schema(description = "사료 섭취 종료날짜", example = "2024-01-04")
+    private LocalDate endDate;
+
     public static GetFeedDetailResponse from(GetFeedDetailVO feedDetailVO) {
         return new GetFeedDetailResponse(
                 feedDetailVO.getBrand(),
@@ -47,7 +55,9 @@ public class GetFeedDetailResponse {
                 feedDetailVO.getMoisture(),
                 feedDetailVO.getKcal(),
                 feedDetailVO.getRecommendIntake(),
-                feedDetailVO.getImageURL()
+                feedDetailVO.getImageURL(),
+                feedDetailVO.getStartDate(),
+                feedDetailVO.getEndDate()
         );
     }
 }
