@@ -9,11 +9,13 @@ public class GetFeedsVO {
     private Long feedId;
     private String brandName;
     private String feedName;
+    private String imageURL;
 
     @QueryProjection
-    public GetFeedsVO(Long feedId, String brandName, String feedName) {
+    public GetFeedsVO(Long feedId, String brandName, String feedName, String imageURL) {
         this.feedId = feedId;
         this.brandName = brandName;
         this.feedName = feedName;
+        this.imageURL = imageURL;
     }
 }
