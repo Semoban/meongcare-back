@@ -68,27 +68,6 @@ public class FeedQueryRepository {
                 .execute();
     }
 
-    public GetFeedDetailVO getFeedDetailById(Long feedId) {
-        return queryFactory
-                .select(new QGetFeedDetailVO(
-                    feed.brand,
-                        feed.feedName,
-                        feed.protein,
-                        feed.fat,
-                        feed.crudeAsh,
-                        feed.moisture,
-                        feed.kcal,
-                        feed.recommendIntake,
-                        feed.imageURL
-                ))
-                .from(feed)
-                .where(
-                        feedIdEq(feedId),
-                        isNotDeleted()
-                )
-                .fetchFirst();
-    }
-
     private BooleanExpression isNotDeleted() {
         return feed.deleted.isFalse();
     }
