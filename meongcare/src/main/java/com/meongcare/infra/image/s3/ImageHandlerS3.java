@@ -27,6 +27,7 @@ public class ImageHandlerS3 implements ImageHandler {
 
     private final S3Api s3Api;
     private static final String EMPTY_IMAGE_URL = "";
+    private static final String FILE_SEPARATOR = "/";
 
     @Override
     public String uploadImage(MultipartFile multipartFile, ImageDirectory imageDirectory) {
@@ -63,5 +64,12 @@ public class ImageHandlerS3 implements ImageHandler {
                 .findAny()
                 .map(imageDirectory -> imageDirectory.getBaseDirectory().concat(UUID.randomUUID().toString()))
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.S3_FOLDER_PATH_NOT_FOUND));
+    }
+
+    @Override
+    public String getBucketNameFromUrl(String imageUrl) {
+        String[] parsedUrl = imageUrl.split(FILE_SEPARATOR);
+        String bucketName = parsedUrl[2];
+        return bucketName;
     }
 }

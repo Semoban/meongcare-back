@@ -6,10 +6,15 @@ spring:
     password: "@sun0896180"
 
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    default_batch_fetch_size: 100
     database: mysql
+    show-sql: true
+    generate-ddl: true
 
   data:
     redis:
@@ -24,7 +29,7 @@ spring:
 jwt:
   secretKey: asdkj1b1jahdo1iu3ht512k7j4asdfajksdfjklh1jk23112312
   access:
-    expiration: 3600000
+    expiration: 36000000000
     header: AccessToken
   refresh:
     expiration: 1209600000
@@ -33,15 +38,15 @@ jwt:
 cloud:
   aws:
     s3:
-      bucket: meongcare-bucket
+      bucket: meongcare-second-bucket
     region:
       static: ap-northeast-2
       auto: false
     stack:
       auto: false
     credentials:
-      access-key: AKIA6DKD6QRBSZNO7ZZT
-      secret-key: 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
+      access-key: AKIA6DKD6QRBSPMAJH6X
+      secret-key: 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
 
 env:
   image-url:

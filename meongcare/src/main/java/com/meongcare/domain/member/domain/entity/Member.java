@@ -62,4 +62,7 @@ public class Member extends BaseEntity {
         delete();
     }
 
+    public void updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }
