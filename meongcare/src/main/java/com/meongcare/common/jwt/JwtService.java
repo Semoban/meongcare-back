@@ -69,7 +69,7 @@ public class JwtService {
 
             return Long.valueOf((Integer)claims.get(ID_CLAIM));
         } catch (Exception e) {
-            throw new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN);
+            throw new InvalidTokenException(ErrorCode.INVALID_TOKEN);
         }
     }
 
