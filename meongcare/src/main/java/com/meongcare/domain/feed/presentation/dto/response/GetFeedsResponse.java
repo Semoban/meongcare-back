@@ -25,6 +25,9 @@ public class GetFeedsResponse {
 
         @Schema(description = "사료명", example = "사료명")
         private String feedName;
+
+        @Schema(description = "사료 이미지 URL", example = "https://xxx.xxx.com")
+        private String imageURL;
     }
 
     public static GetFeedsResponse from(List<GetFeedsVO> feedsVO) {
@@ -32,7 +35,8 @@ public class GetFeedsResponse {
                 .map(vo -> new Feed(
                         vo.getFeedId(),
                         vo.getBrandName(),
-                        vo.getFeedName()
+                        vo.getFeedName(),
+                        vo.getImageURL()
                 ))
                 .collect(Collectors.toUnmodifiableList());
         return new GetFeedsResponse(feeds);
