@@ -4,6 +4,7 @@ import com.meongcare.domain.feed.application.FeedService;
 import com.meongcare.domain.feed.presentation.dto.request.ChangeFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.request.EditFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.request.SaveFeedRequest;
+import com.meongcare.domain.feed.presentation.dto.response.GetFeedDetailResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecommendIntakeForHomeResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedsPartResponse;
@@ -115,10 +116,17 @@ public class FeedController {
     }
 
     @Operation(description = "사료 삭제")
-    @Parameter(name = "AccesToken", in = ParameterIn.HEADER, required = true)
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping("/{feedId}")
     public ResponseEntity<Void> deleteFeed(@PathVariable Long feedId) {
         feedService.deleteFeed(feedId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(description = "사료 상세 정보 조회")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @GetMapping("/detail/{feedId}")
+    public ResponseEntity<GetFeedDetailResponse> getFeedDetail(@PathVariable Long feedId) {
+        return ResponseEntity.ok(feedService.getFeedDetail(feedId));
     }
 }
