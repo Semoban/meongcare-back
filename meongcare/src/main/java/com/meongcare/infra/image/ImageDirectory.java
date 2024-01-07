@@ -4,13 +4,16 @@ import lombok.Getter;
 
 @Getter
 public enum ImageDirectory {
+
+
+
     EXCRETA("meongcare/excreta/"),
     SYMPTOM("meongcare/symptom/"),
     MEDICAL_RECORD("meongcare/medical-record/"),
     DOG("meongcare/dog/"),
     FEED("meongcare/feed/"),
-    SUPPLEMENTS("meongcare/supplements/")
-    ;
+    SUPPLEMENTS("meongcare/supplements/"),
+    MEMBER("meongcare/member/");
 
     private final String baseDirectory;
 

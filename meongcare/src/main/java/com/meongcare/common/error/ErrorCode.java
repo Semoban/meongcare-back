@@ -25,10 +25,11 @@ public enum ErrorCode {
 
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 액세스 토큰입니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."), //토큰 파싱할 때 사용
 
     // 5xx
     FAILED_FILE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "파일이 업로드되지 않았습니다."),
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다."),;
 
     private final HttpStatus httpStatus;
     private final String message;
