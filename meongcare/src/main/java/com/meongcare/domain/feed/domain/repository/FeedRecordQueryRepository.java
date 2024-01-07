@@ -27,7 +27,10 @@ public class FeedRecordQueryRepository {
     public FeedRecord getFeedRecord(Long feedId) {
         return queryFactory
                 .selectFrom(feedRecord)
-                .where(feedIdEq(feedId))
+                .where(
+                        feedIdEq(feedId),
+                        feedRecordIsNotDeleted()
+                )
                 .orderBy(feedRecord.id.desc())
                 .fetchFirst();
     }
@@ -40,7 +43,8 @@ public class FeedRecordQueryRepository {
                 .where(
                         dogIdEq(dogId),
                         startDateLoeSelectedDate(selectedDate),
-                        endDateGoeSelectedDate(selectedDate).or(feedRecord.endDate.isNull())
+                        endDateGoeSelectedDate(selectedDate).or(feedRecord.endDate.isNull()),
+                        feedRecordIsNotDeleted()
                 )
                 .fetchFirst());
     }
@@ -52,13 +56,15 @@ public class FeedRecordQueryRepository {
                         feed.feedName,
                         feedRecord.startDate,
                         feedRecord.endDate,
-                        feedRecord.id
+                        feedRecord.id,
+                        feed.imageURL
                 ))
                 .from(feedRecord)
                 .innerJoin(feedRecord.feed, feed)
                 .where(
                         dogIdEq(dogId),
-                        feedRecordIdNotEq(feedRecordId)
+                        feedRecordIdNotEq(feedRecordId),
+                        feedRecordIsNotDeleted()
                 )
                 .orderBy(feedRecord.startDate.desc())
                 .fetch();
@@ -78,7 +84,8 @@ public class FeedRecordQueryRepository {
                 .innerJoin(feedRecord.feed, feed)
                 .where(
                         dogIdEq(dogId),
-                        feedRecordIdNotEq(feedRecordId)
+                        feedRecordIdNotEq(feedRecordId),
+                        feedRecordIsNotDeleted()
                 )
                 .orderBy(feedRecord.startDate.desc())
                 .limit(2)
@@ -88,7 +95,10 @@ public class FeedRecordQueryRepository {
     public FeedRecord getEndDateNullFeedRecord(Long feedId) {
         return queryFactory
                 .selectFrom(feedRecord)
-                .where(feedIdEq(feedId), feedRecord.endDate.isNull())
+                .where(
+                        feedIdEq(feedId),
+                        feedRecord.endDate.isNull(),
+                        feedRecordIsNotDeleted())
                 .fetchFirst();
     }
 
@@ -98,6 +108,10 @@ public class FeedRecordQueryRepository {
                 .set(feedRecord.deleted, true)
                 .where(feedIdEq(feedId))
                 .execute();
+    }
+
+    private BooleanExpression feedRecordIsNotDeleted() {
+        return feedRecord.deleted.isFalse();
     }
 
     private BooleanExpression feedRecordIdNotEq(Long feedRecordId) {
