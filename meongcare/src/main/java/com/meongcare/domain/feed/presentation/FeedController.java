@@ -79,7 +79,7 @@ public class FeedController {
         return ResponseEntity.ok(feedService.getFeedRecords(dogId, feedRecordId));
     }
 
-    @Operation(description = "사료 변경")
+    @Operation(description = "먹고 있는 사료 변경")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping
     public ResponseEntity<Void> changeFeed(@RequestBody @Valid ChangeFeedRequest request) {
@@ -87,7 +87,7 @@ public class FeedController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "사료 수정")
+    @Operation(description = "사료 정보 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PutMapping
     public ResponseEntity<Void> editFeed(
