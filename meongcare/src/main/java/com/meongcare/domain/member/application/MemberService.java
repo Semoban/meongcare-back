@@ -27,7 +27,8 @@ public class MemberService {
         Member member = memberRepository.getById(userId);
         return GetProfileResponse.of(
                 member.getEmail(),
-                member.getProfileImageUrl());
+                member.getProfileImageUrl(),
+                member.isPushAgreement());
     }
 
     @Transactional
