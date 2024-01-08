@@ -1,5 +1,7 @@
 package com.meongcare.domain.feed.application;
 
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.EntityNotFoundException;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.feed.domain.entity.Feed;
@@ -8,8 +10,10 @@ import com.meongcare.domain.feed.domain.repository.FeedQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRepository;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedDetailVO;
 import com.meongcare.domain.feed.presentation.dto.request.EditFeedRequest;
 import com.meongcare.domain.feed.presentation.dto.request.SaveFeedRequest;
+import com.meongcare.domain.feed.presentation.dto.response.GetFeedDetailResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedRecommendIntakeForHomeResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedResponse;
 import com.meongcare.domain.feed.presentation.dto.response.GetFeedsPartResponse;
@@ -90,7 +94,7 @@ public class FeedService {
     @Transactional
     public void changeFeed(Long dogId, Long newFeedId) {
         Feed feed = feedQueryRepository.getActiveFeedByDogId(dogId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.FEED_ENTITY_NOT_FOUND));
         feed.disActivate();
 
         FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(feed.getId());
@@ -101,7 +105,9 @@ public class FeedService {
         Feed newFeed = feedRepository.getById(newFeedId);
         newFeed.activate();
         FeedRecord endDateNullFeedRecord = feedRecordQueryRepository.getEndDateNullFeedRecord(newFeedId);
-        endDateNullFeedRecord.updateEndDate();
+        if (Objects.nonNull(endDateNullFeedRecord)) {
+            endDateNullFeedRecord.updateEndDate();
+        }
         feedRecordRepository.save(FeedRecord.of(feed, dogId, LocalDate.now(), null));
     }
 
@@ -125,9 +131,15 @@ public class FeedService {
                 .orElse(DEFAULT_RECOMMEND_INTAKE);
         return GetFeedRecommendIntakeForHomeResponse.from(recommendIntake);
     }
+
     @Transactional
     public void deleteFeed(Long feedId) {
         feedQueryRepository.deleteFeed(feedId);
         feedRecordQueryRepository.deleteFeedRecord(feedId);
+    }
+
+    public GetFeedDetailResponse getFeedDetail(Long feedId, Long feedRecordId) {
+        GetFeedDetailVO feedDetailVO = feedRecordQueryRepository.getFeedDetailById(feedRecordId);
+        return GetFeedDetailResponse.from(feedDetailVO);
     }
 }

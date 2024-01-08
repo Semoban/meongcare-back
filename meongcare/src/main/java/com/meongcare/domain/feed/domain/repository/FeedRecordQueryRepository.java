@@ -1,8 +1,10 @@
 package com.meongcare.domain.feed.domain.repository;
 
 import com.meongcare.domain.feed.domain.entity.FeedRecord;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsPartVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsVO;
+import com.meongcare.domain.feed.domain.repository.vo.QGetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsPartVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -27,7 +29,10 @@ public class FeedRecordQueryRepository {
     public FeedRecord getFeedRecord(Long feedId) {
         return queryFactory
                 .selectFrom(feedRecord)
-                .where(feedIdEq(feedId))
+                .where(
+                        feedIdEq(feedId),
+                        feedRecordIsNotDeleted()
+                )
                 .orderBy(feedRecord.id.desc())
                 .fetchFirst();
     }
@@ -40,7 +45,8 @@ public class FeedRecordQueryRepository {
                 .where(
                         dogIdEq(dogId),
                         startDateLoeSelectedDate(selectedDate),
-                        endDateGoeSelectedDate(selectedDate).or(feedRecord.endDate.isNull())
+                        endDateGoeSelectedDate(selectedDate).or(feedRecord.endDate.isNull()),
+                        feedRecordIsNotDeleted()
                 )
                 .fetchFirst());
     }
@@ -52,13 +58,15 @@ public class FeedRecordQueryRepository {
                         feed.feedName,
                         feedRecord.startDate,
                         feedRecord.endDate,
-                        feedRecord.id
+                        feedRecord.id,
+                        feed.imageURL
                 ))
                 .from(feedRecord)
                 .innerJoin(feedRecord.feed, feed)
                 .where(
                         dogIdEq(dogId),
-                        feedRecordIdNotEq(feedRecordId)
+                        feedRecordIdNotEq(feedRecordId),
+                        feedRecordIsNotDeleted()
                 )
                 .orderBy(feedRecord.startDate.desc())
                 .fetch();
@@ -78,7 +86,8 @@ public class FeedRecordQueryRepository {
                 .innerJoin(feedRecord.feed, feed)
                 .where(
                         dogIdEq(dogId),
-                        feedRecordIdNotEq(feedRecordId)
+                        feedRecordIdNotEq(feedRecordId),
+                        feedRecordIsNotDeleted()
                 )
                 .orderBy(feedRecord.startDate.desc())
                 .limit(2)
@@ -88,7 +97,10 @@ public class FeedRecordQueryRepository {
     public FeedRecord getEndDateNullFeedRecord(Long feedId) {
         return queryFactory
                 .selectFrom(feedRecord)
-                .where(feedIdEq(feedId), feedRecord.endDate.isNull())
+                .where(
+                        feedIdEq(feedId),
+                        feedRecord.endDate.isNull(),
+                        feedRecordIsNotDeleted())
                 .fetchFirst();
     }
 
@@ -98,6 +110,38 @@ public class FeedRecordQueryRepository {
                 .set(feedRecord.deleted, true)
                 .where(feedIdEq(feedId))
                 .execute();
+    }
+
+    public GetFeedDetailVO getFeedDetailById(Long feedRecordId) {
+        return queryFactory
+                .select(new QGetFeedDetailVO(
+                        feed.brand,
+                        feed.feedName,
+                        feed.protein,
+                        feed.fat,
+                        feed.crudeAsh,
+                        feed.moisture,
+                        feed.kcal,
+                        feed.recommendIntake,
+                        feed.imageURL,
+                        feedRecord.startDate,
+                        feedRecord.endDate
+                ))
+                .from(feedRecord)
+                .innerJoin(feedRecord.feed, feed)
+                .where(
+                        feedRecordIdEq(feedRecordId),
+                        feedRecordIsNotDeleted()
+                )
+                .fetchFirst();
+    }
+
+    private BooleanExpression feedRecordIdEq(Long feedRecordId) {
+        return feedRecord.id.eq(feedRecordId);
+    }
+
+    private BooleanExpression feedRecordIsNotDeleted() {
+        return feedRecord.deleted.isFalse();
     }
 
     private BooleanExpression feedRecordIdNotEq(Long feedRecordId) {

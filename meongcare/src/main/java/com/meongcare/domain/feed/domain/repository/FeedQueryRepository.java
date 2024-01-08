@@ -1,7 +1,9 @@
 package com.meongcare.domain.feed.domain.repository;
 
 import com.meongcare.domain.feed.domain.entity.Feed;
+import com.meongcare.domain.feed.domain.repository.vo.GetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
+import com.meongcare.domain.feed.domain.repository.vo.QGetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedsVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,7 +26,8 @@ public class FeedQueryRepository {
                 .select(new QGetFeedsVO(
                         feed.id,
                         feed.brand,
-                        feed.feedName
+                        feed.feedName,
+                        feed.imageURL
                 ))
                 .from(feed)
                 .where(

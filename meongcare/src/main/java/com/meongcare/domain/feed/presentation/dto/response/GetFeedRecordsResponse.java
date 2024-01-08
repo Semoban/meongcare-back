@@ -32,6 +32,9 @@ public class GetFeedRecordsResponse {
 
         @Schema(description = "섭취 기록 ID", example = "1")
         private Long feedRecordId;
+
+        @Schema(description = "사료 이미지 URL", example = "https://xxx.xxx.com")
+        private String imageURL;
     }
 
     public static GetFeedRecordsResponse from(List<GetFeedRecordsVO> getFeedRecordsVO) {
@@ -41,7 +44,8 @@ public class GetFeedRecordsResponse {
                         vo.getFeedName(),
                         vo.getStartDate(),
                         vo.getEndDate(),
-                        vo.getFeedRecordId()
+                        vo.getFeedRecordId(),
+                        vo.getImageURL()
                 ))
                 .collect(Collectors.toUnmodifiableList());
         return new GetFeedRecordsResponse(feedRecords);
