@@ -1,5 +1,6 @@
 package com.meongcare.domain.supplements.presentation.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
 import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,6 +20,12 @@ public class GetSupplementsInfoResponse {
 
     @Schema(description = "영양제 ID", example = "1")
     private Long supplementsId;
+
+    @Schema(description = "영양제 이미지 url", example = "https://meongcare/supplements/111")
+    private String imageUrl;
+
+    @Schema(description = "영양제 활성화 여부", example = "true")
+    private Boolean isActive;
 
     @Schema(description = "영양제 브랜드명", example = "하림")
     private String brand;
@@ -54,6 +61,8 @@ public class GetSupplementsInfoResponse {
 
         return GetSupplementsInfoResponse.builder()
                 .supplementsId(supplements.getId())
+                .imageUrl(supplements.getImageUrl())
+                .isActive(supplements.isActive())
                 .brand(supplements.getBrand())
                 .name(supplements.getName())
                 .intakeUnit(supplements.getIntakeUnit())
