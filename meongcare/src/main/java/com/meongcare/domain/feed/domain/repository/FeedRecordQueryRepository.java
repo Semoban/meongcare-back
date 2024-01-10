@@ -59,7 +59,8 @@ public class FeedRecordQueryRepository {
                         feedRecord.startDate,
                         feedRecord.endDate,
                         feedRecord.id,
-                        feed.imageURL
+                        feed.imageURL,
+                        feed.id
                 ))
                 .from(feedRecord)
                 .innerJoin(feedRecord.feed, feed)

@@ -13,14 +13,16 @@ public class GetFeedRecordsVO {
     private LocalDate endDate;
     private Long feedRecordId;
     private String imageURL;
+    private Long feedId;
 
     @QueryProjection
-    public GetFeedRecordsVO(String brandName, String feedName, LocalDate startDate, LocalDate endDate, Long feedRecordId, String imageURL) {
+    public GetFeedRecordsVO(String brandName, String feedName, LocalDate startDate, LocalDate endDate, Long feedRecordId, String imageURL, Long feedId) {
         this.brandName = brandName;
         this.feedName = feedName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.feedRecordId = feedRecordId;
         this.imageURL = imageURL;
+        this.feedId = feedId;
     }
 }
