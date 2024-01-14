@@ -1,5 +1,6 @@
 package com.meongcare.domain.feed.presentation.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.feed.domain.entity.Feed;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,6 +8,8 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+
+import static com.meongcare.common.DateTimePattern.DATE_PATTERN;
 
 @Getter
 public class SaveFeedRequest {
@@ -42,10 +45,12 @@ public class SaveFeedRequest {
     private int recommendIntake;
 
     @Schema(description = "섭취 시작 날짜", example = "2023-10-13")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
     @NotNull
     private LocalDate startDate;
 
     @Schema(description = "섭취 종료 날짜", example = "2023-12-14")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
     private LocalDate endDate;
 
     public Feed toEntity(String imageURL, Dog dog, boolean isFirstRegisterFeed) {
