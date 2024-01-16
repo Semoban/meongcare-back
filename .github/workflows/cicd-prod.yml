@@ -28,8 +28,8 @@ jobs:
       - name: application-prod.yml && firebase-key 생성
         run: |
           cd ./meongcare/src/main/resources 
-          touch ./application-prod.yml 
-          echo "$APPLICATION_DEV" > ./application-prod.yml
+          touch ./application.yml 
+          echo "$APPLICATION_DEV" > ./application.yml
           mkdir firebase
           cd ./firebase
           touch ./meongcare-firebase-key.json
