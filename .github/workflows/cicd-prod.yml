@@ -75,7 +75,7 @@ jobs:
         env: 
           IMAGE_NAME : ${{ steps.build-image.outputs.IMAGE_NAME}}
           IMAGE_TAG : ${{ steps.build-image.outputs.IMAGE_TAG}}
-          AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+          AWS_ACCOUNT: ${{ secrets.ECR_URI }}
         with:
           host: ${{ secrets.EC2_DEV_HOST_PROD }}
           username: ubuntu
