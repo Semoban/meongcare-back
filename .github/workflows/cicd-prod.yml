@@ -35,7 +35,7 @@ jobs:
           touch ./meongcare-firebase-key.json
           echo "$MEONGCARE_FIREBASE_KEY" > ./meongcare-firebase-key.json
         env:
-          APPLICATION_DEV: ${{ secrets.APPLICATION_DEV }}
+          APPLICATION_DEV: ${{ secrets.APPLICATION_PROD }}
           MEONGCARE_FIREBASE_KEY: ${{ secrets.MEONGCARE_FIREBASE_KEY }}
       
       - name: Gradle 셋업
