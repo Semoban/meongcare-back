@@ -29,15 +29,18 @@ public class AuthService {
     public LoginResponse login(LoginRequest loginRequest) {
         String providerId = loginRequest.getProviderId();
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
-        Long memberId = null;
 
+        Long memberId;
+        Boolean isFirstLogin;
         if (findMemberOptional.isEmpty()) {
             Member member = loginRequest.toMemberEntity();
             memberRepository.save(member);
             memberId = member.getId();
+            isFirstLogin = true;
         }
-        if (findMemberOptional.isPresent()) {
+        else {
             memberId = findMemberOptional.get().getId();
+            isFirstLogin = false;
         }
 
         String accessToken = jwtService.createAccessToken(memberId);
@@ -45,7 +48,7 @@ public class AuthService {
 
         refreshTokenRedisRepository.save(RefreshToken.of(refreshToken, memberId));
 
-        LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken);
+        LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken, isFirstLogin);
 
         return loginResponse;
     }
