@@ -35,6 +35,9 @@ public class EditFeedRequest {
     @Schema(description = "수분", example = "5.02")
     private double moisture;
 
+    @Schema(description = "기타", example = "31.4")
+    private double etc;
+
     @Schema(description = "칼로리", example = "230.45")
     private double kcal;
 
