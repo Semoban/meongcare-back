@@ -2,6 +2,7 @@ package com.meongcare.infra.config;
 
 import com.meongcare.common.jwt.JwtAuthenticationFilter;
 import com.meongcare.common.jwt.JwtService;
+import com.meongcare.domain.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     private static final String[] whiteList = {"/auth/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**", "/v3/api-docs/**", "/error/**", "/notice/**", "/health"};
 
@@ -31,7 +33,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtService, memberRepository), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

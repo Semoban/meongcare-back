@@ -27,7 +27,7 @@ public class AuthService {
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
-        String providerId = loginRequest.getProviderId();
+        String providerId = loginRequest.getProviderId() + "@" + loginRequest.getProvider();
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
 
         Long memberId;

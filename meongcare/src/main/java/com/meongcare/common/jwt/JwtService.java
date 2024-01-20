@@ -47,7 +47,7 @@ public class JwtService {
     private String createToken(Long userId, String tokenSubject, Long expirationPeriod) {
         Date expirationTime = new Date();
         Claims claims = Jwts.claims();
-        expirationTime.setTime(expirationTime.getTime()+expirationPeriod);
+        expirationTime.setTime(expirationTime.getTime() + expirationPeriod);
         claims.put(ID_CLAIM, userId);
 
         String accessToken = Jwts.builder()
@@ -67,7 +67,7 @@ public class JwtService {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return Long.valueOf((Integer)claims.get(ID_CLAIM));
+            return Long.valueOf((Integer) claims.get(ID_CLAIM));
         } catch (Exception e) {
             throw new InvalidTokenException(ErrorCode.INVALID_TOKEN);
         }
