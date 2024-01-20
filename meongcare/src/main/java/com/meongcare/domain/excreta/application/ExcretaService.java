@@ -16,6 +16,7 @@ import com.meongcare.domain.excreta.domain.repository.ExcretaRepository;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +36,7 @@ public class ExcretaService {
     private final ExcretaQueryRepository excretaQueryRepository;
     private final DogRepository dogRepository;
     private final ImageHandler imageHandler;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void saveExcreta(SaveExcretaRequest request, MultipartFile multipartFile) {
@@ -74,7 +76,7 @@ public class ExcretaService {
     public void deleteExcreta(List<Long> excretaIds) {
         List<Excreta> excretas = excretaQueryRepository.getByIds(excretaIds);
         for (Excreta excreta : excretas) {
-            imageHandler.deleteImage(excreta.getImageURL());
+            eventPublisher.publishEvent(excreta.getImageURL());
         }
         excretaQueryRepository.deleteExcreta(excretaIds);
     }
