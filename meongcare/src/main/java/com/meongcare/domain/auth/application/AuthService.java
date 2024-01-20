@@ -28,18 +28,17 @@ public class AuthService {
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
-        String providerId = loginRequest.getProviderId() + PROVIDER_ID_SEPARATOR + loginRequest.getProvider();
-        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
+        String providerIdWithProvider = loginRequest.getProviderId() + PROVIDER_ID_SEPARATOR + loginRequest.getProvider();
+        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerIdWithProvider);
 
         Long memberId;
         Boolean isFirstLogin = false;
         if (findMemberOptional.isEmpty()) {
-            Member member = loginRequest.toMemberEntity();
+            Member member = loginRequest.toMemberEntity(providerIdWithProvider);
             memberRepository.save(member);
             memberId = member.getId();
             isFirstLogin = true;
-        }
-        else {
+        } else {
             memberId = findMemberOptional.get().getId();
         }
 
