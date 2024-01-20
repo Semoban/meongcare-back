@@ -13,6 +13,7 @@ public class GetFeedDetailVO {
     private double fat;
     private double crudeAsh;
     private double moisture;
+    private double etc;
     private double kcal;
     private int recommendIntake;
     private String imageURL;
@@ -20,13 +21,17 @@ public class GetFeedDetailVO {
     private LocalDate endDate;
 
     @QueryProjection
-    public GetFeedDetailVO(String brand, String feedName, double protein, double fat, double crudeAsh, double moisture, double kcal, int recommendIntake, String imageURL, LocalDate startDate, LocalDate endDate) {
+    public GetFeedDetailVO(String brand, String feedName, double protein, double fat,
+                           double crudeAsh, double moisture, double etc, double kcal,
+                           int recommendIntake, String imageURL, LocalDate startDate, LocalDate endDate
+    ) {
         this.brand = brand;
         this.feedName = feedName;
         this.protein = protein;
         this.fat = fat;
         this.crudeAsh = crudeAsh;
         this.moisture = moisture;
+        this.etc = etc;
         this.kcal = kcal;
         this.recommendIntake = recommendIntake;
         this.imageURL = imageURL;

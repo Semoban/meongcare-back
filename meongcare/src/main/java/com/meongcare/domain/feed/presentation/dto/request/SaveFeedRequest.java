@@ -38,6 +38,9 @@ public class SaveFeedRequest {
     @Schema(description = "수분", example = "5.02")
     private double moisture;
 
+    @Schema(description = "기타", example = "21.4")
+    private double etc;
+
     @Schema(description = "칼로리", example = "230.45")
     private double kcal;
 
@@ -61,6 +64,7 @@ public class SaveFeedRequest {
                 .fat(fat)
                 .crudeAsh(crudeAsh)
                 .moisture(moisture)
+                .etc(etc)
                 .kcal(kcal)
                 .recommendIntake(recommendIntake)
                 .imageURL(imageURL)

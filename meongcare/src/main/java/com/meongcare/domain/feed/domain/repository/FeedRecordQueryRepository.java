@@ -122,6 +122,7 @@ public class FeedRecordQueryRepository {
                         feed.fat,
                         feed.crudeAsh,
                         feed.moisture,
+                        feed.etc,
                         feed.kcal,
                         feed.recommendIntake,
                         feed.imageURL,
