@@ -8,13 +8,15 @@ import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.UUID;
 
 
@@ -45,12 +47,22 @@ public class ImageHandlerS3 implements ImageHandler {
         }
     }
 
+    @Async
     @Override
     public void deleteImage(String imageURL) {
         if (imageURL.isEmpty()) {
             return;
         }
-        s3Api.removeImage(bucket, imageURL);
+        String filePath = parseFilePathFromUrl(imageURL);
+        s3Api.removeImage(bucket, filePath);
+    }
+
+    private String parseFilePathFromUrl(String imageURL) {
+        String[] parsedUrl = imageURL.split("/");
+        String fileDir = parsedUrl[parsedUrl.length - 3] + FILE_SEPARATOR + parsedUrl[parsedUrl.length - 2];
+        String fileName = parsedUrl[parsedUrl.length - 1];
+        String filePath = fileDir + FILE_SEPARATOR + URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+        return filePath;
     }
 
     private ObjectMetadata createObjectMetadata(MultipartFile multipartFile) {
