@@ -2,7 +2,6 @@ package com.meongcare.domain.symptom.domain.repository;
 
 import com.meongcare.domain.symptom.domain.repository.vo.GetSymptomVO;
 import com.meongcare.domain.symptom.domain.repository.vo.QGetSymptomVO;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

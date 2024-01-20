@@ -8,6 +8,7 @@ import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +47,7 @@ public class ImageHandlerS3 implements ImageHandler {
         }
     }
 
+    @Async
     @Override
     public void deleteImage(String imageURL) {
         if (imageURL.isEmpty()) {

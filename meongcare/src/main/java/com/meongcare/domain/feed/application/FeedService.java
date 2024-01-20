@@ -25,6 +25,7 @@ import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,7 @@ public class FeedService {
     private final FeedRecordRepository feedRecordRepository;
     private final FeedRecordQueryRepository feedRecordQueryRepository;
     private final ImageHandler imageHandler;
+    private final ApplicationEventPublisher eventPublisher;
 
     private static final Integer DEFAULT_RECOMMEND_INTAKE = 0;
 
@@ -134,6 +136,9 @@ public class FeedService {
 
     @Transactional
     public void deleteFeed(Long feedId) {
+        Feed feed = feedRepository.getById(feedId);
+        eventPublisher.publishEvent(feed.getImageURL());
+
         feedQueryRepository.deleteFeed(feedId);
         feedRecordQueryRepository.deleteFeedRecord(feedId);
     }
