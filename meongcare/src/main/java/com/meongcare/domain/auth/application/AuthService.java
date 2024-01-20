@@ -24,23 +24,22 @@ public class AuthService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    public static final String PROVIDER_ID_SEPARATOR = "@";
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
-        String providerId = loginRequest.getProviderId();
-        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
+        String providerIdWithProvider = loginRequest.getProviderId() + PROVIDER_ID_SEPARATOR + loginRequest.getProvider();
+        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerIdWithProvider);
 
         Long memberId;
-        Boolean isFirstLogin;
+        Boolean isFirstLogin = false;
         if (findMemberOptional.isEmpty()) {
-            Member member = loginRequest.toMemberEntity();
+            Member member = loginRequest.toMemberEntity(providerIdWithProvider);
             memberRepository.save(member);
             memberId = member.getId();
             isFirstLogin = true;
-        }
-        else {
+        } else {
             memberId = findMemberOptional.get().getId();
-            isFirstLogin = false;
         }
 
         String accessToken = jwtService.createAccessToken(memberId);

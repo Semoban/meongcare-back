@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
 
 @Getter
 @Entity
@@ -19,11 +21,9 @@ public class Member extends BaseEntity {
     private Long id;
 
     @NotNull
-    private String name;
-
-    @NotNull
     private String email;
 
+    @Column(length = 2000, unique = true)
     @NotNull
     private String providerId;
 
@@ -43,9 +43,8 @@ public class Member extends BaseEntity {
 
 
     @Builder
-    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImageUrl, boolean pushAgreement, String fcmToken) {
+    public Member(Long id, String email, String providerId, Provider provider, String profileImageUrl, boolean pushAgreement, String fcmToken) {
         this.id = id;
-        this.name = name;
         this.email = email;
         this.providerId = providerId;
         this.provider = provider;

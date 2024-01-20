@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,11 +28,11 @@ public class SaveSupplementsRequest {
     private Long dogId;
 
     @Schema(description = "브랜드명", example = "하림")
-    @NotNull
+    @NotEmpty
     private String brand;
 
     @Schema(description = "영양제 제품명", example = "밥이보약 하루양갱")
-    @NotNull
+    @NotEmpty
     private String name;
 
     @Schema(description = "섭취 주기", example = "3")

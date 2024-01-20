@@ -34,7 +34,7 @@ public class SupplementsController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> saveSupplements(
-            @RequestPart(value = "dto", required = false) @Valid SaveSupplementsRequest saveSupplementsRequest,
+            @Valid @RequestPart(value = "dto", required = false) SaveSupplementsRequest saveSupplementsRequest,
             @RequestPart(value = "file") MultipartFile multipartFile) {
         supplementsService.saveSupplements(saveSupplementsRequest, multipartFile);
         return ResponseEntity.ok().build();
