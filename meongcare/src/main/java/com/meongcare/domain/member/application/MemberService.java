@@ -47,7 +47,7 @@ public class MemberService {
     public void updateProfileImage(Long userId, MultipartFile multipartFile) {
         Member member = memberRepository.getById(userId);
         String bucketName = imageHandler.getBucketNameFromUrl(member.getProfileImageUrl());
-        if (bucketName.equals(bucket)) {
+        if (bucketName.startsWith(bucket)) {
             imageHandler.deleteImage(member.getProfileImageUrl());
         }
         String profileImageUrl = imageHandler.uploadImage(multipartFile, ImageDirectory.MEMBER);
