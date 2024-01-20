@@ -9,6 +9,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import static com.meongcare.domain.auth.application.AuthService.PROVIDER_ID_SEPARATOR;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -39,13 +41,11 @@ public class LoginRequest {
         return Member
                 .builder()
                 .provider(Provider.of(provider))
-                .providerId(providerId + "@" + provider)
+                .providerId(providerId + PROVIDER_ID_SEPARATOR + provider)
                 .pushAgreement(false)
                 .profileImageUrl(profileImageUrl)
                 .email(email)
                 .fcmToken(fcmToken)
                 .build();
     }
-
-
 }

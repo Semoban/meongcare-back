@@ -24,10 +24,11 @@ public class AuthService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    public static final String PROVIDER_ID_SEPARATOR = "@";
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
-        String providerId = loginRequest.getProviderId() + "@" + loginRequest.getProvider();
+        String providerId = loginRequest.getProviderId() + PROVIDER_ID_SEPARATOR + loginRequest.getProvider();
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
 
         Long memberId;
