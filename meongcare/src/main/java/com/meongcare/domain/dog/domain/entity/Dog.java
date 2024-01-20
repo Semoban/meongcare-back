@@ -29,10 +29,10 @@ public class Dog {
     @NotNull
     private String name;
 
-    @NotEmpty
+    @NotNull
     private String type;
 
-    @NotEmpty
+    @NotNull
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)

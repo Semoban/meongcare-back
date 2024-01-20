@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
@@ -24,9 +25,9 @@ public class Supplements extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Dog dog;
 
-    @NotEmpty
+    @NotNull
     private String name;
-    @NotEmpty
+    @NotNull
     private String brand;
 
     private String imageUrl;

@@ -20,25 +20,25 @@ public class Member extends BaseEntity {
     @Id
     private Long id;
 
-    @NotEmpty
+    @NotNull
     private String email;
 
     @Column(length = 2000, unique = true)
-    @NotEmpty
+    @NotNull
     private String providerId;
 
     @Enumerated(EnumType.STRING)
     @NotNull
     private Provider provider;
 
-    @NotEmpty
+    @NotNull
     private String profileImageUrl;
 
     @NotNull
     private boolean pushAgreement;
 
     @Column(length = 500)
-    @NotEmpty
+    @NotNull
     private String fcmToken;
 
 
