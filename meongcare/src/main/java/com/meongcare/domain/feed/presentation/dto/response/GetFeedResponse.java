@@ -33,6 +33,9 @@ public class GetFeedResponse {
     @Schema(description = "수분", example = "7.5")
     private double moisture;
 
+    @Schema(description = "기타", example = "31.4")
+    private double etc;
+
     @Schema(description = "섭취일수", example = "40")
     private long days;
 
@@ -58,6 +61,7 @@ public class GetFeedResponse {
                 .fat(feed.getFat())
                 .crudeAsh(feed.getCrudeAsh())
                 .moisture(feed.getMoisture())
+                .etc(feed.getEtc())
                 .days(days)
                 .recommendIntake(feed.getRecommendIntake())
                 .feedId(feed.getId())
