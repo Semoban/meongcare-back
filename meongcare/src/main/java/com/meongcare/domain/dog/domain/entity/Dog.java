@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -28,10 +29,10 @@ public class Dog {
     @NotNull
     private String name;
 
-    @NotNull
+    @NotEmpty
     private String type;
 
-    @NotNull
+    @NotEmpty
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
