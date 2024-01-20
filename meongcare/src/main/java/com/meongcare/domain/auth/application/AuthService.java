@@ -31,7 +31,7 @@ public class AuthService {
         Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
 
         Long memberId;
-        Boolean isFirstLogin;
+        Boolean isFirstLogin = false;
         if (findMemberOptional.isEmpty()) {
             Member member = loginRequest.toMemberEntity();
             memberRepository.save(member);
@@ -40,7 +40,6 @@ public class AuthService {
         }
         else {
             memberId = findMemberOptional.get().getId();
-            isFirstLogin = false;
         }
 
         String accessToken = jwtService.createAccessToken(memberId);

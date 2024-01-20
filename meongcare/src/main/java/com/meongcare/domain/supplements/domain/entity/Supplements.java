@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Entity
@@ -24,8 +24,9 @@ public class Supplements extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Dog dog;
 
+    @NotEmpty
     private String name;
-
+    @NotEmpty
     private String brand;
 
     private String imageUrl;
