@@ -1,5 +1,6 @@
 package com.meongcare.domain.supplements.domain.entity;
 
+import com.meongcare.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalTime;
 @Table(name = "supplements_time", indexes = {
         @Index(name = "idx_intake_time", columnList = "intake_time")
 })
-public class SupplementsTime {
+public class SupplementsTime extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
