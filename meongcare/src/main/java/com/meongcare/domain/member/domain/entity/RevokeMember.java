@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DeletedMember {
+public class RevokeMember {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -21,13 +21,13 @@ public class DeletedMember {
     private String providerId;
     private LocalDateTime revokedAt;
 
-    public DeletedMember(String providerId) {
+    public RevokeMember(String providerId) {
         this.providerId = providerId;
         this.revokedAt = LocalDateTime.now();
     }
 
-    public static DeletedMember of(String providerId) {
-        return new DeletedMember(providerId);
+    public static RevokeMember of(String providerId) {
+        return new RevokeMember(providerId);
     }
 
 }

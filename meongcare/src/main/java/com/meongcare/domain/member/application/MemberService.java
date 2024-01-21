@@ -5,10 +5,10 @@ import com.meongcare.common.error.exception.EntityNotFoundException;
 import com.meongcare.domain.dog.application.DogService;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
-import com.meongcare.domain.member.domain.entity.DeletedMember;
+import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.entity.Member;
-import com.meongcare.domain.member.domain.repository.DeletedMemberRepository;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
+import com.meongcare.domain.member.domain.repository.RevokeMemberRepository;
 import com.meongcare.domain.member.presentation.dto.response.GetProfileResponse;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
@@ -30,7 +30,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final ImageHandler imageHandler;
-    private final DeletedMemberRepository deletedMemberRepository;
+    private final RevokeMemberRepository revokeMemberRepository;
     private final DogService dogService;
     private final DogRepository dogRepository;
 
@@ -62,8 +62,8 @@ public class MemberService {
         }
 
         //탈퇴 유저 저장
-        DeletedMember deletedMember = DeletedMember.of(member.getProviderId());
-        deletedMemberRepository.save(deletedMember);
+        RevokeMember revokeMember = RevokeMember.of(member.getProviderId());
+        revokeMemberRepository.save(revokeMember);
 
         member.deleteMember();
     }
