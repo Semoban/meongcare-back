@@ -135,7 +135,7 @@ public class SupplementsController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "영양제 삭제")
+    @Operation(description = "여러 영양제 삭제")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping
     public ResponseEntity<Void> deleteSupplements(
