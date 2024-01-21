@@ -49,7 +49,6 @@ public class DogService {
 
     public GetDogResponse getDog(Long dogId) {
         Dog dog = dogRepository.getById(dogId);
-
         return GetDogResponse.from(dog);
 
     }
@@ -63,7 +62,16 @@ public class DogService {
 
     @Transactional
     public void deleteDog(Long dogId) {
-        dogRepository.deleteById(dogId);
+        Dog dog = dogRepository.getById(dogId);
+
+        //TODO: 강아지 관련 정보 모두 소프트 딜리트
+        //이상 증상 삭제
+        //사료 삭제, 사료 기록 삭제
+        //영양제 삭제, 영양제 섭취 시간, 영양제 기록 삭제
+        //체중 삭제
+        //배설물 삭제
+
+        dog.delete();
     }
 
 }

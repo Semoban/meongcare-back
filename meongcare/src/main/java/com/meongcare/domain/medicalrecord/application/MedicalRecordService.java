@@ -57,7 +57,6 @@ public class MedicalRecordService {
         medicalRecordQueryRepository.deleteByIds(medicalRecordIds);
     }
 
-
     public GetMedicalRecordResponse get(Long medicalRecordId) {
         MedicalRecord medicalRecord = medicalRecordRepository.getById(medicalRecordId);
         return GetMedicalRecordResponse.of(medicalRecord);
