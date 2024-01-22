@@ -53,13 +53,10 @@ public class MemberService {
         Member member = memberRepository.getActiveUser(userId);
 
         //관련 유저 정보 삭제
-        List<Dog> dogs = dogRepository.findAllByMember(member);
-        for (Dog dog : dogs) {
-            dogService.deleteDog(dog.getId());
-        }
+        dogRepository.deleteByMemberId(member.getId());
 
         //탈퇴 유저 저장
-        RevokeMember revokeMember = RevokeMember.of(member.getProviderId());
+        RevokeMember revokeMember = RevokeMember.from(member.getProviderId());
         revokeMemberRepository.save(revokeMember);
 
         member.deleteMember();

@@ -5,6 +5,9 @@ import com.meongcare.common.error.exception.EntityNotFoundException;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.member.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +20,8 @@ public interface DogRepository extends JpaRepository<Dog, Long> {
     }
 
     List<Dog> findAllByMember(Member member);
+
+    @Modifying
+    @Query("UPDATE Dog d SET d.deleted = true WHERE d.member.id = :memberId")
+    void deleteByMemberId(@Param("memberId") Long memberId);
 }

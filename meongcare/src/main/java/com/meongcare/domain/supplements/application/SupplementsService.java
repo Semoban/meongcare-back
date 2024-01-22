@@ -109,10 +109,12 @@ public class SupplementsService {
     }
 
     private void deleteSupplementsTimes(Long supplementsId) {
-        List<SupplementsTime> allBySupplementsId = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
-        for (SupplementsTime supplementsTime : allBySupplementsId) {
-            supplementsTime.delete();
-        }
+        supplementsTimeRepository.deleteBySupplementsId(supplementsId);
+
+//        List<SupplementsTime> allBySupplementsId = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
+//        for (SupplementsTime supplementsTime : allBySupplementsId) {
+//            supplementsTime.delete();
+//        }
     }
 
     @Transactional
