@@ -35,7 +35,7 @@ public class MemberService {
     private final DogRepository dogRepository;
 
     public GetProfileResponse getProfile(Long userId) {
-        Member member = memberRepository.getById(userId);
+        Member member = memberRepository.getActiveUser(userId);
         return GetProfileResponse.of(
                 member.getEmail(),
                 member.getProfileImageUrl(),
@@ -44,13 +44,13 @@ public class MemberService {
 
     @Transactional
     public void updateAlarm(Long userId, boolean pushAgreement) {
-        Member member = memberRepository.getById(userId);
+        Member member = memberRepository.getActiveUser(userId);
         member.updatePushAgreement(pushAgreement);
     }
 
     @Transactional
     public void deleteMember(Long userId) {
-        Member member = getActiveUser(userId);
+        Member member = memberRepository.getActiveUser(userId);
 
         //OAuth 연결 끊기
 
@@ -70,19 +70,13 @@ public class MemberService {
 
     @Transactional
     public void updateProfileImage(Long userId, MultipartFile multipartFile) {
-        Member member = memberRepository.getById(userId);
+        Member member = memberRepository.getActiveUser(userId);
         String bucketName = imageHandler.getBucketNameFromUrl(member.getProfileImageUrl());
         if (bucketName.equals(bucket)) {
             imageHandler.deleteImage(member.getProfileImageUrl());
         }
         String profileImageUrl = imageHandler.uploadImage(multipartFile, ImageDirectory.MEMBER);
         member.updateProfileImageUrl(profileImageUrl);
-    }
-
-
-    public Member getActiveUser(Long id) {
-        return memberRepository.findByIdAndDeleted(id, false)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
 }

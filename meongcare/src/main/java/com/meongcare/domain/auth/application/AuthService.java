@@ -2,14 +2,17 @@ package com.meongcare.domain.auth.application;
 
 import com.meongcare.common.error.ErrorCode;
 import com.meongcare.common.error.exception.InvalidTokenException;
+import com.meongcare.common.error.exception.UnauthorizedException;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
+import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.common.jwt.JwtService;
 import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequest;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponse;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponse;
+import com.meongcare.domain.member.domain.repository.RevokeMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +27,15 @@ public class AuthService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
-    public static final String PROVIDER_ID_SEPARATOR = "@";
+    private final RevokeMemberRepository revokeMemberRepository;
+    private static final String PROVIDER_ID_SEPARATOR = "@";
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
         String providerIdWithProvider = loginRequest.getProviderId() + PROVIDER_ID_SEPARATOR + loginRequest.getProvider();
-        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerIdWithProvider);
+        checkIsRevokeUser(providerIdWithProvider);
 
+        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerIdWithProvider);
         Long memberId;
         Boolean isFirstLogin = false;
         if (findMemberOptional.isEmpty()) {
@@ -50,6 +55,13 @@ public class AuthService {
         LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken, isFirstLogin);
 
         return loginResponse;
+    }
+
+    private void checkIsRevokeUser(String providerId) {
+        Optional<RevokeMember> revokeMember = revokeMemberRepository.findByProviderId(providerId);
+        if (revokeMember.isPresent()) {
+            throw new UnauthorizedException(ErrorCode.REVOKE_MEMBER_NOT_ALLOWED_LOGIN);
+        }
     }
 
     public ReissueResponse reissue(String refreshToken) {
