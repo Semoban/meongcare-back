@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +95,7 @@ public class SupplementsService {
     @Transactional
     public void deleteSupplements(Long supplementsId) {
         Supplements supplements = supplementsRepository.getById(supplementsId);
+        deleteSupplementsTimes(supplementsId);
         supplements.delete();
     }
 
@@ -102,7 +104,17 @@ public class SupplementsService {
         for (Long supplementsId : supplementsIds) {
             Supplements supplements = supplementsRepository.getById(supplementsId);
             supplements.delete();
+            deleteSupplementsTimes(supplementsId);
         }
+    }
+
+    private void deleteSupplementsTimes(Long supplementsId) {
+        supplementsTimeRepository.deleteBySupplementsId(supplementsId);
+
+//        List<SupplementsTime> allBySupplementsId = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
+//        for (SupplementsTime supplementsTime : allBySupplementsId) {
+//            supplementsTime.delete();
+//        }
     }
 
     @Transactional

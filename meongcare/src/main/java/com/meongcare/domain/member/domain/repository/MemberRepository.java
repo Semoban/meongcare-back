@@ -12,9 +12,11 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByProviderId(String providerId);
 
-    default Member getById(Long id) {
-        return this.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_ENTITY_NOT_FOUND));
+    default Member getActiveUser(Long id) {
+        return this.findByIdAndDeleted(id, false)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
+
+    Optional<Member> findByIdAndDeleted(Long id, boolean deleted);
 
 }
