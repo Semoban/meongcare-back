@@ -52,9 +52,6 @@ public class MemberService {
     public void deleteMember(Long userId) {
         Member member = memberRepository.getActiveUser(userId);
 
-        //OAuth 연결 끊기
-
-
         //관련 유저 정보 삭제
         List<Dog> dogs = dogRepository.findAllByMember(member);
         for (Dog dog : dogs) {
