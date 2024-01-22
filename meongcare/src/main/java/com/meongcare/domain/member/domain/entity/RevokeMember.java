@@ -26,7 +26,7 @@ public class RevokeMember {
         this.revokeDate = LocalDateTime.now();
     }
 
-    public static RevokeMember of(String providerId) {
+    public static RevokeMember from(String providerId) {
         return new RevokeMember(providerId);
     }
 

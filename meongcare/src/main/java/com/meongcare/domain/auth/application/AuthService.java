@@ -5,7 +5,6 @@ import com.meongcare.common.error.exception.InvalidTokenException;
 import com.meongcare.common.error.exception.UnauthorizedException;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
-import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.common.jwt.JwtService;
 import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
@@ -58,8 +57,7 @@ public class AuthService {
     }
 
     private void checkIsRevokeUser(String providerId) {
-        Optional<RevokeMember> revokeMember = revokeMemberRepository.findByProviderId(providerId);
-        if (revokeMember.isPresent()) {
+        if (revokeMemberRepository.existsByProviderId(providerId)) {
             throw new UnauthorizedException(ErrorCode.REVOKE_MEMBER_NOT_ALLOWED_LOGIN);
         }
     }
