@@ -51,14 +51,10 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long userId) {
         Member member = memberRepository.getActiveUser(userId);
-
-        //관련 유저 정보 삭제
         dogRepository.deleteByMemberId(member.getId());
 
-        //탈퇴 유저 저장
         RevokeMember revokeMember = RevokeMember.from(member.getProviderId());
         revokeMemberRepository.save(revokeMember);
-
         member.deleteMember();
     }
 
