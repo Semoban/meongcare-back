@@ -19,11 +19,11 @@ public class RevokeMember {
 
     @NotNull
     private String providerId;
-    private LocalDateTime revokedAt;
+    private LocalDateTime revokeDate;
 
     public RevokeMember(String providerId) {
         this.providerId = providerId;
-        this.revokedAt = LocalDateTime.now();
+        this.revokeDate = LocalDateTime.now();
     }
 
     public static RevokeMember of(String providerId) {

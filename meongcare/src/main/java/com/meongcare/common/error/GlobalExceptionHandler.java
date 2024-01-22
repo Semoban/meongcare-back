@@ -1,8 +1,6 @@
 package com.meongcare.common.error;
 
-import com.meongcare.common.error.exception.EntityNotFoundException;
-import com.meongcare.common.error.exception.FailedFileUploadException;
-import com.meongcare.common.error.exception.InvalidTokenException;
+import com.meongcare.common.error.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,29 +28,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    protected ResponseEntity<ErrorResponse> invalidTokenException(InvalidTokenException e) {
+    @ExceptionHandler(BaseException.class)
+    protected ResponseEntity<ErrorResponse> baseException(BaseException e) {
         e.printStackTrace();
         log.warn("{} - {}", e.getClass().getSimpleName(), e.getMessage());
         final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
         return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<ErrorResponse> entityNotFoundException(EntityNotFoundException e) {
-        e.printStackTrace();
-        log.warn("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-        final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
-        return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
-    }
-
-    @ExceptionHandler(FailedFileUploadException.class)
-    protected ResponseEntity<ErrorResponse> failedFileUploadException(FailedFileUploadException e) {
-        e.printStackTrace();
-        log.warn("{} - {}", e.getClass().getSimpleName(), e.getMessage());
-        final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
-        return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
-    }
 
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<ErrorResponse> runtimeException(RuntimeException e) {
