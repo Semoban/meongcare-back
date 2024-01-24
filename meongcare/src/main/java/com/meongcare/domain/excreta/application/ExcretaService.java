@@ -44,7 +44,7 @@ public class ExcretaService {
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
 
         excretaRepository.save(
-                Excreta.of(request.getExcreta(), request.getDateTime(), imageURL, dog.getId())
+                Excreta.of(request.getExcreta(), request.getDateTime(), imageURL, dog)
         );
     }
 
