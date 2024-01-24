@@ -53,7 +53,7 @@ public class SymptomQueryRepository {
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
-        return symptom.dogId.eq(dogId);
+        return symptom.dog.id.eq(dogId);
     }
 
     private BooleanExpression dateTimeGoe(LocalDateTime nowDateTime) {

@@ -116,7 +116,7 @@ public class WeightQueryRepository {
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
-        return weight.dogId.eq(dogId);
+        return weight.dog.id.eq(dogId);
     }
 
     private BooleanExpression dateLoe(LocalDate date) {

@@ -23,7 +23,7 @@ public class WeightJdbcRepository {
                 weights.size(),
                 (ps, weight) -> {
                     ps.setDate(1, Date.valueOf(weight.getDate()));
-                    ps.setLong(2, weight.getDogId());
+                    ps.setLong(2, weight.getDog().getId());
                     ps.setDouble(3, weight.getKg());
                 }
         );

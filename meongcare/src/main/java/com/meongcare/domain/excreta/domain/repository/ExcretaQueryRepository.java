@@ -60,7 +60,7 @@ public class ExcretaQueryRepository {
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
-        return excreta.dogId.eq(dogId);
+        return excreta.dog.id.eq(dogId);
     }
 
     private BooleanExpression dateTimeGoe(LocalDateTime nowDateTime) {

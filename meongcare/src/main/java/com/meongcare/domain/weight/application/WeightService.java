@@ -69,6 +69,7 @@ public class WeightService {
 
     @Transactional
     public void saveWeight(Long dogId, LocalDate date, Double kg) {
+        Dog dog = dogRepository.getById(dogId);
         GetLastDayWeightVO weightVO = weightQueryRepository.getRecentDayWeightByDogIdAndDateTime(
                 dogId,
                 date
@@ -78,7 +79,7 @@ public class WeightService {
 
         List<Weight> weights = LongStream.range(0, betweenDays)
                 .mapToObj(minusDays -> Weight.createBeforeWeight(
-                        date, minusDays, weightVO.getKg(), dogId
+                        date, minusDays, weightVO.getKg(), dog
                 ))
                 .collect(Collectors.toUnmodifiableList());
 
