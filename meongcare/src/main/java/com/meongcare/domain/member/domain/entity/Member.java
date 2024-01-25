@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Getter
@@ -62,5 +63,13 @@ public class Member extends BaseEntity {
         this.pushAgreement = false;
         this.fcmToken = null;
         this.delete();
+    }
+
+    public boolean isNewFcmToken(String fcmToken) {
+        return !Objects.equals(this.getFcmToken(), fcmToken);
+    }
+
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }
