@@ -52,34 +52,34 @@ public class FeedService {
 
     @Transactional
     public void saveFeed(SaveFeedRequest request, MultipartFile multipartFile) {
-        Dog dog = dogRepository.getById(request.getDogId());
-        boolean isFirstRegisterFeed = true;
+        Dog dog = dogRepository.getActiveDog(request.getDogId());
 
-        if (feedQueryRepository.existsByDogId(request.getDogId())) {
+        boolean isFirstRegisterFeed = true;
+        if (feedRecordQueryRepository.existActiveFeed(dog.getId())) {
             isFirstRegisterFeed = false;
         }
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
 
-        Feed feed = request.toEntity(imageURL, dog, isFirstRegisterFeed);
+        Feed feed = request.toEntity(imageURL, dog);
         feedRepository.save(feed);
 
-        feedRecordRepository.save(FeedRecord.of(feed, dog.getId(), request.getStartDate(), request.getEndDate()));
+        feedRecordRepository.save(
+                FeedRecord.of(feed, dog.getId(), request.getStartDate(), request.getEndDate(), isFirstRegisterFeed)
+        );
     }
 
     public GetFeedResponse getFeed(Long dogId) {
-        Optional<Feed> optionalFeed = feedQueryRepository.getActiveFeedByDogId(dogId);
-
-        if (optionalFeed.isEmpty()) {
+        Optional<FeedRecord> optionalFeedRecord = feedRecordQueryRepository.getActiveFeedByDogId(dogId);
+        if (optionalFeedRecord.isEmpty()) {
             return GetFeedResponse.empty();
         }
-        Feed feed = optionalFeed.get();
-        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(feed.getId());
+        FeedRecord feedRecord = optionalFeedRecord.get();
 
         return GetFeedResponse.of(
                 feedRecord.getStartDate(),
                 feedRecord.getEndDate(),
                 feedRecord.getId(),
-                feed
+                feedRecord.getFeed()
         );
     }
 
@@ -95,22 +95,21 @@ public class FeedService {
 
     @Transactional
     public void changeFeed(Long dogId, Long newFeedId) {
-        Feed feed = feedQueryRepository.getActiveFeedByDogId(dogId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.FEED_ENTITY_NOT_FOUND));
-        feed.disActivate();
+        FeedRecord activateFeedRecord = feedRecordQueryRepository.getActiveFeedByDogId(dogId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.FEED_RECORD_ENTITY_NOT_FOUND));
 
-        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(feed.getId());
-        if (Objects.isNull(feedRecord.getEndDate())) {
+        activateFeedRecord.disActivate();
+        if (Objects.isNull(activateFeedRecord.getEndDate())) {
+            activateFeedRecord.updateEndDate();
+        }
+
+        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(newFeedId);
+        if (Objects.nonNull(feedRecord)) {
             feedRecord.updateEndDate();
         }
 
-        Feed newFeed = feedRepository.getById(newFeedId);
-        newFeed.activate();
-        FeedRecord endDateNullFeedRecord = feedRecordQueryRepository.getEndDateNullFeedRecord(newFeedId);
-        if (Objects.nonNull(endDateNullFeedRecord)) {
-            endDateNullFeedRecord.updateEndDate();
-        }
-        feedRecordRepository.save(FeedRecord.of(feed, dogId, LocalDate.now(), null));
+        Feed feed = feedRepository.getById(newFeedId);
+        feedRecordRepository.save(FeedRecord.of(feed, dogId, LocalDate.now(), null, true));
     }
 
     @Transactional
@@ -135,12 +134,8 @@ public class FeedService {
     }
 
     @Transactional
-    public void deleteFeed(Long feedId) {
-        Feed feed = feedRepository.getById(feedId);
-        eventPublisher.publishEvent(feed.getImageURL());
-
-        feedQueryRepository.deleteFeed(feedId);
-        feedRecordQueryRepository.deleteFeedRecord(feedId);
+    public void deleteFeedRecord(Long feedRecordId) {
+        feedRecordQueryRepository.deleteFeedRecord(feedRecordId);
     }
 
     public GetFeedDetailResponse getFeedDetail(Long feedId, Long feedRecordId) {
