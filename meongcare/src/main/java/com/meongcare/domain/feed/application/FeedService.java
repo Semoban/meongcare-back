@@ -69,7 +69,7 @@ public class FeedService {
     }
 
     public GetFeedResponse getFeed(Long dogId) {
-        Optional<FeedRecord> optionalFeedRecord = feedRecordQueryRepository.getActiveFeedByDogId(dogId);
+        Optional<FeedRecord> optionalFeedRecord = feedRecordQueryRepository.getActiveFeedRecordByDogId(dogId);
         if (optionalFeedRecord.isEmpty()) {
             return GetFeedResponse.empty();
         }
@@ -95,7 +95,7 @@ public class FeedService {
 
     @Transactional
     public void changeFeed(Long dogId, Long newFeedId) {
-        FeedRecord activateFeedRecord = feedRecordQueryRepository.getActiveFeedByDogId(dogId)
+        FeedRecord activateFeedRecord = feedRecordQueryRepository.getActiveFeedRecordByDogId(dogId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.FEED_RECORD_ENTITY_NOT_FOUND));
 
         activateFeedRecord.disActivate();
@@ -103,10 +103,9 @@ public class FeedService {
             activateFeedRecord.updateEndDate();
         }
 
-        FeedRecord feedRecord = feedRecordQueryRepository.getFeedRecord(newFeedId);
-        if (Objects.nonNull(feedRecord)) {
-            feedRecord.updateEndDate();
-        }
+        feedRecordQueryRepository.getFeedRecord(newFeedId)
+                .filter(feedRecord -> Objects.nonNull(feedRecord.getEndDate()))
+                .ifPresent(FeedRecord::updateEndDate);
 
         Feed feed = feedRepository.getById(newFeedId);
         feedRecordRepository.save(FeedRecord.of(feed, dogId, LocalDate.now(), null, true));
