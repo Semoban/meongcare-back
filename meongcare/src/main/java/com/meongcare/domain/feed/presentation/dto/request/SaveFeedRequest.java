@@ -56,7 +56,7 @@ public class SaveFeedRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
     private LocalDate endDate;
 
-    public Feed toEntity(String imageURL, Dog dog, boolean isFirstRegisterFeed) {
+    public Feed toEntity(String imageURL, Dog dog) {
         return Feed.builder()
                 .brand(brand)
                 .feedName(feedName)
@@ -69,7 +69,6 @@ public class SaveFeedRequest {
                 .recommendIntake(recommendIntake)
                 .imageURL(imageURL)
                 .dog(dog)
-                .isActivate(isFirstRegisterFeed)
                 .build();
     }
 }
