@@ -138,6 +138,28 @@ public class FeedRecordQueryRepository {
                 .fetchFirst();
     }
 
+    public boolean existActiveFeed(Long dogId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(feedRecord)
+                .where(feedRecord.dogId.eq(dogId))
+                .fetchFirst()
+        ).isPresent();
+
+    }
+
+    public Optional<FeedRecord> getActiveFeedByDogId(Long dogId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(feedRecord)
+                .innerJoin(feedRecord.feed, feed)
+                .where(
+                        dogIdEq(dogId),
+                        feedRecord.isActive.isTrue(),
+                        feedRecordIsNotDeleted()
+                )
+                .fetchFirst()
+        );
+    }
+
     private BooleanExpression feedRecordIdEq(Long feedRecordId) {
         return feedRecord.id.eq(feedRecordId);
     }
