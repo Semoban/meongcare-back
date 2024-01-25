@@ -17,8 +17,8 @@ public class MessageHandlerFirebase implements MessageHandler {
     private final FirebaseMessaging firebaseMessaging;
 
     @Override
-    public void sendMessage(String title, String body, String logoImageUrl, String fcmToken) {
-        Notification notification = createNotification(logoImageUrl, title, body);
+    public void sendMessage(String title, String body, String fcmToken) {
+        Notification notification = createNotification(title, body);
         Message message = createMessage(fcmToken, notification);
         sendMessage(message);
     }
@@ -38,11 +38,10 @@ public class MessageHandlerFirebase implements MessageHandler {
                 .build();
     }
 
-    private Notification createNotification(String logoImageUrl, String title, String body) {
+    private Notification createNotification(String title, String body) {
         return Notification.builder()
                 .setTitle(title)
                 .setBody(body)
-                .setImage(logoImageUrl)
                 .build();
     }
 

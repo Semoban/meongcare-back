@@ -25,15 +25,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SupplementsScheduler {
 
-    @Value("${env.image-url.logo}")
-    private String logoImageUrl;
-
     private final MessageHandler messageHandler;
     private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final SupplementsTimeQueryRepository supplementsTimeQueryRepository;
     private final SupplementsRecordJdbcRepository supplementsRecordJdbcRepository;
 
-    private static final String DEFAULT_ALARM_BODY_TEXT = "의 건강을 챙겨주세요!";
+    private static final String ALARM_TITLE_TEXT_FORMAT = "%s %s";
+    private static final String ALARM_BODY_TEXT_FORMAT = "%s에게 영양제를 챙겨주세요!";
+
 
     @Transactional
     @Scheduled(cron = "0 55 23 * * *", zone = "Asia/Seoul")
@@ -55,21 +54,19 @@ public class SupplementsScheduler {
         List<GetAlarmSupplementsVO> alarmSupplementsVOS = supplementsRecordQueryRepository.findAllAlarmSupplementsByTime(now, fiftyNineSecondsLater);
 
         for (GetAlarmSupplementsVO alarmSupplementsVO : alarmSupplementsVOS) {
-            String title = createPushAlarmTitle(alarmSupplementsVO.getDogName(), now, alarmSupplementsVO.getSupplementsName());
+            String title = createPushAlarmTitle(now, alarmSupplementsVO.getSupplementsName());
             String body = createPushAlarmBody(alarmSupplementsVO.getDogName());
             String fcmToken = alarmSupplementsVO.getFcmToken();
-            messageHandler.sendMessage(title, body, logoImageUrl, fcmToken);
+            messageHandler.sendMessage(title, body, fcmToken);
         }
     }
 
     private String createPushAlarmBody(String dogName) {
-        String body = dogName + DEFAULT_ALARM_BODY_TEXT;
-        return body;
+        return String.format(ALARM_BODY_TEXT_FORMAT, dogName);
     }
 
-    private String createPushAlarmTitle(String dogName, LocalTime now, String supplementsName) {
-        String title = String.join(" ", dogName, LocalDateTimeUtils.createAMPMTime(now), supplementsName);
-        return title;
+    private String createPushAlarmTitle(LocalTime now, String supplementsName) {
+        return String.format(ALARM_TITLE_TEXT_FORMAT, LocalDateTimeUtils.createAMPMTime(now), supplementsName);
     }
 
 
