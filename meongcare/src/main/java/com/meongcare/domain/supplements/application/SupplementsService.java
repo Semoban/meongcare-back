@@ -38,7 +38,7 @@ public class SupplementsService {
 
     @Transactional
     public void saveSupplements(SaveSupplementsRequest saveSupplementsRequest, MultipartFile multipartFile) {
-        Dog dog = dogRepository.getById(saveSupplementsRequest.getDogId());
+        Dog dog = dogRepository.getActiveDog(saveSupplementsRequest.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.SUPPLEMENTS);
 
         Supplements supplements = saveSupplementsRequest.toSupplements(dog, imageURL);
@@ -81,20 +81,20 @@ public class SupplementsService {
     }
 
     public GetSupplementsInfoResponse getSupplementsInfo(Long supplementsId) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
+        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
         List<SupplementsTime> supplementsTimes = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
         return GetSupplementsInfoResponse.of(supplements, supplementsTimes);
     }
 
     @Transactional
     public void stopSupplementsRoutine(Long supplementsId, boolean isActive) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
+        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
         supplements.updateActive(isActive);
     }
 
     @Transactional
     public void deleteSupplements(Long supplementsId) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
+        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
         deleteSupplementsTimes(supplementsId);
         supplements.delete();
     }
@@ -102,7 +102,7 @@ public class SupplementsService {
     @Transactional
     public void deleteSupplements(List<Long> supplementsIds) {
         for (Long supplementsId : supplementsIds) {
-            Supplements supplements = supplementsRepository.getById(supplementsId);
+            Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
             supplements.delete();
             deleteSupplementsTimes(supplementsId);
         }
@@ -110,16 +110,11 @@ public class SupplementsService {
 
     private void deleteSupplementsTimes(Long supplementsId) {
         supplementsTimeRepository.deleteBySupplementsId(supplementsId);
-
-//        List<SupplementsTime> allBySupplementsId = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
-//        for (SupplementsTime supplementsTime : allBySupplementsId) {
-//            supplementsTime.delete();
-//        }
     }
 
     @Transactional
     public void updatePushAgreement(Long supplementsId, boolean pushAgreement) {
-        Supplements supplements = supplementsRepository.getById(supplementsId);
+        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
         supplements.updatePushAgreement(pushAgreement);
     }
 
@@ -146,7 +141,7 @@ public class SupplementsService {
     }
 
     private GetSupplementsRoutineResponse createAfterRecord(LocalDate date, Long dogId) {
-        List<Supplements> supplements = supplementsRepository.findAllByDogId(dogId);
+        List<Supplements> supplements = supplementsRepository.findAllByDogIdAndDeletedFalse(dogId);
         List<GetSupplementsRoutineWithoutStatusVO> getSupplementsRoutineWithoutStatusVOs = new ArrayList<>();
         for (Supplements supplementInfo : supplements) {
             if (checkIntakeDate(supplementInfo.getStartDate(), date, supplementInfo.getIntakeCycle())) {

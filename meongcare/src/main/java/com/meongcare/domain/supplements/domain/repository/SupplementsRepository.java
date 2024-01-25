@@ -7,15 +7,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SupplementsRepository extends JpaRepository<Supplements, Long> {
-    List<Supplements> findAllByDogId(Long dogId);
 
     List<Supplements> findAllByDogIdAndDeletedFalse(Long dogId);
-    default Supplements getById(Long dogId){
-        return this.findById(dogId)
+    default Supplements getActiveSupplement(Long dogId){
+        return this.findByIdAndDeletedFalse(dogId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUPPLEMENTS_ENTITY_NOT_FOUND));
     }
+
+    Optional<Supplements> findByIdAndDeletedFalse(Long supplementId);
 
 }

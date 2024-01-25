@@ -43,19 +43,19 @@ public class DogService {
 
     public GetDogsResponse getDogs(Long userId) {
         Member member = memberRepository.getActiveUser(userId);
-        List<Dog> dogs = dogRepository.findAllByMember(member);
+        List<Dog> dogs = dogRepository.findAllByMemberAndDeletedFalse(member);
         return GetDogsResponse.of(dogs);
     }
 
     public GetDogResponse getDog(Long dogId) {
-        Dog dog = dogRepository.getById(dogId);
+        Dog dog = dogRepository.getActiveDog(dogId);
         return GetDogResponse.from(dog);
 
     }
 
     @Transactional
     public void updateDog(MultipartFile multipartFile, PutDogRequest putDogRequest, Long dogId) {
-        Dog dog = dogRepository.getById(dogId);
+        Dog dog = dogRepository.getActiveDog(dogId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
         dog.updateAll(putDogRequest, dogImageURL);
     }
