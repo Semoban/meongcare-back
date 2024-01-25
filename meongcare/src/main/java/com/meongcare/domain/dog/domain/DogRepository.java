@@ -11,15 +11,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DogRepository extends JpaRepository<Dog, Long> {
-    default Dog getById(Long id) {
-        return this.findById(id)
+    default Dog getActiveDog(Long id) {
+        return this.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.DOG_ENTITY_NOT_FOUND));
     }
 
-    List<Dog> findAllByMember(Member member);
+    Optional<Dog> findByIdAndDeletedFalse(Long id);
+
+    List<Dog> findAllByMemberAndDeletedFalse(Member member);
 
     @Modifying
     @Query("UPDATE Dog d SET d.deleted = true WHERE d.member.id = :memberId")
