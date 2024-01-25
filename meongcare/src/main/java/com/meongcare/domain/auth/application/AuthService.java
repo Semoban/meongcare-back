@@ -38,12 +38,12 @@ public class AuthService {
         Long memberId;
         Boolean isFirstLogin = false;
         if (findMemberOptional.isEmpty()) {
-            Member member = loginRequest.toMemberEntity(providerIdWithProvider);
-            memberRepository.save(member);
-            memberId = member.getId();
+            memberId = joinMember(loginRequest, providerIdWithProvider);
             isFirstLogin = true;
         } else {
-            memberId = findMemberOptional.get().getId();
+            Member member = findMemberOptional.get();
+            memberId = member.getId();
+            checkFcmToken(loginRequest, member);
         }
 
         String accessToken = jwtService.createAccessToken(memberId);
@@ -54,6 +54,18 @@ public class AuthService {
         LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken, isFirstLogin);
 
         return loginResponse;
+    }
+
+    private void checkFcmToken(LoginRequest loginRequest, Member member) {
+        if (member.isNewFcmToken(loginRequest.getFcmToken())) {
+            member.updateFcmToken(loginRequest.getFcmToken());
+        }
+    }
+
+    private Long joinMember(LoginRequest loginRequest, String providerIdWithProvider) {
+        Member member = loginRequest.toMemberEntity(providerIdWithProvider);
+        memberRepository.save(member);
+        return member.getId();
     }
 
     private void checkIsRevokeUser(String providerId) {
