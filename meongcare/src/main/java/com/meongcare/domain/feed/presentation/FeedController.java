@@ -129,4 +129,12 @@ public class FeedController {
     public ResponseEntity<GetFeedDetailResponse> getFeedDetail(@PathVariable Long feedId, @RequestParam Long feedRecordId) {
         return ResponseEntity.ok(feedService.getFeedDetail(feedId, feedRecordId));
     }
+
+    @Operation(description = "사료 중단")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PatchMapping("/stop/{feedRecordId}")
+    public ResponseEntity<Void> stopFeed(@PathVariable Long feedRecordId) {
+        feedService.stopFeed(feedRecordId);
+        return ResponseEntity.ok().build();
+    }
 }

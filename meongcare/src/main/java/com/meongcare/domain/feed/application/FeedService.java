@@ -146,4 +146,11 @@ public class FeedService {
         GetFeedDetailVO feedDetailVO = feedRecordQueryRepository.getFeedDetailById(feedRecordId);
         return GetFeedDetailResponse.from(feedDetailVO);
     }
+
+    @Transactional
+    public void stopFeed(Long feedRecordId) {
+        FeedRecord activeFeedRecord = feedRecordQueryRepository.getActiveFeedRecordByFeedRecordId(feedRecordId);
+        activeFeedRecord.disActivate();
+        activeFeedRecord.updateEndDate();
+    }
 }
