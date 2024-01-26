@@ -138,7 +138,7 @@ public class FeedRecordQueryRepository {
                 .fetchFirst();
     }
 
-    public boolean existActiveFeed(Long dogId) {
+    public boolean existActiveFeedRecord(Long dogId) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(feedRecord)
                 .where(

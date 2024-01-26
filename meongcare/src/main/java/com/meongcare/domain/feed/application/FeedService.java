@@ -55,7 +55,7 @@ public class FeedService {
         Dog dog = dogRepository.getActiveDog(request.getDogId());
 
         boolean isFirstRegisterFeed = true;
-        if (feedRecordQueryRepository.existActiveFeed(dog.getId())) {
+        if (feedRecordQueryRepository.existActiveFeedRecord(dog.getId())) {
             isFirstRegisterFeed = false;
         }
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
@@ -104,7 +104,12 @@ public class FeedService {
         }
 
         feedRecordQueryRepository.getFeedRecord(newFeedId)
-                .filter(feedRecord -> Objects.nonNull(feedRecord.getEndDate()))
+                .filter(feedRecord -> {
+                    if (Objects.isNull(feedRecord.getEndDate())) {
+                        return true;
+                    }
+                    return feedRecord.getEndDate().isAfter(LocalDate.now());
+                })
                 .ifPresent(FeedRecord::updateEndDate);
 
         Feed feed = feedRepository.getById(newFeedId);
