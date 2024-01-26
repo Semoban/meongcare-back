@@ -45,15 +45,13 @@ public class Feed extends BaseEntity {
 
     private String imageURL;
 
-    private boolean isActivate;
-
     @JoinColumn(name = "dog_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Dog dog;
 
     @Builder
     public Feed(String brand, String feedName, double protein, double fat, double crudeAsh,
-                double moisture, double etc, double kcal, int recommendIntake, String imageURL, boolean isActivate, Dog dog) {
+                double moisture, double etc, double kcal, int recommendIntake, String imageURL, Dog dog) {
         this.brand = brand;
         this.feedName = feedName;
         this.protein = protein;
@@ -64,16 +62,7 @@ public class Feed extends BaseEntity {
         this.kcal = kcal;
         this.recommendIntake = recommendIntake;
         this.imageURL = imageURL;
-        this.isActivate = isActivate;
         this.dog = dog;
-    }
-
-    public void disActivate() {
-        this.isActivate = false;
-    }
-
-    public void activate() {
-        this.isActivate = true;
     }
 
     public void updateInfo(EditFeedRequest request, String imageURL) {

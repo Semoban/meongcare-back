@@ -26,15 +26,15 @@ public class FeedRecordQueryRepository {
     private final JPAQueryFactory queryFactory;
 
 
-    public FeedRecord getFeedRecord(Long feedId) {
-        return queryFactory
+    public Optional<FeedRecord> getFeedRecord(Long feedId) {
+        return Optional.ofNullable(queryFactory
                 .selectFrom(feedRecord)
                 .where(
                         feedIdEq(feedId),
                         feedRecordIsNotDeleted()
                 )
                 .orderBy(feedRecord.id.desc())
-                .fetchFirst();
+                .fetchFirst());
     }
 
     public Optional<Integer> getFeedRecordByDogIdAndDate(Long dogId, LocalDate selectedDate) {
@@ -136,6 +136,31 @@ public class FeedRecordQueryRepository {
                         feedRecordIsNotDeleted()
                 )
                 .fetchFirst();
+    }
+
+    public boolean existActiveFeedRecord(Long dogId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(feedRecord)
+                .where(
+                        feedRecord.dogId.eq(dogId),
+                        feedRecordIsNotDeleted()
+                )
+                .fetchFirst()
+        ).isPresent();
+
+    }
+
+    public Optional<FeedRecord> getActiveFeedRecordByDogId(Long dogId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(feedRecord)
+                .innerJoin(feedRecord.feed, feed)
+                .where(
+                        dogIdEq(dogId),
+                        feedRecord.isActive.isTrue(),
+                        feedRecordIsNotDeleted()
+                )
+                .fetchFirst()
+        );
     }
 
     private BooleanExpression feedRecordIdEq(Long feedRecordId) {
