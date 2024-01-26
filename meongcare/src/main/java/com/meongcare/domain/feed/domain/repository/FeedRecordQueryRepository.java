@@ -163,6 +163,12 @@ public class FeedRecordQueryRepository {
         );
     }
 
+    public FeedRecord getActiveFeedRecordByFeedRecordId(Long feedRecordId) {
+        return queryFactory.selectFrom(feedRecord)
+                .where(feedRecordIdEq(feedRecordId))
+                .fetchFirst();
+    }
+
     private BooleanExpression feedRecordIdEq(Long feedRecordId) {
         return feedRecord.id.eq(feedRecordId);
     }
