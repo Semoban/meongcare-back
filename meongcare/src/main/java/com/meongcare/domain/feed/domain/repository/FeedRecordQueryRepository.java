@@ -105,11 +105,11 @@ public class FeedRecordQueryRepository {
                 .fetchFirst();
     }
 
-    public void deleteFeedRecord(Long feedId) {
+    public void deleteFeedRecord(Long feedRecordId) {
         queryFactory
                 .update(feedRecord)
                 .set(feedRecord.deleted, true)
-                .where(feedIdEq(feedId))
+                .where(feedRecordIdEq(feedRecordId))
                 .execute();
     }
 
