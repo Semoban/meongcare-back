@@ -96,14 +96,14 @@ public class SupplementsService {
     public void deleteSupplements(Long supplementsId) {
         Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
         deleteSupplementsTimes(supplementsId);
-        supplements.delete();
+        supplements.softDelete();
     }
 
     @Transactional
-    public void deleteSupplements(List<Long> supplementsIds) {
+    public void deleteSupplementsList(List<Long> supplementsIds) {
         for (Long supplementsId : supplementsIds) {
             Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
-            supplements.delete();
+            supplements.softDelete();
             deleteSupplementsTimes(supplementsId);
         }
     }

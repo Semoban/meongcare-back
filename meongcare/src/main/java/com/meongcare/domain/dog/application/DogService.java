@@ -8,6 +8,7 @@ import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
 import com.meongcare.domain.dog.presentation.dto.request.SaveDogRequest;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogResponse;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponse;
+import com.meongcare.domain.supplements.application.SupplementsService;
 import com.meongcare.domain.weight.domain.entity.Weight;
 import com.meongcare.domain.weight.domain.repository.WeightRepository;
 import com.meongcare.infra.image.ImageDirectory;
@@ -29,6 +30,8 @@ public class DogService {
     private final WeightRepository weightRepository;
     private final ImageHandler imageHandler;
 
+    private final SupplementsService supplementsService;
+
     @Transactional
     public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
         Member member = memberRepository.getActiveUser(userId);
@@ -48,14 +51,14 @@ public class DogService {
     }
 
     public GetDogResponse getDog(Long dogId) {
-        Dog dog = dogRepository.getActiveDog(dogId);
+        Dog dog = dogRepository.getDog(dogId);
         return GetDogResponse.from(dog);
 
     }
 
     @Transactional
     public void updateDog(MultipartFile multipartFile, PutDogRequest putDogRequest, Long dogId) {
-        Dog dog = dogRepository.getActiveDog(dogId);
+        Dog dog = dogRepository.getDog(dogId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
         dog.updateAll(putDogRequest, dogImageURL);
     }
@@ -63,7 +66,8 @@ public class DogService {
     @Transactional
     public void deleteDog(Long dogId) {
         Dog dog = dogRepository.getById(dogId);
-        dog.delete();
+        supplementsService.getSupplements(dogId);
+        dog.softDelete();
     }
 
 }
