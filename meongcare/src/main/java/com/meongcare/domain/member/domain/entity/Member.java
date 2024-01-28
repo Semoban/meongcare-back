@@ -62,7 +62,7 @@ public class Member extends BaseEntity {
         this.profileImageUrl = null;
         this.pushAgreement = false;
         this.fcmToken = null;
-        this.delete();
+        this.softDelete();
     }
 
     public boolean isNewFcmToken(String fcmToken) {

@@ -25,7 +25,7 @@ public abstract class BaseEntity {
     @Column(nullable = false, columnDefinition = "boolean DEFAULT FALSE")
     private boolean deleted;
 
-    public void delete() {
+    public void softDelete() {
         this.deleted = true;
     }
 }

@@ -141,7 +141,7 @@ public class SupplementsController {
     public ResponseEntity<Void> deleteSupplements(
             @RequestParam("supplementsIds") List<Long> supplementsIds
     ) {
-        supplementsService.deleteSupplements(supplementsIds);
+        supplementsService.deleteSupplementsList(supplementsIds);
         return ResponseEntity.ok().build();
     }
 
