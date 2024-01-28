@@ -31,11 +31,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ImageHandler imageHandler;
     private final RevokeMemberRepository revokeMemberRepository;
-    private final DogService dogService;
     private final DogRepository dogRepository;
 
     public GetProfileResponse getProfile(Long userId) {
-        Member member = memberRepository.getActiveUser(userId);
+        Member member = memberRepository.getUser(userId);
         return GetProfileResponse.of(
                 member.getEmail(),
                 member.getProfileImageUrl(),
@@ -44,13 +43,13 @@ public class MemberService {
 
     @Transactional
     public void updateAlarm(Long userId, boolean pushAgreement) {
-        Member member = memberRepository.getActiveUser(userId);
+        Member member = memberRepository.getUser(userId);
         member.updatePushAgreement(pushAgreement);
     }
 
     @Transactional
     public void deleteMember(Long userId) {
-        Member member = memberRepository.getActiveUser(userId);
+        Member member = memberRepository.getUser(userId);
         dogRepository.deleteByMemberId(member.getId());
 
         RevokeMember revokeMember = RevokeMember.from(member.getProviderId());
@@ -60,7 +59,7 @@ public class MemberService {
 
     @Transactional
     public void updateProfileImage(Long userId, MultipartFile multipartFile) {
-        Member member = memberRepository.getActiveUser(userId);
+        Member member = memberRepository.getUser(userId);
         String bucketName = imageHandler.getBucketNameFromUrl(member.getProfileImageUrl());
         if (bucketName.startsWith(bucket)) {
             imageHandler.deleteImage(member.getProfileImageUrl());

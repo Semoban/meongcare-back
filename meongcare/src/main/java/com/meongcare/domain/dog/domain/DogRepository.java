@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface DogRepository extends JpaRepository<Dog, Long> {
-    default Dog getActiveDog(Long id) {
+    default Dog getDog(Long id) {
         return this.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.DOG_ENTITY_NOT_FOUND));
     }

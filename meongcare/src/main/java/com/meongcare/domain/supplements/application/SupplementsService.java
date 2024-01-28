@@ -38,7 +38,7 @@ public class SupplementsService {
 
     @Transactional
     public void saveSupplements(SaveSupplementsRequest saveSupplementsRequest, MultipartFile multipartFile) {
-        Dog dog = dogRepository.getActiveDog(saveSupplementsRequest.getDogId());
+        Dog dog = dogRepository.getDog(saveSupplementsRequest.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.SUPPLEMENTS);
 
         Supplements supplements = saveSupplementsRequest.toSupplements(dog, imageURL);
@@ -81,20 +81,20 @@ public class SupplementsService {
     }
 
     public GetSupplementsInfoResponse getSupplementsInfo(Long supplementsId) {
-        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
+        Supplements supplements = supplementsRepository.getSupplement(supplementsId);
         List<SupplementsTime> supplementsTimes = supplementsTimeRepository.findAllBySupplementsId(supplementsId);
         return GetSupplementsInfoResponse.of(supplements, supplementsTimes);
     }
 
     @Transactional
     public void stopSupplementsRoutine(Long supplementsId, boolean isActive) {
-        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
+        Supplements supplements = supplementsRepository.getSupplement(supplementsId);
         supplements.updateActive(isActive);
     }
 
     @Transactional
     public void deleteSupplements(Long supplementsId) {
-        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
+        Supplements supplements = supplementsRepository.getSupplement(supplementsId);
         deleteSupplementsTimes(supplementsId);
         supplements.softDelete();
     }
@@ -102,7 +102,7 @@ public class SupplementsService {
     @Transactional
     public void deleteSupplementsList(List<Long> supplementsIds) {
         for (Long supplementsId : supplementsIds) {
-            Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
+            Supplements supplements = supplementsRepository.getSupplement(supplementsId);
             supplements.softDelete();
             deleteSupplementsTimes(supplementsId);
         }
@@ -114,7 +114,7 @@ public class SupplementsService {
 
     @Transactional
     public void updatePushAgreement(Long supplementsId, boolean pushAgreement) {
-        Supplements supplements = supplementsRepository.getActiveSupplement(supplementsId);
+        Supplements supplements = supplementsRepository.getSupplement(supplementsId);
         supplements.updatePushAgreement(pushAgreement);
     }
 

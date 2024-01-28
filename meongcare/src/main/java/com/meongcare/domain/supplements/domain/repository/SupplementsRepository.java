@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface SupplementsRepository extends JpaRepository<Supplements, Long> {
 
     List<Supplements> findAllByDogIdAndDeletedFalse(Long dogId);
-    default Supplements getActiveSupplement(Long dogId){
+    default Supplements getSupplement(Long dogId){
         return this.findByIdAndDeletedFalse(dogId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUPPLEMENTS_ENTITY_NOT_FOUND));
     }
