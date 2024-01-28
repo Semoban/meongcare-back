@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
             Long userId = jwtService.parseJwtToken(accessToken);
-            memberRepository.getActiveUser(userId);
+            memberRepository.getUser(userId);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             e.printStackTrace();

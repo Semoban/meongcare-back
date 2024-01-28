@@ -52,7 +52,7 @@ public class FeedService {
 
     @Transactional
     public void saveFeed(SaveFeedRequest request, MultipartFile multipartFile) {
-        Dog dog = dogRepository.getActiveDog(request.getDogId());
+        Dog dog = dogRepository.getDog(request.getDogId());
 
         boolean isFirstRegisterFeed = true;
         if (feedRecordQueryRepository.existActiveFeedRecord(dog.getId())) {
