@@ -33,7 +33,7 @@ public class MedicalRecordService {
 
     @Transactional
     public void save(MultipartFile multipartFile, SaveMedicalRecordRequest saveMedicalRecordRequest) {
-        Dog dog = dogRepository.getActiveDog(saveMedicalRecordRequest.getDogId());
+        Dog dog = dogRepository.getDog(saveMedicalRecordRequest.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
 
         medicalRecordRepository.save(saveMedicalRecordRequest.toEntity(dog, imageURL));
@@ -63,7 +63,7 @@ public class MedicalRecordService {
     }
 
     public GetMedicalRecordsResponse getMedicalRecords(Long dogId, LocalDateTime dateTime) {
-        Dog dog = dogRepository.getActiveDog(dogId);
+        Dog dog = dogRepository.getDog(dogId);
         List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(
                 dog,
                 LocalDateTimeUtils.createNowMidnight(dateTime),

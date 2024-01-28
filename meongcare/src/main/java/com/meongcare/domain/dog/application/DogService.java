@@ -34,7 +34,7 @@ public class DogService {
 
     @Transactional
     public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
-        Member member = memberRepository.getActiveUser(userId);
+        Member member = memberRepository.getUser(userId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
 
         Dog dog = saveDogRequest.toEntity(member, dogImageURL);
@@ -45,7 +45,7 @@ public class DogService {
     }
 
     public GetDogsResponse getDogs(Long userId) {
-        Member member = memberRepository.getActiveUser(userId);
+        Member member = memberRepository.getUser(userId);
         List<Dog> dogs = dogRepository.findAllByMemberAndDeletedFalse(member);
         return GetDogsResponse.of(dogs);
     }
