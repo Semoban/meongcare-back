@@ -1,8 +1,8 @@
 package com.meongcare.domain.auth.application;
 
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.InvalidTokenException;
-import com.meongcare.common.error.exception.UnauthorizedException;
+import com.meongcare.common.error.exception.clientError.InvalidTokenException;
+import com.meongcare.common.error.exception.clientError.UnauthorizedException;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
