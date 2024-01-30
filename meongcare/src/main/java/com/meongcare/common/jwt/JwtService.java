@@ -1,7 +1,7 @@
 package com.meongcare.common.jwt;
 
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.InvalidTokenException;
+import com.meongcare.common.error.exception.clientError.InvalidTokenException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

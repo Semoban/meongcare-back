@@ -1,7 +1,7 @@
 package com.meongcare.domain.excreta.domain.repository;
 
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.EntityNotFoundException;
+import com.meongcare.common.error.exception.clientError.EntityNotFoundException;
 import com.meongcare.domain.excreta.domain.entity.Excreta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
