@@ -2,8 +2,8 @@ package com.meongcare.infra.image.s3;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.EntityNotFoundException;
-import com.meongcare.common.error.exception.FailedFileUploadException;
+import com.meongcare.common.error.exception.clientError.EntityNotFoundException;
+import com.meongcare.common.error.exception.serverError.FailedFileUploadException;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;

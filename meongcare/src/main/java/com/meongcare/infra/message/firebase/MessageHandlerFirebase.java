@@ -4,6 +4,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.serverError.MessageException;
 import com.meongcare.infra.message.MessageHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +29,8 @@ public class MessageHandlerFirebase implements MessageHandler {
         try{
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
-            log.error("알림 보내기를 실패하였습니다. errorMessage={}", e.getMessage());
+            log.error("errorMessage = {}", e.getMessage());
+            throw new MessageException(ErrorCode.FAILED_MESSAGE_SEND);
         }
     }
 

@@ -30,6 +30,7 @@ public enum ErrorCode {
 
     // 5xx
     FAILED_FILE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "파일이 업로드되지 않았습니다."),
+    FAILED_MESSAGE_SEND(HttpStatus.INTERNAL_SERVER_ERROR, "알림 메세지 보내기를 실패했습니다"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다."),;
 
     private final HttpStatus httpStatus;
