@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -29,24 +30,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     protected ResponseEntity<ErrorResponse> badRequestException(BadRequestException e) {
-        e.printStackTrace();
-        log.warn("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.warn("[{}] {} ({})", e.getClass().getSimpleName(), e.getMessage(), e.getStackTrace()[0]);
         final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
         return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
     }
 
     @ExceptionHandler(InternalServerException.class)
     protected ResponseEntity<ErrorResponse> internalServerException(InternalServerException e) {
-        e.printStackTrace();
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.error("[{}] {} ({})", e.getClass().getSimpleName(), e.getMessage(), e.getStackTrace()[0]);
         final ErrorResponse errorResponse = new ErrorResponse(e.getHttpStatus(), e.getMessage());
         return ResponseEntity.status(e.getHttpStatus()).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> runtimeException(Exception e) {
-        e.printStackTrace();
-        log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
+        log.error("[{}] {} ({})", e.getClass().getSimpleName(), e.getMessage(), e.getStackTrace()[0]);
         final ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
