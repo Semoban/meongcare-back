@@ -11,7 +11,7 @@
         <colorCoding>true</colorCoding>
     </appender>
 
-    <!-- Consol appender 설정 -->
+    <!-- Console appender 설정 -->
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
