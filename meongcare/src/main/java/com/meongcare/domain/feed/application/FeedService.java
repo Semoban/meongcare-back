@@ -95,13 +95,13 @@ public class FeedService {
 
     @Transactional
     public void changeFeed(Long dogId, Long newFeedId) {
-        FeedRecord activateFeedRecord = feedRecordQueryRepository.getActiveFeedRecordByDogId(dogId)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.FEED_RECORD_ENTITY_NOT_FOUND));
-
-        activateFeedRecord.disActivate();
-        if (Objects.isNull(activateFeedRecord.getEndDate())) {
-            activateFeedRecord.updateEndDate();
-        }
+        feedRecordQueryRepository.getActiveFeedRecordByDogId(dogId)
+                .ifPresent(feedRecord -> {
+                    feedRecord.disActivate();
+                    if (Objects.isNull(feedRecord.getEndDate())) {
+                        feedRecord.updateEndDate();
+                    }
+                });
 
         feedRecordQueryRepository.getFeedRecord(newFeedId)
                 .filter(feedRecord -> {
