@@ -29,8 +29,7 @@ public class MessageHandlerFirebase implements MessageHandler {
         try{
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
-            log.error("errorMessage = {}", e.getMessage());
-            throw new MessageException(ErrorCode.FAILED_MESSAGE_SEND);
+            log.warn("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
         }
     }
 
