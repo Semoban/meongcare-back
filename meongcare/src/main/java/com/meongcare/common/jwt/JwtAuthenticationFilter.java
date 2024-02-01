@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(errorCode.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(ENCODING_TYPE);
-        ErrorResponse errorResponse = new ErrorResponse(errorCode);
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getHttpStatus(), errorCode.getMessage());
         try{
             response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
         }catch (IOException e){

@@ -28,6 +28,8 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."), //토큰 파싱할 때 사용
 
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "클라이언트 에러입니다"),
+
     // 5xx
     FAILED_FILE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "파일이 업로드되지 않았습니다."),
     FAILED_MESSAGE_SEND(HttpStatus.INTERNAL_SERVER_ERROR, "알림 메세지 보내기를 실패했습니다"),
