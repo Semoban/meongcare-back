@@ -67,7 +67,10 @@ public class SupplementsRecordQueryRepository {
                 .select(new QGetAlarmSupplementsVO(
                         member.fcmToken,
                         dog.name,
-                        supplements.name))
+                        supplements.name,
+                        member.id,
+                        dog.id)
+                )
                 .from(supplementsRecord)
                 .innerJoin(supplementsRecord.supplements, supplements)
                 .innerJoin(supplements.dog, dog)
