@@ -54,7 +54,7 @@ public class MedicalRecordService {
             imageHandler.deleteImage(medicalRecord.getImageUrl());
         }
 
-        medicalRecordQueryRepository.deleteByIds(medicalRecordIds);
+        medicalRecordQueryRepository.deleteMedicalRecords(medicalRecordIds);
     }
 
     public GetMedicalRecordResponse get(Long medicalRecordId) {
@@ -63,9 +63,9 @@ public class MedicalRecordService {
     }
 
     public GetMedicalRecordsResponse getMedicalRecords(Long dogId, LocalDateTime dateTime) {
-        Dog dog = dogRepository.getDog(dogId);
+
         List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(
-                dog,
+                dogId,
                 LocalDateTimeUtils.createNowMidnight(dateTime),
                 LocalDateTimeUtils.createNextMidnight(dateTime)
         );

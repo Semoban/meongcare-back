@@ -44,6 +44,14 @@ public class SymptomQueryRepository {
                 .execute();
     }
 
+    public void deleteSymptomDogId(Long dogId) {
+        queryFactory
+                .update(symptom)
+                .set(symptom.deleted, true)
+                .where(symptom.dog.id.eq(dogId))
+                .execute();
+    }
+
     private BooleanExpression isNotDeleted() {
         return symptom.deleted.isFalse();
     }

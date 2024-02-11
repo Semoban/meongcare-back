@@ -41,6 +41,14 @@ public class FeedQueryRepository {
                 .execute();
     }
 
+    public void deleteFeedByDogId(Long dogId) {
+        queryFactory
+                .update(feed)
+                .set(feed.deleted, true)
+                .where(dogIdEq(dogId))
+                .execute();
+    }
+
     private BooleanExpression isNotDeleted() {
         return feed.deleted.isFalse();
     }

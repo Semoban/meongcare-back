@@ -1,6 +1,8 @@
 package com.meongcare.domain.member.application;
 
+import com.meongcare.domain.dog.application.DogService;
 import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -26,6 +30,7 @@ public class MemberService {
     private final ImageHandler imageHandler;
     private final RevokeMemberRepository revokeMemberRepository;
     private final DogRepository dogRepository;
+    private final DogService dogService;
 
     public GetProfileResponse getProfile(Long userId) {
         Member member = memberRepository.getUser(userId);
@@ -44,7 +49,11 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long userId) {
         Member member = memberRepository.getUser(userId);
-        dogRepository.deleteByMemberId(member.getId());
+
+        List<Dog> dogs = dogRepository.findAllByMemberAndDeletedFalse(member);
+        for (Dog dog : dogs) {
+            dogService.deleteDog(dog.getId());
+        }
 
         RevokeMember revokeMember = RevokeMember.from(member.getProviderId());
         revokeMemberRepository.save(revokeMember);

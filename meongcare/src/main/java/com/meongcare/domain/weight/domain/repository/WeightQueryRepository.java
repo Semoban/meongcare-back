@@ -107,6 +107,14 @@ public class WeightQueryRepository {
         return fetchWeight != null;
     }
 
+    public void deleteWeightByDogId(Long dogId) {
+        queryFactory
+                .update(weight)
+                .set(weight.deleted, true)
+                .where(dogIdEq(dogId))
+                .execute();
+    }
+
     private BooleanExpression dateEq(LocalDate date) {
         return weight.date.eq(date);
     }
