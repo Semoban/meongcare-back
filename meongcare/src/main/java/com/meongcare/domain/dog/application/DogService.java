@@ -42,16 +42,14 @@ public class DogService {
     private final DogRepository dogRepository;
     private final WeightRepository weightRepository;
     private final ImageHandler imageHandler;
-
-    private SymptomQueryRepository symptomQueryRepository;
-    private FeedQueryRepository feedQueryRepository;
-    private MedicalRecordQueryRepository medicalRecordQueryRepository;
-    private ExcretaQueryRepository excretaQueryRepository;
-    private WeightQueryRepository weightQueryRepository;
-    private FeedRecordQueryRepository feedRecordQueryRepository;
-    private SupplementsQueryRepository supplementsQueryRepository;
-    private SupplementsTimeQueryRepository supplementsTimeQueryRepository;
-    private SupplementsService supplementsService;
+    private final SymptomQueryRepository symptomQueryRepository;
+    private final FeedQueryRepository feedQueryRepository;
+    private final MedicalRecordQueryRepository medicalRecordQueryRepository;
+    private final ExcretaQueryRepository excretaQueryRepository;
+    private final WeightQueryRepository weightQueryRepository;
+    private final FeedRecordQueryRepository feedRecordQueryRepository;
+    private final SupplementsQueryRepository supplementsQueryRepository;
+    private final SupplementsService supplementsService;
 
 
     @Transactional

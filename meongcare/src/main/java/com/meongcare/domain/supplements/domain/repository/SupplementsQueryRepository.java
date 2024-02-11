@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.meongcare.domain.supplements.domain.entity.QSupplements.*;
+import static com.meongcare.domain.supplements.domain.entity.QSupplementsRecord.supplementsRecord;
 
 
 @RequiredArgsConstructor
@@ -30,5 +31,13 @@ public class SupplementsQueryRepository {
 
     private BooleanExpression dogIdEq(Long dogId) {
         return supplements.dog.id.eq(dogId);
+    }
+
+    public void deleteBySupplementsIds(List<Long> supplementsIds) {
+        queryFactory
+                .update(supplements)
+                .set(supplements.deleted, true)
+                .where(supplements.id.in(supplementsIds))
+                .execute();
     }
 }

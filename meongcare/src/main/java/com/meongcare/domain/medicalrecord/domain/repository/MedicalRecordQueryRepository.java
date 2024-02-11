@@ -1,6 +1,5 @@
 package com.meongcare.domain.medicalrecord.domain.repository;
 
-import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.QGetMedicalRecordsVo;
@@ -54,8 +53,8 @@ public class MedicalRecordQueryRepository {
 
     public void deleteMedicalRecordsDogId(Long dogId) {
         queryFactory
-                .update(feedRecord)
-                .set(feedRecord.deleted, true)
+                .update(medicalRecord)
+                .set(medicalRecord.deleted, true)
                 .where(dogIdEq(dogId))
                 .execute();
     }

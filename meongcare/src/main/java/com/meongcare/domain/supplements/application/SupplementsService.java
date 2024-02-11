@@ -8,12 +8,7 @@ import com.meongcare.domain.notifciation.domain.entity.NotificationType;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
 import com.meongcare.domain.supplements.domain.entity.SupplementsRecord;
 import com.meongcare.domain.supplements.domain.entity.SupplementsTime;
-import com.meongcare.domain.supplements.domain.repository.SupplementsRecordJdbcRepository;
-import com.meongcare.domain.supplements.domain.repository.SupplementsRecordQueryRepository;
-import com.meongcare.domain.supplements.domain.repository.SupplementsRecordRepository;
-import com.meongcare.domain.supplements.domain.repository.SupplementsRepository;
-import com.meongcare.domain.supplements.domain.repository.SupplementsTimeQueryRepository;
-import com.meongcare.domain.supplements.domain.repository.SupplementsTimeRepository;
+import com.meongcare.domain.supplements.domain.repository.*;
 import com.meongcare.domain.supplements.domain.repository.vo.GetAlarmSupplementsVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsAndTimeVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
@@ -26,7 +21,6 @@ import com.meongcare.domain.supplements.presentation.dto.response.GetSupplements
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
 import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
-import com.meongcare.infra.message.MessageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -48,6 +42,7 @@ public class SupplementsService {
     private final SupplementsRepository supplementsRepository;
     private final SupplementsTimeRepository supplementsTimeRepository;
     private final SupplementsTimeQueryRepository supplementsTimeQueryRepository;
+    private final SupplementsQueryRepository supplementsQueryRepository;
     private final SupplementsRecordRepository supplementsRecordRepository;
     private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final DogRepository dogRepository;
@@ -118,16 +113,19 @@ public class SupplementsService {
     public void deleteSupplements(Long supplementsId) {
         Supplements supplements = supplementsRepository.getSupplement(supplementsId);
         deleteSupplementsTimes(supplementsId);
+        deleteSupplementsRecord(supplementsId);
         supplements.softDelete();
     }
 
     @Transactional
     public void deleteSupplementsList(List<Long> supplementsIds) {
-        for (Long supplementsId : supplementsIds) {
-            Supplements supplements = supplementsRepository.getSupplement(supplementsId);
-            supplements.softDelete();
-            deleteSupplementsTimes(supplementsId);
-        }
+        supplementsQueryRepository.deleteBySupplementsIds(supplementsIds);
+        supplementsTimeQueryRepository.deleteBySupplementsIds(supplementsIds);
+        supplementsRecordQueryRepository.deleteBySupplementsIds(supplementsIds);
+    }
+
+    private void deleteSupplementsRecord(Long supplementsId) {
+        supplementsRecordQueryRepository.deleteBySupplementsId(supplementsId);
     }
 
     private void deleteSupplementsTimes(Long supplementsId) {
