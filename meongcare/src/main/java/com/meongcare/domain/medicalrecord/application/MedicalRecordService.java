@@ -54,7 +54,7 @@ public class MedicalRecordService {
             imageHandler.deleteImage(medicalRecord.getImageUrl());
         }
 
-        medicalRecordQueryRepository.deleteByIds(medicalRecordIds);
+        medicalRecordQueryRepository.deleteMedicalRecords(medicalRecordIds);
     }
 
     public GetMedicalRecordResponse get(Long medicalRecordId) {
