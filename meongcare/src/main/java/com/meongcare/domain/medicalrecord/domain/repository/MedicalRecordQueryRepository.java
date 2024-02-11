@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.meongcare.domain.feed.domain.entity.QFeedRecord.feedRecord;
 import static com.meongcare.domain.medicalrecord.domain.entity.QMedicalRecord.*;
 
 @RequiredArgsConstructor
@@ -27,14 +28,15 @@ public class MedicalRecordQueryRepository {
                 .fetch();
     }
 
-    public void deleteByIds(List<Long> medicalRecordIds) {
+    public void deleteMedicalRecords(List<Long> medicalRecordIds) {
         queryFactory
-                .delete(medicalRecord)
+                .update(feedRecord)
+                .set(feedRecord.deleted, true)
                 .where(medicalRecord.id.in(medicalRecordIds))
                 .execute();
     }
 
-    public List<GetMedicalRecordsVo> getByDate(Dog dog, LocalDateTime nowDateTime, LocalDateTime nextDateTime) {
+    public List<GetMedicalRecordsVo> getByDate(Long dogId, LocalDateTime nowDateTime, LocalDateTime nextDateTime) {
         return queryFactory
                 .select(new QGetMedicalRecordsVo(
                         medicalRecord.id,
@@ -42,7 +44,7 @@ public class MedicalRecordQueryRepository {
                 ))
                 .from(medicalRecord)
                 .where(
-                        dogIdEq(dog),
+                        dogIdEq(dogId),
                         dateTimeGoe(nowDateTime),
                         dateTimeLt(nextDateTime)
                 )
@@ -50,8 +52,16 @@ public class MedicalRecordQueryRepository {
                 .fetch();
     }
 
-    private BooleanExpression dogIdEq(Dog dog) {
-        return medicalRecord.dog.eq(dog);
+    public void deleteMedicalRecordsDogId(Long dogId) {
+        queryFactory
+                .update(feedRecord)
+                .set(feedRecord.deleted, true)
+                .where(dogIdEq(dogId))
+                .execute();
+    }
+
+    private BooleanExpression dogIdEq(Long dogId) {
+        return medicalRecord.dog.id.eq(dogId);
     }
     private BooleanExpression dateTimeGoe(LocalDateTime nowDateTime) {
         return medicalRecord.dateTime.goe(nowDateTime);

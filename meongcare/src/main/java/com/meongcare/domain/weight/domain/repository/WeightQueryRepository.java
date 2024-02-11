@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.meongcare.domain.feed.domain.entity.QFeedRecord.feedRecord;
 import static com.meongcare.domain.weight.domain.entity.QWeight.weight;
 
 @RequiredArgsConstructor
@@ -105,6 +106,14 @@ public class WeightQueryRepository {
                 )
                 .fetchFirst();
         return fetchWeight != null;
+    }
+
+    public void deleteWeightByDogId(Long dogId) {
+        queryFactory
+                .update(weight)
+                .set(weight.deleted, true)
+                .where(dogIdEq(dogId))
+                .execute();
     }
 
     private BooleanExpression dateEq(LocalDate date) {

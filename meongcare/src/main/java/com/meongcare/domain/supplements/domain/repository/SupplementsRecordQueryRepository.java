@@ -1,8 +1,5 @@
 package com.meongcare.domain.supplements.domain.repository;
 
-import com.meongcare.domain.dog.domain.entity.QDog;
-import com.meongcare.domain.member.domain.entity.QMember;
-import com.meongcare.domain.supplements.domain.entity.QSupplements;
 import com.meongcare.domain.supplements.domain.repository.vo.GetAlarmSupplementsVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.QGetAlarmSupplementsVO;

@@ -8,6 +8,7 @@ import com.meongcare.domain.feed.domain.repository.vo.QGetFeedDetailVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsPartVO;
 import com.meongcare.domain.feed.domain.repository.vo.QGetFeedRecordsVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -167,6 +168,14 @@ public class FeedRecordQueryRepository {
         return queryFactory.selectFrom(feedRecord)
                 .where(feedRecordIdEq(feedRecordId))
                 .fetchFirst();
+    }
+
+    public void deleteFeedRecordByDogId(Long dogId) {
+        queryFactory
+                .update(feedRecord)
+                .set(feedRecord.deleted, true)
+                .where(dogIdEq(dogId))
+                .execute();
     }
 
     private BooleanExpression feedRecordIdEq(Long feedRecordId) {
