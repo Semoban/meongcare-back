@@ -49,6 +49,7 @@ public class FeedService {
     private final ApplicationEventPublisher eventPublisher;
 
     private static final Integer DEFAULT_RECOMMEND_INTAKE = 0;
+    private static final Integer REST_FEED_RECORD = 1;
 
     @Transactional
     public void saveFeed(SaveFeedRequest request, MultipartFile multipartFile) {
@@ -139,6 +140,12 @@ public class FeedService {
 
     @Transactional
     public void deleteFeedRecord(Long feedRecordId) {
+        FeedRecord feedRecord = feedRecordRepository.getById(feedRecordId);
+        Feed feed = feedRecord.getFeed();
+        int feedRecordCount = feedRecordQueryRepository.getFeedRecordCountByFeedId(feed.getId());
+        if (feedRecordCount == REST_FEED_RECORD) {
+            feedQueryRepository.deleteFeed(feed.getId());
+        }
         feedRecordQueryRepository.deleteFeedRecord(feedRecordId);
     }
 
