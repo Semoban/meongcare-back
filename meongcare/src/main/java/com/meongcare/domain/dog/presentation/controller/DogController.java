@@ -31,7 +31,7 @@ public class DogController {
     @Valid
     public ResponseEntity<Void> saveDog(
             @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") SaveDogRequest saveDogRequest,
+            @Valid @RequestPart(value = "dto") SaveDogRequest saveDogRequest,
             @JwtValidation Long userId) {
         dogService.saveDog(multipartFile, saveDogRequest, userId);
         return ResponseEntity.ok().build();

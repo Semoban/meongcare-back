@@ -1,5 +1,6 @@
 package com.meongcare.domain.medicalrecord.domain.entity;
 
+import com.meongcare.common.BaseEntity;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequest;
 import lombok.AccessLevel;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MedicalRecord {
+public class MedicalRecord extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

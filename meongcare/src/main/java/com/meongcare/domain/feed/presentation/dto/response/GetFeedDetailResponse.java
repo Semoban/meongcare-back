@@ -30,6 +30,9 @@ public class GetFeedDetailResponse {
     @Schema(description = "수분", example = "7.5")
     private double moisture;
 
+    @Schema(description = "기타", example = "31.4")
+    private double etc;
+
     @Schema(description = "칼로리", example = "230.34")
     private double kcal;
 
@@ -53,6 +56,7 @@ public class GetFeedDetailResponse {
                 feedDetailVO.getFat(),
                 feedDetailVO.getCrudeAsh(),
                 feedDetailVO.getMoisture(),
+                feedDetailVO.getEtc(),
                 feedDetailVO.getKcal(),
                 feedDetailVO.getRecommendIntake(),
                 feedDetailVO.getImageURL(),

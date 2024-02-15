@@ -24,7 +24,7 @@ public class S3Api {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    public void removeImage(String bucket, String imageURL) {
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, imageURL));
+    public void removeImage(String bucket, String filePath) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filePath));
     }
 }

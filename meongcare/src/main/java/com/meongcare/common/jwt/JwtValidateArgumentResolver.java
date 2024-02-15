@@ -1,7 +1,7 @@
 package com.meongcare.common.jwt;
 
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.InvalidTokenException;
+import com.meongcare.common.error.exception.clientError.InvalidTokenException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

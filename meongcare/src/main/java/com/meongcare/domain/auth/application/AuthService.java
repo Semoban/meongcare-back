@@ -1,7 +1,8 @@
 package com.meongcare.domain.auth.application;
 
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.InvalidTokenException;
+import com.meongcare.common.error.exception.clientError.InvalidTokenException;
+import com.meongcare.common.error.exception.clientError.UnauthorizedException;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.auth.domain.entity.RefreshToken;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
@@ -10,6 +11,7 @@ import com.meongcare.domain.auth.domain.repository.RefreshTokenRedisRepository;
 import com.meongcare.domain.auth.presentation.dto.request.LoginRequest;
 import com.meongcare.domain.auth.presentation.dto.response.LoginResponse;
 import com.meongcare.domain.auth.presentation.dto.response.ReissueResponse;
+import com.meongcare.domain.member.domain.repository.RevokeMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,20 +26,24 @@ public class AuthService {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final RevokeMemberRepository revokeMemberRepository;
+    private static final String PROVIDER_ID_SEPARATOR = "@";
 
     @Transactional
     public LoginResponse login(LoginRequest loginRequest) {
-        String providerId = loginRequest.getProviderId();
-        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerId);
-        Long memberId = null;
+        String providerIdWithProvider = loginRequest.getProviderId() + PROVIDER_ID_SEPARATOR + loginRequest.getProvider();
+        checkIsRevokeUser(providerIdWithProvider);
 
+        Optional<Member> findMemberOptional = memberRepository.findByProviderId(providerIdWithProvider);
+        Long memberId;
+        Boolean isFirstLogin = false;
         if (findMemberOptional.isEmpty()) {
-            Member member = loginRequest.toMemberEntity();
-            memberRepository.save(member);
+            memberId = joinMember(loginRequest, providerIdWithProvider);
+            isFirstLogin = true;
+        } else {
+            Member member = findMemberOptional.get();
             memberId = member.getId();
-        }
-        if (findMemberOptional.isPresent()) {
-            memberId = findMemberOptional.get().getId();
+            checkFcmToken(loginRequest, member);
         }
 
         String accessToken = jwtService.createAccessToken(memberId);
@@ -45,9 +51,27 @@ public class AuthService {
 
         refreshTokenRedisRepository.save(RefreshToken.of(refreshToken, memberId));
 
-        LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken);
+        LoginResponse loginResponse = LoginResponse.of(accessToken, refreshToken, isFirstLogin);
 
         return loginResponse;
+    }
+
+    private void checkFcmToken(LoginRequest loginRequest, Member member) {
+        if (member.isNewFcmToken(loginRequest.getFcmToken())) {
+            member.updateFcmToken(loginRequest.getFcmToken());
+        }
+    }
+
+    private Long joinMember(LoginRequest loginRequest, String providerIdWithProvider) {
+        Member member = loginRequest.toMemberEntity(providerIdWithProvider);
+        memberRepository.save(member);
+        return member.getId();
+    }
+
+    private void checkIsRevokeUser(String providerId) {
+        if (revokeMemberRepository.existsByProviderId(providerId)) {
+            throw new UnauthorizedException(ErrorCode.REVOKE_MEMBER_NOT_ALLOWED_LOGIN);
+        }
     }
 
     public ReissueResponse reissue(String refreshToken) {

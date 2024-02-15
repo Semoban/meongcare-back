@@ -115,11 +115,11 @@ public class FeedController {
         return ResponseEntity.ok(feedService.getFeedRecommendIntakeForHome(dogId, date));
     }
 
-    @Operation(description = "사료 삭제")
+    @Operation(description = "사료 기록 삭제")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
-    @DeleteMapping("/{feedId}")
-    public ResponseEntity<Void> deleteFeed(@PathVariable Long feedId) {
-        feedService.deleteFeed(feedId);
+    @DeleteMapping("/{feedRecordId}")
+    public ResponseEntity<Void> deleteFeedRecord(@PathVariable Long feedRecordId) {
+        feedService.deleteFeedRecord(feedRecordId);
         return ResponseEntity.ok().build();
     }
 
@@ -128,5 +128,13 @@ public class FeedController {
     @GetMapping("/detail/{feedId}")
     public ResponseEntity<GetFeedDetailResponse> getFeedDetail(@PathVariable Long feedId, @RequestParam Long feedRecordId) {
         return ResponseEntity.ok(feedService.getFeedDetail(feedId, feedRecordId));
+    }
+
+    @Operation(description = "사료 중단")
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
+    @PatchMapping("/stop/{feedRecordId}")
+    public ResponseEntity<Void> stopFeed(@PathVariable Long feedRecordId) {
+        feedService.stopFeed(feedRecordId);
+        return ResponseEntity.ok().build();
     }
 }

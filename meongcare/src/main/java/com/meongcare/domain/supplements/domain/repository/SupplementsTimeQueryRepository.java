@@ -46,6 +46,14 @@ public class SupplementsTimeQueryRepository {
                 .fetch();
     }
 
+    public void deleteBySupplementsIds(List<Long> supplementsIds) {
+        queryFactory
+                .update(supplementsTime)
+                .set(supplementsTime.deleted, true)
+                .where(supplementsTime.supplements.id.in(supplementsIds))
+                .execute();
+    }
+
     private BooleanExpression supplementsIdEq(Long supplementsId) {
         return supplementsTime.supplements.id.eq(supplementsId);
     }

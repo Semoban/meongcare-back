@@ -1,7 +1,7 @@
 package com.meongcare.common.jwt;
 
 import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.InvalidTokenException;
+import com.meongcare.common.error.exception.clientError.InvalidTokenException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class JwtService {
     private String createToken(Long userId, String tokenSubject, Long expirationPeriod) {
         Date expirationTime = new Date();
         Claims claims = Jwts.claims();
-        expirationTime.setTime(expirationTime.getTime()+expirationPeriod);
+        expirationTime.setTime(expirationTime.getTime() + expirationPeriod);
         claims.put(ID_CLAIM, userId);
 
         String accessToken = Jwts.builder()
@@ -67,7 +67,7 @@ public class JwtService {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return Long.valueOf((Integer)claims.get(ID_CLAIM));
+            return Long.valueOf((Integer) claims.get(ID_CLAIM));
         } catch (Exception e) {
             throw new InvalidTokenException(ErrorCode.INVALID_TOKEN);
         }

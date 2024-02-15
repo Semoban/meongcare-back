@@ -3,6 +3,7 @@ package com.meongcare.common.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meongcare.common.error.ErrorCode;
 import com.meongcare.common.error.ErrorResponse;
+import com.meongcare.domain.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -21,12 +22,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String ENCODING_TYPE = "UTF-8";
 
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
-            jwtService.parseJwtToken(accessToken);
+            Long userId = jwtService.parseJwtToken(accessToken);
+            memberRepository.getUser(userId);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(errorCode.getHttpStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(ENCODING_TYPE);
-        ErrorResponse errorResponse = new ErrorResponse(errorCode);
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getHttpStatus(), errorCode.getMessage());
         try{
             response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
         }catch (IOException e){

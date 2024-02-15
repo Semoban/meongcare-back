@@ -38,6 +38,9 @@ public class SaveFeedRequest {
     @Schema(description = "수분", example = "5.02")
     private double moisture;
 
+    @Schema(description = "기타", example = "21.4")
+    private double etc;
+
     @Schema(description = "칼로리", example = "230.45")
     private double kcal;
 
@@ -53,7 +56,7 @@ public class SaveFeedRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
     private LocalDate endDate;
 
-    public Feed toEntity(String imageURL, Dog dog, boolean isFirstRegisterFeed) {
+    public Feed toEntity(String imageURL, Dog dog) {
         return Feed.builder()
                 .brand(brand)
                 .feedName(feedName)
@@ -61,11 +64,11 @@ public class SaveFeedRequest {
                 .fat(fat)
                 .crudeAsh(crudeAsh)
                 .moisture(moisture)
+                .etc(etc)
                 .kcal(kcal)
                 .recommendIntake(recommendIntake)
                 .imageURL(imageURL)
                 .dog(dog)
-                .isActivate(isFirstRegisterFeed)
                 .build();
     }
 }

@@ -64,6 +64,13 @@ dependencies {
 
 	//firebase
 	implementation 'com.google.firebase:firebase-admin:9.1.1'
+
+	//sentry
+	implementation 'io.sentry:sentry-spring-boot-starter:7.2.0'
+	implementation 'io.sentry:sentry-logback:6.28.0'
+
+	//logback
+	implementation "com.github.maricn:logback-slack-appender:1.4.0"
 }
 
 tasks.named('test') {

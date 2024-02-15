@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
 
 @Getter
 @Entity
@@ -18,34 +19,26 @@ public class Member extends BaseEntity {
     @Id
     private Long id;
 
-    @NotNull
-    private String name;
-
-    @NotNull
     private String email;
 
-    @NotNull
+    @Column(length = 2000, unique = true)
     private String providerId;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private Provider provider;
 
-    @NotNull
     private String profileImageUrl;
 
-    @NotNull
     private boolean pushAgreement;
 
     @Column(length = 500)
-    @NotNull
     private String fcmToken;
 
 
+
     @Builder
-    public Member(Long id, String name, String email, String providerId, Provider provider, String profileImageUrl, boolean pushAgreement, String fcmToken) {
+    public Member(Long id, String email, String providerId, Provider provider, String profileImageUrl, boolean pushAgreement, String fcmToken) {
         this.id = id;
-        this.name = name;
         this.email = email;
         this.providerId = providerId;
         this.provider = provider;
@@ -58,11 +51,25 @@ public class Member extends BaseEntity {
         this.pushAgreement = pushAgreement;
     }
 
-    public void deleteMember() {
-        delete();
-    }
-
     public void updateProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public void deleteMember() {
+        this.email = null;
+        this.providerId = null;
+        this.provider = null;
+        this.profileImageUrl = null;
+        this.pushAgreement = false;
+        this.fcmToken = null;
+        this.softDelete();
+    }
+
+    public boolean isNewFcmToken(String fcmToken) {
+        return !Objects.equals(this.getFcmToken(), fcmToken);
+    }
+
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

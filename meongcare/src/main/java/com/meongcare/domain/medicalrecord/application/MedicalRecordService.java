@@ -33,7 +33,7 @@ public class MedicalRecordService {
 
     @Transactional
     public void save(MultipartFile multipartFile, SaveMedicalRecordRequest saveMedicalRecordRequest) {
-        Dog dog = dogRepository.getById(saveMedicalRecordRequest.getDogId());
+        Dog dog = dogRepository.getDog(saveMedicalRecordRequest.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
 
         medicalRecordRepository.save(saveMedicalRecordRequest.toEntity(dog, imageURL));
@@ -54,9 +54,8 @@ public class MedicalRecordService {
             imageHandler.deleteImage(medicalRecord.getImageUrl());
         }
 
-        medicalRecordQueryRepository.deleteByIds(medicalRecordIds);
+        medicalRecordQueryRepository.deleteMedicalRecords(medicalRecordIds);
     }
-
 
     public GetMedicalRecordResponse get(Long medicalRecordId) {
         MedicalRecord medicalRecord = medicalRecordRepository.getById(medicalRecordId);
@@ -64,9 +63,9 @@ public class MedicalRecordService {
     }
 
     public GetMedicalRecordsResponse getMedicalRecords(Long dogId, LocalDateTime dateTime) {
-        Dog dog = dogRepository.getById(dogId);
+
         List<GetMedicalRecordsVo> getMedicalRecordsVos = medicalRecordQueryRepository.getByDate(
-                dog,
+                dogId,
                 LocalDateTimeUtils.createNowMidnight(dateTime),
                 LocalDateTimeUtils.createNextMidnight(dateTime)
         );

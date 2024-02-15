@@ -55,12 +55,20 @@ public class ExcretaQueryRepository {
                 .execute();
     }
 
+    public void deleteExcretaByDogId(Long dogId) {
+        queryFactory
+                .update(excreta)
+                .set(excreta.deleted, true)
+                .where(dogIdEq(dogId))
+                .execute();
+    }
+
     private BooleanExpression isNotDeleted() {
         return excreta.deleted.isFalse();
     }
 
     private BooleanExpression dogIdEq(Long dogId) {
-        return excreta.dogId.eq(dogId);
+        return excreta.dog.id.eq(dogId);
     }
 
     private BooleanExpression dateTimeGoe(LocalDateTime nowDateTime) {

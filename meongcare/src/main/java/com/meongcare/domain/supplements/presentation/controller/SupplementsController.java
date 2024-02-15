@@ -34,7 +34,7 @@ public class SupplementsController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> saveSupplements(
-            @RequestPart(value = "dto", required = false) @Valid SaveSupplementsRequest saveSupplementsRequest,
+            @Valid @RequestPart(value = "dto", required = false) SaveSupplementsRequest saveSupplementsRequest,
             @RequestPart(value = "file") MultipartFile multipartFile) {
         supplementsService.saveSupplements(saveSupplementsRequest, multipartFile);
         return ResponseEntity.ok().build();
@@ -135,13 +135,13 @@ public class SupplementsController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(description = "영양제 삭제")
+    @Operation(description = "여러 영양제 삭제")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping
     public ResponseEntity<Void> deleteSupplements(
             @RequestParam("supplementsIds") List<Long> supplementsIds
     ) {
-        supplementsService.deleteSupplements(supplementsIds);
+        supplementsService.deleteSupplementsList(supplementsIds);
         return ResponseEntity.ok().build();
     }
 

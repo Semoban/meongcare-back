@@ -38,7 +38,7 @@ public class SymptomService {
                         SymptomType.of(request.getSymptomString()),
                         request.getNote(),
                         request.getDateTime(),
-                        dog.getId()
+                        dog
                 )
         );
     }

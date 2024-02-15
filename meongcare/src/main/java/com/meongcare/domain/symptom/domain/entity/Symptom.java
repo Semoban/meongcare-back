@@ -1,6 +1,7 @@
 package com.meongcare.domain.symptom.domain.entity;
 
 import com.meongcare.common.BaseEntity;
+import com.meongcare.domain.dog.domain.entity.Dog;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,9 +10,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,23 +35,24 @@ public class Symptom extends BaseEntity {
 
     private LocalDateTime dateTime;
 
-    private Long dogId;
+    @JoinColumn(name = "dog_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Dog dog;
 
     @Builder
-    public Symptom(Long id, SymptomType symptomType, String note, LocalDateTime dateTime, Long dogId) {
-        this.id = id;
+    public Symptom(SymptomType symptomType, String note, LocalDateTime dateTime, Dog dog) {
         this.symptomType = symptomType;
         this.note = note;
         this.dateTime = dateTime;
-        this.dogId = dogId;
+        this.dog = dog;
     }
 
-    public static Symptom of(SymptomType symptomType, String note, LocalDateTime dateTime, Long dogId) {
+    public static Symptom of(SymptomType symptomType, String note, LocalDateTime dateTime, Dog dog) {
         return Symptom.builder()
                 .symptomType(symptomType)
                 .dateTime(dateTime)
                 .note(note)
-                .dogId(dogId)
+                .dog(dog)
                 .build();
     }
 

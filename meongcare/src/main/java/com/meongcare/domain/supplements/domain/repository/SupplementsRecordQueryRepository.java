@@ -1,8 +1,5 @@
 package com.meongcare.domain.supplements.domain.repository;
 
-import com.meongcare.domain.dog.domain.entity.QDog;
-import com.meongcare.domain.member.domain.entity.QMember;
-import com.meongcare.domain.supplements.domain.entity.QSupplements;
 import com.meongcare.domain.supplements.domain.repository.vo.GetAlarmSupplementsVO;
 import com.meongcare.domain.supplements.domain.repository.vo.GetSupplementsRoutineVO;
 import com.meongcare.domain.supplements.domain.repository.vo.QGetAlarmSupplementsVO;
@@ -67,7 +64,10 @@ public class SupplementsRecordQueryRepository {
                 .select(new QGetAlarmSupplementsVO(
                         member.fcmToken,
                         dog.name,
-                        supplements.name))
+                        supplements.name,
+                        member.id,
+                        dog.id)
+                )
                 .from(supplementsRecord)
                 .innerJoin(supplementsRecord.supplements, supplements)
                 .innerJoin(supplements.dog, dog)
@@ -98,4 +98,19 @@ public class SupplementsRecordQueryRepository {
         return supplementsRecord.supplementsTime.intakeTime.between(time, fiftyNineSecondsLater);
     }
 
+    public void deleteBySupplementsId(Long supplementsId) {
+        queryFactory
+                .update(supplementsRecord)
+                .set(supplementsRecord.deleted, true)
+                .where(supplementsRecord.supplements.id.eq(supplementsId))
+                .execute();
+    }
+
+    public void deleteBySupplementsIds(List<Long> supplementsIds) {
+        queryFactory
+                .update(supplementsRecord)
+                .set(supplementsRecord.deleted, true)
+                .where(supplementsRecord.supplements.id.in(supplementsIds))
+                .execute();
+    }
 }
