@@ -178,6 +178,14 @@ public class FeedRecordQueryRepository {
                 .execute();
     }
 
+    public int getFeedRecordCountByFeedId(Long feedRecordId) {
+        return queryFactory
+                .selectFrom(feedRecord)
+                .where(feedRecordIdEq(feedRecordId))
+                .fetch()
+                .size();
+    }
+
     private BooleanExpression feedRecordIdEq(Long feedRecordId) {
         return feedRecord.id.eq(feedRecordId);
     }
