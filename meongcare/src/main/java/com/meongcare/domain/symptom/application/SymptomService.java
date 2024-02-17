@@ -32,7 +32,7 @@ public class SymptomService {
     private final SymptomQueryRepository symptomQueryRepository;
 
     public void saveSymptom(SaveSymptomRequest request) {
-        Dog dog = dogRepository.getById(request.getDogId());
+        Dog dog = dogRepository.getDog(request.getDogId());
         symptomRepository.save(
                 Symptom.of(
                         SymptomType.of(request.getSymptomString()),
@@ -46,7 +46,7 @@ public class SymptomService {
 
     @Transactional(readOnly = true)
     public GetSymptomResponse getSymptom(Long dogId, LocalDateTime dateTime) {
-        Dog dog = dogRepository.getById(dogId);
+        Dog dog = dogRepository.getDog(dogId);
 
         List<GetSymptomVO> symptomVO = symptomQueryRepository.getSymptomByDogIdAndSelectedDate(
                 dog.getId(),

@@ -85,7 +85,7 @@ public class DogService {
 
     @Transactional
     public void deleteDog(Long dogId) {
-        Dog dog = dogRepository.getById(dogId);
+        Dog dog = dogRepository.getDog(dogId);
 
         symptomQueryRepository.deleteSymptomDogId(dogId);
         medicalRecordQueryRepository.deleteMedicalRecordsDogId(dogId);
