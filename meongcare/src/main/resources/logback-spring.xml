@@ -9,14 +9,14 @@
         </encoder>
     </appender>
 
-    <springProfile name="!dev">
+    <springProfile name="local">
         <!-- local 프로파일일 때는 로그를 파일에 저장하지 않고, 콘솔에만 출력 -->
         <root level="INFO">
             <appender-ref ref="Console" />
         </root>
     </springProfile>
 
-    <springProfile name="dev">
+    <springProfile name="!local">
         <!-- local이 아닌 다른 프로파일일 때는 Slack과 Sentry에 로그 전송 -->
         <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">
             <webhookUri>${SLACK_WEBHOOK_URI}</webhookUri>
