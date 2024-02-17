@@ -37,7 +37,7 @@ public class MessageHandlerFirebase implements MessageHandler {
                     notificationType, memberId, dogId,
                     title, body
             ));
-            log.warn("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
+            log.error("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
         }
     }
 
