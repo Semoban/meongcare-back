@@ -34,9 +34,8 @@ public class MessageHandlerFirebase implements MessageHandler {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
             notificationRecordRepository.save(new NotificationRecord(
-                    notificationType,
-                    memberId,
-                    dogId
+                    notificationType, memberId, dogId,
+                    title, body
             ));
             log.warn("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
         }
