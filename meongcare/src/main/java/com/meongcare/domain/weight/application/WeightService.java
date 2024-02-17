@@ -54,9 +54,9 @@ public class WeightService {
         LocalDate threeWeeksAgoLastDayDate = LocalDateTimeUtils.createThisWeekLastDay(threeWeeksAgoStartDayDate);
 
         List<GetWeekWeightResponse.Week> weeks = IntStream.rangeClosed(0, 3)
-                .mapToObj(increaseNumber -> {
-                    LocalDate startDay = threeWeeksAgoStartDayDate.plusWeeks(increaseNumber);
-                    LocalDate lastDay = threeWeeksAgoLastDayDate.plusWeeks(increaseNumber);
+                .mapToObj(increaseWeek -> {
+                    LocalDate startDay = threeWeeksAgoStartDayDate.plusWeeks(increaseWeek);
+                    LocalDate lastDay = threeWeeksAgoLastDayDate.plusWeeks(increaseWeek);
                     double weight = getWeightAverage(weekWeightVO, startDay, lastDay);
                     return new GetWeekWeightResponse.Week(weight,startDay, lastDay);
                 })
@@ -71,7 +71,7 @@ public class WeightService {
                         || vo.getDate().isEqual(startDay) || vo.getDate().isEqual(lastDay))
                 .mapToDouble(GetWeekWeightVO::getWeight)
                 .average()
-                .orElse(0);
+                .orElse(DEFAULT_WEIGHT);
     }
 
     public GetMonthWeightResponse getMonthWeight(Long dogId, LocalDate date) {
