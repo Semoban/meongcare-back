@@ -3,6 +3,7 @@ package com.meongcare.domain.notifciation.domain.entity;
 import com.meongcare.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NotificationRecord extends BaseEntity {
 
@@ -27,10 +29,16 @@ public class NotificationRecord extends BaseEntity {
 
     private Long dogId;
 
+    private String title;
+
+    private String body;
+
     @Builder
-    public NotificationRecord(NotificationType notificationType, Long userId, Long dogId) {
+    public NotificationRecord(NotificationType notificationType, Long userId, Long dogId, String title, String body) {
         this.notificationType = notificationType;
         this.userId = userId;
         this.dogId = dogId;
+        this.title = title;
+        this.body = body;
     }
 }
