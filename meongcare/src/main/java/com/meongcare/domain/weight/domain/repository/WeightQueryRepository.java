@@ -24,7 +24,7 @@ public class WeightQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<GetMonthWeightVO> getMonthWeightByDogIdAndDateTime(
+    public List<GetMonthWeightVO> getMonthWeightByDogIdAndDate(
             Long dogId,
             LocalDate lastMonthFirstDayDate,
             LocalDate thisMonthLastDayDate
@@ -43,7 +43,7 @@ public class WeightQueryRepository {
                 .fetch();
     }
 
-    public List<GetWeekWeightVO> getWeekWeightByDogIdAndDateTime(
+    public List<GetWeekWeightVO> getWeekWeightByDogIdAndDate(
             Long dogId,
             LocalDate threeWeeksAgoStartDayDate,
             LocalDate thisWeekLastDayDate
@@ -61,7 +61,7 @@ public class WeightQueryRepository {
                 .fetch();
     }
 
-    public GetLastDayWeightVO getRecentDayWeightByDogIdAndDateTime(Long dogId, LocalDate date) {
+    public GetLastDayWeightVO getRecentDayWeightByDogIdAndDate(Long dogId, LocalDate date) {
         return queryFactory
                 .select(new QGetLastDayWeightVO(
                         weight.date,
@@ -75,7 +75,7 @@ public class WeightQueryRepository {
                 .fetchFirst();
     }
 
-    public Optional<Double> getDayWeightByDogIdAndDateTime(Long dogId, LocalDate date) {
+    public Optional<Double> getDayWeightByDogIdAndDate(Long dogId, LocalDate date) {
         return Optional.ofNullable(queryFactory
                 .select(weight.kg)
                 .from(weight)

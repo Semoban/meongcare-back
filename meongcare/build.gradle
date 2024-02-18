@@ -71,6 +71,9 @@ dependencies {
 
 	//logback
 	implementation "com.github.maricn:logback-slack-appender:1.4.0"
+
+	//jeasy
+	testImplementation group: 'org.jeasy', name: 'easy-random-core', version: '5.0.0'
 }
 
 tasks.named('test') {

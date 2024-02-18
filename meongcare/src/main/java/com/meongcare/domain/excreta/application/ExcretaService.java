@@ -40,7 +40,7 @@ public class ExcretaService {
 
     @Transactional
     public void saveExcreta(SaveExcretaRequest request, MultipartFile multipartFile) {
-        Dog dog = dogRepository.getById(request.getDogId());
+        Dog dog = dogRepository.getDog(request.getDogId());
         String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
 
         excretaRepository.save(
@@ -49,7 +49,7 @@ public class ExcretaService {
     }
 
     public GetExcretaResponse getExcreta(Long dogId, LocalDateTime dateTime) {
-        Dog dog = dogRepository.getById(dogId);
+        Dog dog = dogRepository.getDog(dogId);
 
         List<GetExcretaVO> excretaVO = excretaQueryRepository.getByDogIdAndSelectedDate(
                 dog.getId(),
