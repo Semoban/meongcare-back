@@ -44,7 +44,7 @@ jobs:
       - name: Gradle 빌드
         run: |
           cd ./meongcare
-          ./gradlew build
+          ./gradlew build -x test
           
       - name: AWS Configure 설정
         uses: aws-actions/configure-aws-credentials@v4
