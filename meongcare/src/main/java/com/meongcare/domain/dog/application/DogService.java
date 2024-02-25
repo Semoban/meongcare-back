@@ -53,8 +53,8 @@ public class DogService {
 
 
     @Transactional
-    public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long userId) {
-        Member member = memberRepository.getUser(userId);
+    public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long memberId) {
+        Member member = memberRepository.getMember(memberId);
         String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
 
         Dog dog = saveDogRequest.toEntity(member, dogImageURL);
@@ -64,8 +64,8 @@ public class DogService {
         weightRepository.save(weight);
     }
 
-    public GetDogsResponse getDogs(Long userId) {
-        Member member = memberRepository.getUser(userId);
+    public GetDogsResponse getDogs(Long memberId) {
+        Member member = memberRepository.getMember(memberId);
         List<Dog> dogs = dogRepository.findAllByMemberAndDeletedFalse(member);
         return GetDogsResponse.of(dogs);
     }

@@ -32,8 +32,8 @@ public class MemberService {
     private final DogRepository dogRepository;
     private final DogService dogService;
 
-    public GetProfileResponse getProfile(Long userId) {
-        Member member = memberRepository.getUser(userId);
+    public GetProfileResponse getProfile(Long memberId) {
+        Member member = memberRepository.getMember(memberId);
         return GetProfileResponse.of(
                 member.getEmail(),
                 member.getProfileImageUrl(),
@@ -41,14 +41,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateAlarm(Long userId, boolean pushAgreement) {
-        Member member = memberRepository.getUser(userId);
+    public void updateAlarm(Long memberId, boolean pushAgreement) {
+        Member member = memberRepository.getMember(memberId);
         member.updatePushAgreement(pushAgreement);
     }
 
     @Transactional
-    public void deleteMember(Long userId) {
-        Member member = memberRepository.getUser(userId);
+    public void deleteMember(Long memberId) {
+        Member member = memberRepository.getMember(memberId);
 
         List<Dog> dogs = dogRepository.findAllByMemberAndDeletedFalse(member);
         for (Dog dog : dogs) {
@@ -61,8 +61,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateProfileImage(Long userId, MultipartFile multipartFile) {
-        Member member = memberRepository.getUser(userId);
+    public void updateProfileImage(Long memberId, MultipartFile multipartFile) {
+        Member member = memberRepository.getMember(memberId);
         String bucketName = imageHandler.getBucketNameFromUrl(member.getProfileImageUrl());
         if (bucketName.startsWith(bucket)) {
             imageHandler.deleteImage(member.getProfileImageUrl());

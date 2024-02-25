@@ -35,7 +35,7 @@ public class JwtValidateArgumentResolver implements HandlerMethodArgumentResolve
             throw new InvalidTokenException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
 
-        Long userIdx = jwtService.parseJwtToken(accessToken);
-        return userIdx;
+        Long memberId = jwtService.parseJwtToken(accessToken);
+        return memberId;
     }
 }

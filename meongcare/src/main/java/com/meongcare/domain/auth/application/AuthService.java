@@ -88,8 +88,8 @@ public class AuthService {
 
     @Transactional
     public void logout(String refreshToken) {
-        Long userId = jwtService.parseJwtToken(refreshToken);
-        Member member = memberRepository.getUser(userId);
+        Long memberId = jwtService.parseJwtToken(refreshToken);
+        Member member = memberRepository.getMember(memberId);
         member.deleteFcmToken();
         refreshTokenRedisRepository.deleteById(refreshToken);
     }

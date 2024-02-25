@@ -26,34 +26,34 @@ public class MemberController {
     @Operation(description = "나의 정보 조회")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/profile")
-    public ResponseEntity<GetProfileResponse> getProfile(@JwtValidation Long userId){
-        GetProfileResponse getProfileResponse = memberService.getProfile(userId);
+    public ResponseEntity<GetProfileResponse> getProfile(@JwtValidation Long memberId){
+        GetProfileResponse getProfileResponse = memberService.getProfile(memberId);
         return ResponseEntity.ok().body(getProfileResponse);
     }
 
     @Operation(description = "프로필 사진 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/profile")
-    public ResponseEntity<Void> updateProfileImage(@JwtValidation Long userId,
+    public ResponseEntity<Void> updateProfileImage(@JwtValidation Long memberId,
                                            @RequestPart(value = "file") MultipartFile multipartFile){
-        memberService.updateProfileImage(userId, multipartFile);
+        memberService.updateProfileImage(memberId, multipartFile);
         return ResponseEntity.ok().build();
     }
 
     @Operation(description = "알림 설정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/alarm")
-    public ResponseEntity<Void> updateAlarm(@JwtValidation Long userId,
+    public ResponseEntity<Void> updateAlarm(@JwtValidation Long memberId,
                                      @RequestParam("pushAgreement") boolean pushAgreement) {
-        memberService.updateAlarm(userId, pushAgreement);
+        memberService.updateAlarm(memberId, pushAgreement);
         return ResponseEntity.ok().build();
     }
 
     @Operation(description = "회원 탈퇴")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @DeleteMapping
-    public ResponseEntity<Void> deleteMember(@JwtValidation Long userId){
-        memberService.deleteMember(userId);
+    public ResponseEntity<Void> deleteMember(@JwtValidation Long memberId){
+        memberService.deleteMember(memberId);
         return ResponseEntity.ok().build();
     }
 }

@@ -28,8 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
-            Long userId = jwtService.parseJwtToken(accessToken);
-            memberRepository.getUser(userId);
+            Long memberId = jwtService.parseJwtToken(accessToken);
+            memberRepository.getMember(memberId);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             e.printStackTrace();
