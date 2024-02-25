@@ -75,12 +75,12 @@ public class AuthService {
     }
 
     public ReissueResponse reissue(String refreshToken) {
-        Long userId = jwtService.parseJwtToken(refreshToken);
+        Long memberId = jwtService.parseJwtToken(refreshToken);
         refreshTokenRedisRepository
                 .findById(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN));
 
-        String accessToken = jwtService.createAccessToken(userId);
+        String accessToken = jwtService.createAccessToken(memberId);
         ReissueResponse reissueResponse = new ReissueResponse(accessToken);
 
         return reissueResponse;
