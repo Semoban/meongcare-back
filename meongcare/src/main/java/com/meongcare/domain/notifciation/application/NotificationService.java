@@ -30,17 +30,17 @@ public class NotificationService {
             return;
         }
         List<Long> memberIds = notificationRecords.stream()
-                .map(NotificationRecord::getUserId)
+                .map(NotificationRecord::getMemberId)
                 .collect(Collectors.toList());
 
         Map<Long, String> memberIdFcmTokenMap = memberRepository.findAllById(memberIds).stream()
                 .collect(Collectors.toMap(Member::getId, Member::getFcmToken));
 
         for (NotificationRecord notificationRecord : notificationRecords) {
-            String fcmToken = memberIdFcmTokenMap.get(notificationRecord.getUserId());
+            String fcmToken = memberIdFcmTokenMap.get(notificationRecord.getMemberId());
             eventPublisher.publishEvent(FcmNotificationDTO.of(
                     notificationRecord.getTitle(), notificationRecord.getBody(), fcmToken,
-                    notificationRecord.getNotificationType(), notificationRecord.getUserId(), notificationRecord.getDogId()
+                    notificationRecord.getNotificationType(), notificationRecord.getMemberId(), notificationRecord.getDogId()
             ));
         }
 

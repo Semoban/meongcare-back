@@ -32,16 +32,16 @@ public class DogController {
     public ResponseEntity<Void> saveDog(
             @RequestPart(value = "file") MultipartFile multipartFile,
             @Valid @RequestPart(value = "dto") SaveDogRequest saveDogRequest,
-            @JwtValidation Long userId) {
-        dogService.saveDog(multipartFile, saveDogRequest, userId);
+            @JwtValidation Long memberId) {
+        dogService.saveDog(multipartFile, saveDogRequest, memberId);
         return ResponseEntity.ok().build();
     }
 
     @Operation(description = "반려동물 목록")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping
-    public ResponseEntity<GetDogsResponse> getDogs(@JwtValidation Long userId) {
-        GetDogsResponse getDogsResponse = dogService.getDogs(userId);
+    public ResponseEntity<GetDogsResponse> getDogs(@JwtValidation Long memberId) {
+        GetDogsResponse getDogsResponse = dogService.getDogs(memberId);
         return ResponseEntity.ok().body(getDogsResponse);
     }
 

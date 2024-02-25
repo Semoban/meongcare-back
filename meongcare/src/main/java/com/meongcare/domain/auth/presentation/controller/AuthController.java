@@ -34,7 +34,7 @@ public class AuthController {
         return ResponseEntity.ok().body(reissueResponse);
     }
 
-    @Operation(description = "로그아웃 (엑세스 토큰 삭제)")
+    @Operation(description = "로그아웃 (리프레시 토큰 삭제)")
     @DeleteMapping("/logout")
     public ResponseEntity<Void> login(@RequestHeader("RefreshToken") String refreshToken) {
         authService.logout(refreshToken);

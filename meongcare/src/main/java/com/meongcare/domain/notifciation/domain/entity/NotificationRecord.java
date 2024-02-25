@@ -25,7 +25,7 @@ public class NotificationRecord extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private NotificationType notificationType;
 
-    private Long userId;
+    private Long memberId;
 
     private Long dogId;
 
@@ -34,9 +34,9 @@ public class NotificationRecord extends BaseEntity {
     private String body;
 
     @Builder
-    public NotificationRecord(NotificationType notificationType, Long userId, Long dogId, String title, String body) {
+    public NotificationRecord(NotificationType notificationType, Long memberId, Long dogId, String title, String body) {
         this.notificationType = notificationType;
-        this.userId = userId;
+        this.memberId = memberId;
         this.dogId = dogId;
         this.title = title;
         this.body = body;

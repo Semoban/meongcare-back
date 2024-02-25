@@ -76,7 +76,6 @@ public class AuthService {
 
     public ReissueResponse reissue(String refreshToken) {
         Long userId = jwtService.parseJwtToken(refreshToken);
-
         refreshTokenRedisRepository
                 .findById(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN));
@@ -87,8 +86,11 @@ public class AuthService {
         return reissueResponse;
     }
 
+    @Transactional
     public void logout(String refreshToken) {
+        Long memberId = jwtService.parseJwtToken(refreshToken);
+        Member member = memberRepository.getMember(memberId);
+        member.deleteFcmToken();
         refreshTokenRedisRepository.deleteById(refreshToken);
     }
-
 }
