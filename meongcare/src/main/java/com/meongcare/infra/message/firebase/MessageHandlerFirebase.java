@@ -40,9 +40,15 @@ public class MessageHandlerFirebase implements MessageHandler {
         try {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
+            log.error("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
             Member member = memberRepository.getMember(memberId);
             member.deleteFcmToken();
+        } catch (Exception e) {
             log.error("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
+            notificationRecordRepository.save(new NotificationRecord(
+                    notificationType, memberId, dogId,
+                    title, body
+            ));
         }
     }
 
