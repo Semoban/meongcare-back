@@ -4,6 +4,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.notifciation.domain.entity.NotificationRecord;
 import com.meongcare.domain.notifciation.domain.entity.NotificationType;
 import com.meongcare.domain.notifciation.domain.repository.NotificationRecordRepository;
@@ -21,23 +23,32 @@ public class MessageHandlerFirebase implements MessageHandler {
 
     private final FirebaseMessaging firebaseMessaging;
     private final NotificationRecordRepository notificationRecordRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = FirebaseMessagingException.class)
     @Override
     public void sendMessage(String title, String body, String fcmToken,
                             NotificationType notificationType, Long memberId, Long dogId
     ) {
+        if (fcmToken == null) {
+            return;
+        }
+
         Notification notification = createNotification(title, body);
         Message message = createMessage(fcmToken, notification);
 
         try {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
+            log.error("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
+            Member member = memberRepository.getMember(memberId);
+            member.deleteFcmToken();
+        } catch (Exception e) {
+            log.error("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
             notificationRecordRepository.save(new NotificationRecord(
                     notificationType, memberId, dogId,
                     title, body
             ));
-            log.error("알림 보내기를 실패했습니다 errorMessage = {}", e.getMessage());
         }
     }
 
