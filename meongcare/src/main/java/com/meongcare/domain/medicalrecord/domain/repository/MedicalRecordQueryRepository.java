@@ -29,8 +29,8 @@ public class MedicalRecordQueryRepository {
 
     public void deleteMedicalRecords(List<Long> medicalRecordIds) {
         queryFactory
-                .update(feedRecord)
-                .set(feedRecord.deleted, true)
+                .update(medicalRecord)
+                .set(medicalRecord.deleted, true)
                 .where(medicalRecord.id.in(medicalRecordIds))
                 .execute();
     }
