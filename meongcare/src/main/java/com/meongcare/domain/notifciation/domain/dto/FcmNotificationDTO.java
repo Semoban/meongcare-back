@@ -16,14 +16,14 @@ public class FcmNotificationDTO {
 
     public static FcmNotificationDTO of(
             String title, String body, String fcmToken,
-            NotificationType notificationType, Long userId, Long dogId
+            NotificationType notificationType, Long memberId, Long dogId
     ) {
         return new FcmNotificationDTO(
                 title,
                 body,
                 fcmToken,
                 notificationType,
-                userId,
+                memberId,
                 dogId
         );
     }

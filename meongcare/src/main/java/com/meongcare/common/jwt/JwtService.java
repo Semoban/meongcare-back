@@ -34,21 +34,21 @@ public class JwtService {
     private static final String ID_CLAIM = "id";
     private static final String BEARER = "Bearer ";
 
-    public String createAccessToken(Long userId) {
-        String accessToken = createToken(userId, ACCESS_TOKEN_SUBJECT, accessTokenExpirationPeriod);
+    public String createAccessToken(Long memberId) {
+        String accessToken = createToken(memberId, ACCESS_TOKEN_SUBJECT, accessTokenExpirationPeriod);
         return accessToken;
     }
 
-    public String createRefreshToken(Long userId) {
-        String refreshToken = createToken(userId, REFRESH_TOKEN_SUBJECT, refreshTokenExpirationPeriod);
+    public String createRefreshToken(Long memberId) {
+        String refreshToken = createToken(memberId, REFRESH_TOKEN_SUBJECT, refreshTokenExpirationPeriod);
         return refreshToken;
     }
 
-    private String createToken(Long userId, String tokenSubject, Long expirationPeriod) {
+    private String createToken(Long memberId, String tokenSubject, Long expirationPeriod) {
         Date expirationTime = new Date();
         Claims claims = Jwts.claims();
         expirationTime.setTime(expirationTime.getTime() + expirationPeriod);
-        claims.put(ID_CLAIM, userId);
+        claims.put(ID_CLAIM, memberId);
 
         String accessToken = Jwts.builder()
                 .setSubject(tokenSubject)
