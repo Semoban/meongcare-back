@@ -3,6 +3,7 @@ package com.meongcare.domain.medicalrecord.domain.repository;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.GetMedicalRecordsVo;
 import com.meongcare.domain.medicalrecord.domain.repository.vo.QGetMedicalRecordsVo;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,9 @@ public class MedicalRecordQueryRepository {
     public List<MedicalRecord> getByIds(List<Long> medicalRecordIds) {
         return queryFactory
                 .selectFrom(medicalRecord)
-                .where(medicalRecord.id.in(medicalRecordIds))
+                .where(
+                        medicalRecordIsNotDeleted(),
+                        medicalRecord.id.in(medicalRecordIds))
                 .fetch();
     }
 
@@ -45,7 +48,8 @@ public class MedicalRecordQueryRepository {
                 .where(
                         dogIdEq(dogId),
                         dateTimeGoe(nowDateTime),
-                        dateTimeLt(nextDateTime)
+                        dateTimeLt(nextDateTime),
+                        medicalRecordIsNotDeleted()
                 )
                 .orderBy(medicalRecord.dateTime.asc())
                 .fetch();
@@ -68,5 +72,9 @@ public class MedicalRecordQueryRepository {
 
     private BooleanExpression dateTimeLt(LocalDateTime nextDatetime) {
         return medicalRecord.dateTime.lt(nextDatetime);
+    }
+
+    private BooleanExpression medicalRecordIsNotDeleted() {
+        return medicalRecord.deleted.isFalse();
     }
 }
