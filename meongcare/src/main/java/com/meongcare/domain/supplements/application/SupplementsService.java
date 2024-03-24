@@ -54,14 +54,13 @@ public class SupplementsService {
     private static final String ALARM_BODY_TEXT_FORMAT = "%s에게 영양제를 챙겨주세요!";
 
     @Transactional
-    public void saveSupplements(SaveSupplementsRequest saveSupplementsRequest, MultipartFile multipartFile) {
-        Dog dog = dogRepository.getDog(saveSupplementsRequest.getDogId());
-        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.SUPPLEMENTS);
+    public void saveSupplements(SaveSupplementsRequest request) {
+        Dog dog = dogRepository.getDog(request.getDogId());
 
-        Supplements supplements = saveSupplementsRequest.toSupplements(dog, imageURL);
+        Supplements supplements = request.toSupplements(dog);
         supplementsRepository.save(supplements);
 
-        List<SupplementsTime> supplementsTimes = saveSupplementsRequest.toSupplementsTimes(supplements);
+        List<SupplementsTime> supplementsTimes = request.toSupplementsTimes(supplements);
         for (SupplementsTime supplementsTime : supplementsTimes) {
             supplementsTimeRepository.save(supplementsTime);
             supplementsRecordRepository.save(SupplementsRecord.of(supplements, supplementsTime, LocalDate.now()));
