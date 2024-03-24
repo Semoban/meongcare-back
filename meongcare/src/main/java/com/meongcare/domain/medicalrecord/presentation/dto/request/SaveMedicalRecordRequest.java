@@ -32,7 +32,10 @@ public class SaveMedicalRecordRequest {
     @Schema(description = "진료 노트", example = "기침과 고열을 느낌")
     private String note;
 
-    public MedicalRecord toEntity(Dog dog, String imageUrl) {
+    @Schema(description = "이미지 경로")
+    private String imageURL;
+
+    public MedicalRecord toEntity(Dog dog) {
         return MedicalRecord
                 .builder()
                 .dog(dog)
@@ -40,7 +43,7 @@ public class SaveMedicalRecordRequest {
                 .hospitalName(hospitalName)
                 .doctorName(doctorName)
                 .note(note)
-                .imageUrl(imageUrl)
+                .imageUrl(imageURL)
                 .build();
     }
 }

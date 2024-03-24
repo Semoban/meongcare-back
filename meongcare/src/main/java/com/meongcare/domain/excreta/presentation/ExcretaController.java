@@ -18,11 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -41,11 +40,8 @@ public class ExcretaController {
     @Operation(description = "대소변 저장")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
-    public ResponseEntity<Void> saveExcreta(
-            @RequestPart(value = "dto") @Valid SaveExcretaRequest request,
-            @RequestPart(value = "file") MultipartFile multipartFile
-    ) {
-        excretaService.saveExcreta(request, multipartFile);
+    public ResponseEntity<Void> saveExcreta(@RequestBody @Valid SaveExcretaRequest request) {
+        excretaService.saveExcreta(request);
         return ResponseEntity.ok().build();
     }
 
@@ -61,11 +57,8 @@ public class ExcretaController {
     @Operation(description = "대소변 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping
-    public ResponseEntity<Void> patchExcreta(
-            @RequestPart(value = "dto") @Valid PatchExcretaRequest request,
-            @RequestPart(value = "file") MultipartFile multipartFile
-    ) {
-        excretaService.editExcreta(request, multipartFile);
+    public ResponseEntity<Void> patchExcreta(@RequestBody @Valid PatchExcretaRequest request) {
+        excretaService.editExcreta(request);
         return ResponseEntity.ok().build();
     }
 

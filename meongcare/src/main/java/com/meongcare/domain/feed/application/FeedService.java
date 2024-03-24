@@ -52,16 +52,15 @@ public class FeedService {
     private static final Integer REST_FEED_RECORD = 1;
 
     @Transactional
-    public void saveFeed(SaveFeedRequest request, MultipartFile multipartFile) {
+    public void saveFeed(SaveFeedRequest request) {
         Dog dog = dogRepository.getDog(request.getDogId());
 
         boolean isFirstRegisterFeed = true;
         if (feedRecordQueryRepository.existActiveFeedRecord(dog.getId())) {
             isFirstRegisterFeed = false;
         }
-        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
 
-        Feed feed = request.toEntity(imageURL, dog);
+        Feed feed = request.toEntity(dog);
         feedRepository.save(feed);
 
         feedRecordRepository.save(
@@ -118,10 +117,9 @@ public class FeedService {
     }
 
     @Transactional
-    public void editFeed(EditFeedRequest request, MultipartFile multipartFile) {
+    public void editFeed(EditFeedRequest request) {
         Feed feed = feedRepository.getById(request.getFeedId());
-        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.FEED);
-        feed.updateInfo(request, imageURL);
+        feed.updateInfo(request);
 
         FeedRecord feedRecord = feedRecordRepository.getById(request.getFeedRecordId());
         feedRecord.updateDate(request.getStartDate(), request.getEndDate());

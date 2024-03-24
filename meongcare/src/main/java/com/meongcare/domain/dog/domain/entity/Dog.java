@@ -2,7 +2,6 @@ package com.meongcare.domain.dog.domain.entity;
 
 import com.meongcare.common.BaseEntity;
 import com.meongcare.domain.member.domain.entity.Member;
-import com.meongcare.domain.dog.presentation.dto.request.PutDogRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -75,16 +74,19 @@ public class Dog extends BaseEntity {
         this.weight = weight;
     }
 
-    public void updateAll(PutDogRequest putDogRequest, String dogImageURL) {
-        this.name = putDogRequest.getName();
-        this.type = putDogRequest.getType();
-        this.imageUrl = dogImageURL;
-        this.sex = Sex.of(putDogRequest.getSex());
-        this.castrate = putDogRequest.isCastrate();
-        this.birthDate = putDogRequest.getBirthDate();
-        this.backRound = putDogRequest.getBackRound();
-        this.neckRound = putDogRequest.getNeckRound();
-        this.chestRound = putDogRequest.getChestRound();
-        this.weight = putDogRequest.getWeight();
+    public void updateAll(
+            String name, String type, String imageUrl, Sex sex, boolean castrate, LocalDate birthDate,
+            double backRound, double neckRound, double chestRound, double weight
+    ) {
+        this.name = name;
+        this.type = type;
+        this.imageUrl = imageUrl;
+        this.sex = sex;
+        this.castrate = castrate;
+        this.birthDate = birthDate;
+        this.backRound = backRound;
+        this.neckRound = neckRound;
+        this.chestRound = chestRound;
+        this.weight = weight;
     }
 }

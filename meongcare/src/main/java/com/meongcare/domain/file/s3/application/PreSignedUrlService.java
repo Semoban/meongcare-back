@@ -21,16 +21,12 @@ public class PreSignedUrlService {
 
     public PreSignedUrlResponse getPreSignedUrl(String fileName) {
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.MINUTE, 3);
+        now.add(Calendar.MINUTE, 1);
 
         Date expiration = now.getTime();
 
         String preSignedUrl = amazonS3Client.generatePresignedUrl(bucket, fileName, expiration, HttpMethod.PUT)
                 .toString();
         return new PreSignedUrlResponse(preSignedUrl);
-    }
-
-    public void updateImageLink(String imageUrl) {
-
     }
 }

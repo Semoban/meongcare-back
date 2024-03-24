@@ -51,14 +51,17 @@ public class SaveDogRequest {
     @NotNull
     private double chestRound;
 
-    public Dog toEntity(Member member, String dogImageURL) {
+    @Schema(description = "S3 이미지 URL")
+    private String imageURL;
+
+    public Dog toEntity(Member member) {
         return Dog.builder()
                 .member(member)
                 .name(name)
                 .type(type)
                 .sex(Sex.of(sex))
                 .birthDate(birthDate)
-                .imageUrl(dogImageURL)
+                .imageUrl(imageURL)
                 .castrate(castrate)
                 .backRound(backRound)
                 .neckRound(neckRound)

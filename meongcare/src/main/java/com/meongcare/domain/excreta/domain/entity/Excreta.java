@@ -59,9 +59,6 @@ public class Excreta extends BaseEntity {
     public void updateRecord(ExcretaType type, LocalDateTime dateTime, String imageURL) {
         this.type = type;
         this.dateTime = dateTime;
-        if (imageURL.isEmpty()) {
-            return;
-        }
         this.imageURL = imageURL;
     }
 }

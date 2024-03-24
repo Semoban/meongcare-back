@@ -55,4 +55,7 @@ public class EditFeedRequest {
 
     @Schema(description = "사료 섭취기록 ID", example = "1")
     private Long feedRecordId;
+
+    @Schema(description = "이미지 S3 링크")
+    private String imageURL;
 }

@@ -13,13 +13,11 @@ import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse
 import com.meongcare.domain.excreta.domain.entity.ExcretaType;
 import com.meongcare.domain.excreta.domain.repository.ExcretaQueryRepository;
 import com.meongcare.domain.excreta.domain.repository.ExcretaRepository;
-import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,12 +37,11 @@ public class ExcretaService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public void saveExcreta(SaveExcretaRequest request, MultipartFile multipartFile) {
+    public void saveExcreta(SaveExcretaRequest request) {
         Dog dog = dogRepository.getDog(request.getDogId());
-        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
 
         excretaRepository.save(
-                Excreta.of(request.getExcreta(), request.getDateTime(), imageURL, dog)
+                Excreta.of(request.getExcreta(), request.getDateTime(), request.getImageURL(), dog)
         );
     }
 
@@ -60,14 +57,12 @@ public class ExcretaService {
     }
 
     @Transactional
-    public void editExcreta(PatchExcretaRequest request, MultipartFile multipartFile) {
+    public void editExcreta(PatchExcretaRequest request) {
         Excreta excreta = excretaRepository.getById(request.getExcretaId());
-        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.EXCRETA);
-
         excreta.updateRecord(
                 ExcretaType.of(request.getExcretaString()),
                 request.getDateTime(),
-                imageURL
+                request.getImageURL()
         );
 
     }
