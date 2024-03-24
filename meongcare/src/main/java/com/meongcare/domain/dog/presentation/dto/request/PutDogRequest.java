@@ -42,4 +42,7 @@ public class PutDogRequest {
     @Schema(description = "강아지 가슴 둘레", example = "10.5")
     @NotNull
     private double chestRound;
+
+    @Schema(description = "이미지 S3 링크")
+    private String imageURL;
 }

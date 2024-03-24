@@ -75,16 +75,16 @@ public class Dog extends BaseEntity {
         this.weight = weight;
     }
 
-    public void updateAll(PutDogRequest putDogRequest, String dogImageURL) {
-        this.name = putDogRequest.getName();
-        this.type = putDogRequest.getType();
-        this.imageUrl = dogImageURL;
-        this.sex = Sex.of(putDogRequest.getSex());
-        this.castrate = putDogRequest.isCastrate();
-        this.birthDate = putDogRequest.getBirthDate();
-        this.backRound = putDogRequest.getBackRound();
-        this.neckRound = putDogRequest.getNeckRound();
-        this.chestRound = putDogRequest.getChestRound();
-        this.weight = putDogRequest.getWeight();
+    public void updateAll(PutDogRequest request) {
+        this.name = request.getName();
+        this.type = request.getType();
+        this.imageUrl = request.getImageURL();
+        this.sex = Sex.of(request.getSex());
+        this.castrate = request.isCastrate();
+        this.birthDate = request.getBirthDate();
+        this.backRound = request.getBackRound();
+        this.neckRound = request.getNeckRound();
+        this.chestRound = request.getChestRound();
+        this.weight = request.getWeight();
     }
 }

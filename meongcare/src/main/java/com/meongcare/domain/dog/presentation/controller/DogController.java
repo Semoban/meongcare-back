@@ -30,10 +30,10 @@ public class DogController {
     @PostMapping
     @Valid
     public ResponseEntity<Void> saveDog(
-            @RequestPart(value = "file") MultipartFile multipartFile,
-            @Valid @RequestPart(value = "dto") SaveDogRequest saveDogRequest,
-            @JwtValidation Long memberId) {
-        dogService.saveDog(multipartFile, saveDogRequest, memberId);
+            @Valid @RequestBody SaveDogRequest request,
+            @JwtValidation Long memberId
+    ) {
+        dogService.saveDog(request, memberId);
         return ResponseEntity.ok().build();
     }
 
@@ -58,10 +58,9 @@ public class DogController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PutMapping("/{dogId}")
     public ResponseEntity<Void> updateDog(
-            @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid PutDogRequest putDogRequest,
+            @RequestBody @Valid PutDogRequest request,
             @PathVariable Long dogId) {
-        dogService.updateDog(multipartFile, putDogRequest, dogId);
+        dogService.updateDog(request, dogId);
         return ResponseEntity.ok().build();
     }
 
