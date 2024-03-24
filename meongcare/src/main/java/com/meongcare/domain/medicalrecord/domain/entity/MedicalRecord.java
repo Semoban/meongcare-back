@@ -48,7 +48,7 @@ public class MedicalRecord extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public static MedicalRecord of(Dog dog, LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl){
+    public static MedicalRecord of(Dog dog, LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl) {
         return MedicalRecord
                 .builder()
                 .dog(dog)
@@ -60,11 +60,11 @@ public class MedicalRecord extends BaseEntity {
                 .build();
     }
 
-    public void updateMedicalRecord(PutMedicalRecordRequest putMedicalRecordRequest, String imageUrl){
-        this.dateTime = putMedicalRecordRequest.getDateTime();
-        this.hospitalName = putMedicalRecordRequest.getHospitalName();
-        this.doctorName = putMedicalRecordRequest.getDoctorName();
-        this.note = putMedicalRecordRequest.getNote();
-        this.imageUrl = imageUrl;
+    public void updateMedicalRecord(PutMedicalRecordRequest request) {
+        this.dateTime = request.getDateTime();
+        this.hospitalName = request.getHospitalName();
+        this.doctorName = request.getDoctorName();
+        this.note = request.getNote();
+        this.imageUrl = request.getImageURL();
     }
 }
