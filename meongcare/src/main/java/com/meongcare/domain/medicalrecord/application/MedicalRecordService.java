@@ -40,7 +40,13 @@ public class MedicalRecordService {
     @Transactional
     public void update(PutMedicalRecordRequest request) {
         MedicalRecord medicalRecord = medicalRecordRepository.getById(request.getMedicalRecordId());
-        medicalRecord.updateMedicalRecord(request);
+        medicalRecord.updateMedicalRecord(
+                request.getDateTime(),
+                request.getHospitalName(),
+                request.getDoctorName(),
+                request.getNote(),
+                request.getImageURL()
+        );
     }
 
     @Transactional

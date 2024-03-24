@@ -1,5 +1,6 @@
 package com.meongcare.domain.dog.application;
 
+import com.meongcare.domain.dog.domain.entity.Sex;
 import com.meongcare.domain.excreta.domain.repository.ExcretaQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordQueryRepository;
@@ -69,7 +70,11 @@ public class DogService {
     @Transactional
     public void updateDog(PutDogRequest request, Long dogId) {
         Dog dog = dogRepository.getDog(dogId);
-        dog.updateAll(request);
+        dog.updateAll(
+                request.getName(), request.getType(), request.getImageURL(), Sex.of(request.getSex()),
+                request.isCastrate(), request.getBirthDate(), request.getBackRound(), request.getNeckRound(),
+                request.getChestRound(), request.getWeight()
+        );
     }
 
     @Transactional
