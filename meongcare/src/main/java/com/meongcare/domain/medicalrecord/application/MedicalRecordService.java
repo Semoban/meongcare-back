@@ -32,21 +32,19 @@ public class MedicalRecordService {
     private final MedicalRecordQueryRepository medicalRecordQueryRepository;
 
     @Transactional
-    public void save(SaveMedicalRecordRequest request) {
-        Dog dog = dogRepository.getDog(request.getDogId());
-        medicalRecordRepository.save(request.toEntity(dog));
+    public void save(MultipartFile multipartFile, SaveMedicalRecordRequest saveMedicalRecordRequest) {
+        Dog dog = dogRepository.getDog(saveMedicalRecordRequest.getDogId());
+        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
+
+        medicalRecordRepository.save(saveMedicalRecordRequest.toEntity(dog, imageURL));
     }
 
     @Transactional
-    public void update(PutMedicalRecordRequest request) {
-        MedicalRecord medicalRecord = medicalRecordRepository.getById(request.getMedicalRecordId());
-        medicalRecord.updateMedicalRecord(
-                request.getDateTime(),
-                request.getHospitalName(),
-                request.getDoctorName(),
-                request.getNote(),
-                request.getImageURL()
-        );
+    public void update(MultipartFile multipartFile, PutMedicalRecordRequest putMedicalRecordRequest) {
+        MedicalRecord medicalRecord = medicalRecordRepository.getById(putMedicalRecordRequest.getMedicalRecordId());
+        String imageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.MEDICAL_RECORD);
+
+        medicalRecord.updateMedicalRecord(putMedicalRecordRequest, imageURL);
     }
 
     @Transactional

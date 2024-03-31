@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -31,16 +32,20 @@ public class MedicalRecordController {
     @Operation(description = "진료기록 저장")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
-    public ResponseEntity<Void> saveMedicalRecord(@RequestBody @Valid SaveMedicalRecordRequest request) {
-        medicalRecordService.save(request);
+    public ResponseEntity<Void> saveMedicalRecord(
+            @RequestPart(value = "file") MultipartFile multipartFile,
+            @RequestPart(value = "dto") @Valid SaveMedicalRecordRequest saveMedicalRecordRequest) {
+        medicalRecordService.save(multipartFile, saveMedicalRecordRequest);
         return ResponseEntity.ok().build();
     }
 
     @Operation(description = "진료기록 편집")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PutMapping
-    public ResponseEntity<Void> updateMedicalRecord(@RequestBody @Valid PutMedicalRecordRequest request) {
-        medicalRecordService.update(request);
+    public ResponseEntity<Void> updateMedicalRecord(
+            @RequestPart(value = "file") MultipartFile multipartFile,
+            @RequestPart(value = "dto") @Valid PutMedicalRecordRequest putMedicalRecordRequest) {
+        medicalRecordService.update(multipartFile, putMedicalRecordRequest);
         return ResponseEntity.ok().build();
     }
 

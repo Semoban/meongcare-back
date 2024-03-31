@@ -32,9 +32,6 @@ public class PutMedicalRecordRequest {
     @Schema(description = "진료 노트", example = "기침과 고열을 느낌")
     private String note;
 
-    @Schema(description = "이미지 S3 링크")
-    private String imageURL;
-
     public MedicalRecord toEntity(Dog dog, String imageUrl) {
         return MedicalRecord
                 .builder()

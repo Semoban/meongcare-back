@@ -2,6 +2,7 @@ package com.meongcare.domain.medicalrecord.domain.entity;
 
 import com.meongcare.common.BaseEntity;
 import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRecordRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class MedicalRecord extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public static MedicalRecord of(Dog dog, LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl) {
+    public static MedicalRecord of(Dog dog, LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl){
         return MedicalRecord
                 .builder()
                 .dog(dog)
@@ -59,11 +60,11 @@ public class MedicalRecord extends BaseEntity {
                 .build();
     }
 
-    public void updateMedicalRecord(LocalDateTime dateTime, String hospitalName, String doctorName, String note, String imageUrl) {
-        this.dateTime = dateTime;
-        this.hospitalName = hospitalName;
-        this.doctorName = doctorName;
-        this.note = note;
+    public void updateMedicalRecord(PutMedicalRecordRequest putMedicalRecordRequest, String imageUrl){
+        this.dateTime = putMedicalRecordRequest.getDateTime();
+        this.hospitalName = putMedicalRecordRequest.getHospitalName();
+        this.doctorName = putMedicalRecordRequest.getDoctorName();
+        this.note = putMedicalRecordRequest.getNote();
         this.imageUrl = imageUrl;
     }
 }
