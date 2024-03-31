@@ -26,9 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -46,11 +44,8 @@ public class FeedController {
     @Operation(description = "사료 저장")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
-    public ResponseEntity<Void> saveFeed(
-            @RequestPart(value = "dto") @Valid SaveFeedRequest request,
-            @RequestPart(value = "file") MultipartFile multipartFile
-    ) {
-        feedService.saveFeed(request, multipartFile);
+    public ResponseEntity<Void> saveFeed(@RequestBody @Valid SaveFeedRequest request) {
+        feedService.saveFeed(request);
         return ResponseEntity.ok().build();
     }
 
@@ -90,11 +85,8 @@ public class FeedController {
     @Operation(description = "사료 정보 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PutMapping
-    public ResponseEntity<Void> editFeed(
-            @RequestPart(value = "dto") @Valid EditFeedRequest request,
-            @RequestPart(value = "file") MultipartFile multipartFile
-    ) {
-        feedService.editFeed(request, multipartFile);
+    public ResponseEntity<Void> editFeed(@RequestBody @Valid EditFeedRequest request) {
+        feedService.editFeed(request);
         return ResponseEntity.ok().build();
     }
 

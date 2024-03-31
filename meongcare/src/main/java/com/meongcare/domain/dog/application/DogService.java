@@ -1,13 +1,10 @@
 package com.meongcare.domain.dog.application;
 
+import com.meongcare.domain.dog.domain.entity.Sex;
 import com.meongcare.domain.excreta.domain.repository.ExcretaQueryRepository;
-import com.meongcare.domain.excreta.domain.repository.ExcretaRepository;
 import com.meongcare.domain.feed.domain.repository.FeedQueryRepository;
 import com.meongcare.domain.feed.domain.repository.FeedRecordQueryRepository;
-import com.meongcare.domain.feed.domain.repository.FeedRepository;
-import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
 import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordQueryRepository;
-import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordRepository;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.dog.domain.DogRepository;
@@ -18,18 +15,14 @@ import com.meongcare.domain.dog.presentation.dto.response.GetDogResponse;
 import com.meongcare.domain.dog.presentation.dto.response.GetDogsResponse;
 import com.meongcare.domain.supplements.application.SupplementsService;
 import com.meongcare.domain.supplements.domain.repository.SupplementsQueryRepository;
-import com.meongcare.domain.supplements.domain.repository.SupplementsTimeQueryRepository;
 import com.meongcare.domain.symptom.domain.repository.SymptomQueryRepository;
-import com.meongcare.domain.symptom.domain.repository.SymptomRepository;
 import com.meongcare.domain.weight.domain.entity.Weight;
 import com.meongcare.domain.weight.domain.repository.WeightQueryRepository;
 import com.meongcare.domain.weight.domain.repository.WeightRepository;
-import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,11 +46,9 @@ public class DogService {
 
 
     @Transactional
-    public void saveDog(MultipartFile multipartFile, SaveDogRequest saveDogRequest, Long memberId) {
+    public void saveDog(SaveDogRequest saveDogRequest, Long memberId) {
         Member member = memberRepository.getMember(memberId);
-        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
-
-        Dog dog = saveDogRequest.toEntity(member, dogImageURL);
+        Dog dog = saveDogRequest.toEntity(member);
         dogRepository.save(dog);
 
         Weight weight = Weight.createWeight(dog.getWeight(), dog);
@@ -77,10 +68,13 @@ public class DogService {
     }
 
     @Transactional
-    public void updateDog(MultipartFile multipartFile, PutDogRequest putDogRequest, Long dogId) {
+    public void updateDog(PutDogRequest request, Long dogId) {
         Dog dog = dogRepository.getDog(dogId);
-        String dogImageURL = imageHandler.uploadImage(multipartFile, ImageDirectory.DOG);
-        dog.updateAll(putDogRequest, dogImageURL);
+        dog.updateAll(
+                request.getName(), request.getType(), request.getImageURL(), Sex.of(request.getSex()),
+                request.isCastrate(), request.getBirthDate(), request.getBackRound(), request.getNeckRound(),
+                request.getChestRound(), request.getWeight()
+        );
     }
 
     @Transactional

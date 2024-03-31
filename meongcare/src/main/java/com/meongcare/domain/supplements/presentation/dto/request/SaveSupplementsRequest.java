@@ -41,7 +41,11 @@ public class SaveSupplementsRequest {
     @Schema(description = "섭취 단위", example = "포")
     private String intakeUnit;
 
+    @Schema(description = "이미지 링크")
+    private String imageURL;
+
     private List<IntakeInfo> intakeInfos;
+
     @AllArgsConstructor
     @Getter
     @NoArgsConstructor
@@ -53,14 +57,14 @@ public class SaveSupplementsRequest {
         private int intakeCount;
     }
 
-    public Supplements toSupplements(Dog dog, String imageUrl) {
+    public Supplements toSupplements(Dog dog) {
         return Supplements.builder()
                 .dog(dog)
                 .brand(brand)
                 .name(name)
                 .intakeUnit(intakeUnit)
                 .startDate(LocalDate.now())
-                .imageUrl(imageUrl)
+                .imageUrl(imageURL)
                 .intakeCycle(intakeCycle)
                 .build();
     }

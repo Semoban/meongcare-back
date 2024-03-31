@@ -56,7 +56,10 @@ public class SaveFeedRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_PATTERN, timezone = "Asia/Seoul")
     private LocalDate endDate;
 
-    public Feed toEntity(String imageURL, Dog dog) {
+    @Schema(description = "이미지 경로")
+    private String imageURL;
+
+    public Feed toEntity(Dog dog) {
         return Feed.builder()
                 .brand(brand)
                 .feedName(feedName)

@@ -12,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -32,11 +31,9 @@ public class SupplementsController {
 
     @Operation(description = "영양제 등록")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Void> saveSupplements(
-            @Valid @RequestPart(value = "dto", required = false) SaveSupplementsRequest saveSupplementsRequest,
-            @RequestPart(value = "file") MultipartFile multipartFile) {
-        supplementsService.saveSupplements(saveSupplementsRequest, multipartFile);
+    @PostMapping
+    public ResponseEntity<Void> saveSupplements(@RequestBody @Valid SaveSupplementsRequest request) {
+        supplementsService.saveSupplements(request);
         return ResponseEntity.ok().build();
     }
 
