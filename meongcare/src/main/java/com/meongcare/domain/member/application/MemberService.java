@@ -7,14 +7,13 @@ import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.member.domain.repository.RevokeMemberRepository;
+import com.meongcare.domain.member.presentation.dto.request.EditProfileImageRequest;
 import com.meongcare.domain.member.presentation.dto.response.GetProfileResponse;
-import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -61,14 +60,13 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateProfileImage(Long memberId, MultipartFile multipartFile) {
-        Member member = memberRepository.getMember(memberId);
+    public void updateProfileImage(EditProfileImageRequest request) {
+        Member member = memberRepository.getMember(request.getMemberId());
         String bucketName = imageHandler.getBucketNameFromUrl(member.getProfileImageUrl());
         if (bucketName.startsWith(bucket)) {
             imageHandler.deleteImage(member.getProfileImageUrl());
         }
-        String profileImageUrl = imageHandler.uploadImage(multipartFile, ImageDirectory.MEMBER);
-        member.updateProfileImageUrl(profileImageUrl);
+        member.updateProfileImageUrl(request.getImageURL());
     }
 
 }
