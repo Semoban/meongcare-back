@@ -33,8 +33,8 @@ public class MemberController {
     @Operation(description = "프로필 사진 수정")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PatchMapping("/profile")
-    public ResponseEntity<Void> updateProfileImage(@RequestBody @Valid EditProfileImageRequest request) {
-        memberService.updateProfileImage(request);
+    public ResponseEntity<Void> updateProfileImage(@JwtValidation Long memberId, @RequestBody @Valid EditProfileImageRequest request) {
+        memberService.updateProfileImage(memberId, request);
         return ResponseEntity.ok().build();
     }
 

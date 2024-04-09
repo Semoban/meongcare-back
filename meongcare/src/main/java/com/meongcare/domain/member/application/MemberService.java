@@ -60,8 +60,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateProfileImage(EditProfileImageRequest request) {
-        Member member = memberRepository.getMember(request.getMemberId());
+    public void updateProfileImage(Long memberId, EditProfileImageRequest request) {
+        Member member = memberRepository.getMember(memberId);
         String bucketName = imageHandler.getBucketNameFromUrl(member.getProfileImageUrl());
         if (bucketName.startsWith(bucket)) {
             imageHandler.deleteImage(member.getProfileImageUrl());
