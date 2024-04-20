@@ -60,11 +60,11 @@ public class MedicalRecord extends BaseEntity {
                 .build();
     }
 
-    public void updateMedicalRecord(PutMedicalRecordRequest putMedicalRecordRequest, String imageUrl){
+    public void updateMedicalRecord(PutMedicalRecordRequest putMedicalRecordRequest){
         this.dateTime = putMedicalRecordRequest.getDateTime();
         this.hospitalName = putMedicalRecordRequest.getHospitalName();
         this.doctorName = putMedicalRecordRequest.getDoctorName();
         this.note = putMedicalRecordRequest.getNote();
-        this.imageUrl = imageUrl;
+        this.imageUrl = putMedicalRecordRequest.getImageURL();
     }
 }
