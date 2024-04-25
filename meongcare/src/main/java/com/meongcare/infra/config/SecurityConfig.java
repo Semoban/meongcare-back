@@ -1,6 +1,5 @@
 package com.meongcare.infra.config;
 
-import com.meongcare.common.DoubleSlashLoggingFilter;
 import com.meongcare.common.jwt.JwtAuthenticationFilter;
 import com.meongcare.common.jwt.JwtService;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
@@ -23,14 +22,13 @@ public class SecurityConfig {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
-    private static final String[] whiteList = {"/auth/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**", "/v3/api-docs/**", "/error/**", "/notice/**", "/health"};
+    private static final String[] whiteList = {"/auth/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**", "/v3/api-docs/**", "/error/**", "/notice/**"};
 
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> {
             web.ignoring().antMatchers(whiteList);
-            web.httpFirewall(allowUrlEncodedDoubleSlashHttpFirewall());
         };
     }
 
@@ -41,15 +39,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new DoubleSlashLoggingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtService, memberRepository), UsernamePasswordAuthenticationFilter.class)
                 .build();
-    }
-
-    @Bean
-    public HttpFirewall allowUrlEncodedDoubleSlashHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowUrlEncodedDoubleSlash(true);
-        return firewall;
     }
 }
