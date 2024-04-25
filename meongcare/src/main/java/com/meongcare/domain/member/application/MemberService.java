@@ -1,10 +1,13 @@
 package com.meongcare.domain.member.application;
 
+import com.meongcare.common.error.ErrorCode;
+import com.meongcare.common.error.exception.clientError.EntityNotFoundException;
 import com.meongcare.domain.dog.application.DogService;
 import com.meongcare.domain.dog.domain.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.member.domain.repository.MemberQueryRepository;
 import com.meongcare.domain.member.domain.repository.MemberRepository;
 import com.meongcare.domain.member.domain.repository.RevokeMemberRepository;
 import com.meongcare.domain.member.presentation.dto.request.EditProfileImageRequest;
@@ -26,6 +29,7 @@ public class MemberService {
     private String bucket;
 
     private final MemberRepository memberRepository;
+    private final MemberQueryRepository memberQueryRepository;
     private final ImageHandler imageHandler;
     private final RevokeMemberRepository revokeMemberRepository;
     private final DogRepository dogRepository;
@@ -69,4 +73,13 @@ public class MemberService {
         member.updateProfileImageUrl(request.getImageURL());
     }
 
+    public void checkExistMember(String email) {
+        if (isNotExistMember(email)) {
+            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+    }
+
+    private boolean isNotExistMember(String email) {
+        return !memberQueryRepository.existMemberByEmail(email);
+    }
 }
