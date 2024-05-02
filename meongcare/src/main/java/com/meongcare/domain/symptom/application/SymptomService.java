@@ -1,7 +1,7 @@
 package com.meongcare.domain.symptom.application;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.symptom.domain.entity.SymptomType;
 import com.meongcare.domain.symptom.domain.repository.vo.GetSymptomVO;

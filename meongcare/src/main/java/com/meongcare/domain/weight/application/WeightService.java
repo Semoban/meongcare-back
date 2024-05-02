@@ -3,7 +3,7 @@ package com.meongcare.domain.weight.application;
 import com.meongcare.common.error.ErrorCode;
 import com.meongcare.common.error.exception.clientError.EntityNotFoundException;
 import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.weight.domain.entity.Weight;
 import com.meongcare.domain.weight.domain.repository.WeightJdbcRepository;

@@ -1,7 +1,7 @@
 package com.meongcare.domain.supplements.application;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.notifciation.domain.dto.FcmNotificationDTO;
 import com.meongcare.domain.notifciation.domain.entity.NotificationType;
@@ -19,13 +19,11 @@ import com.meongcare.domain.supplements.presentation.dto.response.GetSupplements
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
-import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
