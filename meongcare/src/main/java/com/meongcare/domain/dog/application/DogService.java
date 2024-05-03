@@ -86,7 +86,6 @@ public class DogService {
 
     /**
      * 해당 dog의 memberDog이 모두 삭제된 경우만 사용함.
-     * @param dogId
      */
     @Transactional
     public void deleteDog(Long dogId) {
