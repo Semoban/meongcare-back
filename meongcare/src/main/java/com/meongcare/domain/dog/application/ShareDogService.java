@@ -58,7 +58,6 @@ public class ShareDogService {
         memberDogRepository.save(MemberDog.of(member, dog));
     }
 
-    //TODO : 알림 유틸 클래스로 빼기 (위 상수까지)
     private String createPushAlarmTitle(String requesterEmail) {
         return String.format(ALARM_TITLE_TEXT_FORMAT, requesterEmail);
     }
