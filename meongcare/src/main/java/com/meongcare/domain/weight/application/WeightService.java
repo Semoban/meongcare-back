@@ -85,8 +85,8 @@ public class WeightService {
                 .collect(Collectors.groupingBy(GetMonthWeightVO::getMonth,
                         Collectors.summingDouble(GetMonthWeightVO::getWeight)));
 
-        double lastMonthWeight = monthWeightMap.getOrDefault(date.minusMonths(1).getMonthValue(), 0.0);;
-        double thisMonthWeight = monthWeightMap.getOrDefault(date.getMonthValue(), 0.0);;
+        double lastMonthWeight = monthWeightMap.getOrDefault(date.minusMonths(1).getMonthValue(), 0.0);
+        double thisMonthWeight = monthWeightMap.getOrDefault(date.getMonthValue(), 0.0);
 
         return GetMonthWeightResponse.of(lastMonthWeight, thisMonthWeight);
     }
