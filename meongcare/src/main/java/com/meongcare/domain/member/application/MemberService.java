@@ -2,9 +2,7 @@ package com.meongcare.domain.member.application;
 
 import com.meongcare.common.error.ErrorCode;
 import com.meongcare.common.error.exception.clientError.EntityNotFoundException;
-import com.meongcare.domain.dog.application.DogService;
-import com.meongcare.domain.dog.domain.DogRepository;
-import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.dog.domain.repository.MemberDogQueryRepository;
 import com.meongcare.domain.member.domain.entity.RevokeMember;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberQueryRepository;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +29,7 @@ public class MemberService {
     private final MemberQueryRepository memberQueryRepository;
     private final ImageHandler imageHandler;
     private final RevokeMemberRepository revokeMemberRepository;
-    private final DogRepository dogRepository;
-    private final DogService dogService;
+    private final MemberDogQueryRepository memberDogQueryRepository;
 
     public GetProfileResponse getProfile(Long memberId) {
         Member member = memberRepository.getMember(memberId);
@@ -52,11 +48,7 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long memberId) {
         Member member = memberRepository.getMember(memberId);
-
-        List<Dog> dogs = dogRepository.findAllByMemberAndDeletedFalse(member);
-        for (Dog dog : dogs) {
-            dogService.deleteDog(dog.getId());
-        }
+        memberDogQueryRepository.deleteByMember(memberId);
 
         RevokeMember revokeMember = RevokeMember.from(member.getProviderId());
         revokeMemberRepository.save(revokeMember);
