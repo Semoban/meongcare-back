@@ -21,10 +21,9 @@ public class RevokeMemberScheduler {
 
     private final RevokeMemberRepository revokeMemberRepository;
 
-    //매일 자정 90일이 지난 탈퇴 회원 정보 삭제
     @Scheduled(cron = "0 0 0 * * *")
     public void deleteExpiredRevokeMembers() {
-        log.info("deleteExpiredRevokeMembers 스케쥴러 시작");
+        log.info("매일 자정 90일이 지난 탈퇴 회원 정보 삭제");
         LocalDateTime ninetyDaysAgo = LocalDateTime.now().minusDays(REVOKE_MEMBER_EXPIRATION_DATE);
 
         List<RevokeMember> expiredRevokeMembers = revokeMemberRepository.findByRevokeDateBefore(ninetyDaysAgo);
