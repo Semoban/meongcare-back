@@ -65,7 +65,7 @@ public class Feed extends BaseEntity {
         this.dog = dog;
     }
 
-    public void updateInfo(EditFeedRequest request, String imageURL) {
+    public void updateInfo(EditFeedRequest request) {
         this.brand = request.getBrand();
         this.feedName = request.getFeedName();
         this.protein = request.getProtein();
@@ -75,6 +75,6 @@ public class Feed extends BaseEntity {
         this.etc = request.getEtc();
         this.kcal = request.getKcal();
         this.recommendIntake = request.getRecommendIntake();
-        this.imageURL = imageURL;
+        this.imageURL = request.getImageURL();
     }
 }

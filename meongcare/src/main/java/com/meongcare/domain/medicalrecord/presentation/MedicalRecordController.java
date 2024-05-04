@@ -33,9 +33,8 @@ public class MedicalRecordController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
     public ResponseEntity<Void> saveMedicalRecord(
-            @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid SaveMedicalRecordRequest saveMedicalRecordRequest) {
-        medicalRecordService.save(multipartFile, saveMedicalRecordRequest);
+            @RequestBody @Valid SaveMedicalRecordRequest saveMedicalRecordRequest) {
+        medicalRecordService.save(saveMedicalRecordRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -43,9 +42,8 @@ public class MedicalRecordController {
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PutMapping
     public ResponseEntity<Void> updateMedicalRecord(
-            @RequestPart(value = "file") MultipartFile multipartFile,
-            @RequestPart(value = "dto") @Valid PutMedicalRecordRequest putMedicalRecordRequest) {
-        medicalRecordService.update(multipartFile, putMedicalRecordRequest);
+            @RequestBody @Valid PutMedicalRecordRequest putMedicalRecordRequest) {
+        medicalRecordService.update(putMedicalRecordRequest);
         return ResponseEntity.ok().build();
     }
 
