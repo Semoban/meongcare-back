@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ShareDogService {
 
     private final MemberQueryRepository memberQueryRepository;
@@ -34,7 +34,7 @@ public class ShareDogService {
     private static final String ALARM_TITLE_TEXT_FORMAT = "%s님의 강아지 공유 요청";
     private static final String ALARM_BODY_TEXT_FORMAT = "%s의 주인이 되어주세요!";
 
-
+    @Transactional
     public void requestShareDog(Long dogId, ShareDogRequest shareDogRequest, Long requesterId) {
         Member accepter = memberQueryRepository.getMemberByEmail(shareDogRequest.getShareEmail())
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
@@ -49,7 +49,7 @@ public class ShareDogService {
         shareWaitingRepository.save(shareWaiting);
     }
 
-    //미완성
+    @Transactional
     public void acceptShareDog(Long dogId, Long memberId) {
         shareWaitingRepository.deleteByAcceptorIdAndDogId(memberId, dogId);
 

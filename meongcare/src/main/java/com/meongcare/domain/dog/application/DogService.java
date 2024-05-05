@@ -84,9 +84,24 @@ public class DogService {
         );
     }
 
-    /**
-     * 해당 dog의 memberDog이 모두 삭제된 경우만 사용함.
-     */
+    @Transactional
+    public void deleteMemberDog(Long dogId, Long memberId) {
+        memberDogQueryRepository.deleteByMemberAndDog(memberId, dogId);
+    }
+
+    @Transactional
+    public void deleteOwnerLessDogs() {
+        List<Dog> dogs = dogRepository.findAll();
+        for (Dog dog : dogs) {
+            List<MemberDog> dogOwner = memberDogQueryRepository.findDogId(dog.getId());
+            if (dogOwner.isEmpty()) {
+                deleteDog(dog.getId());
+            }
+        }
+    }
+
+
+    //해당 dog의 memberDog이 모두 삭제된 경우만 사용함
     @Transactional
     public void deleteDog(Long dogId) {
         Dog dog = dogRepository.getDog(dogId);
@@ -99,16 +114,9 @@ public class DogService {
         feedQueryRepository.deleteFeedByDogId(dogId);
         feedRecordQueryRepository.deleteFeedRecordByDogId(dogId);
 
-        //영양제, 영양제 섭취 시간, 영양제 루틴
         List<Long> supplementsIds = supplementsQueryRepository.getSupplementsIdsByDogId(dogId);
         supplementsService.deleteSupplementsList(supplementsIds);
 
         dog.softDelete();
     }
-
-    @Transactional
-    public void deleteMemberDog(Long dogId, Long memberId) {
-        memberDogQueryRepository.deleteByMemberAndDog(memberId, dogId); //변경감지로 가능할듯..?
-    }
-
 }
