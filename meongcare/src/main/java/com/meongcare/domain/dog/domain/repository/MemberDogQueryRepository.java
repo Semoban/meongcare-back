@@ -1,6 +1,5 @@
 package com.meongcare.domain.dog.domain.repository;
 
-import com.meongcare.domain.dog.domain.entity.MemberDog;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
