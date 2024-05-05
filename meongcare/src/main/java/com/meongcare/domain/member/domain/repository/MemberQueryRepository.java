@@ -2,6 +2,7 @@ package com.meongcare.domain.member.domain.repository;
 
 import com.meongcare.domain.member.domain.entity.Member;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.meongcare.domain.dog.domain.entity.QMemberDog.memberDog;
-import static com.meongcare.domain.dog.domain.repository.MemberDogQueryRepository.dogIdEq;
 import static com.meongcare.domain.member.domain.entity.QMember.member;
 
 
@@ -54,5 +54,9 @@ public class MemberQueryRepository {
 
     private Predicate memberIsNotDeleted() {
         return member.deleted.isFalse();
+    }
+
+    public BooleanExpression dogIdEq(Long dogId) {
+        return memberDog.dog.id.eq(dogId);
     }
 }

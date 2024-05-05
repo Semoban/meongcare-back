@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 
-@Component
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class DogScheduler {
 
     private final DogService dogService;

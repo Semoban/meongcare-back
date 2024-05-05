@@ -47,15 +47,15 @@ public class MemberDogQueryRepository {
                 .execute();
     }
 
-    public static BooleanExpression dogIdEq(Long dogId) {
+    public BooleanExpression dogIdEq(Long dogId) {
         return memberDog.dog.id.eq(dogId);
     }
 
-    private static BooleanExpression memberIdEq(Long memberId) {
+    private BooleanExpression memberIdEq(Long memberId) {
         return memberDog.member.id.eq(memberId);
     }
 
-    private static BooleanExpression isNotDeleted() {
+    private BooleanExpression isNotDeleted() {
         return memberDog.deleted.isFalse();
     }
 
