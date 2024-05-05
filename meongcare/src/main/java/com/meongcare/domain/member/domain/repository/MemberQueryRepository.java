@@ -6,8 +6,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import static com.meongcare.domain.dog.domain.entity.QMemberDog.memberDog;
+import static com.meongcare.domain.dog.domain.repository.MemberDogQueryRepository.dogIdEq;
 import static com.meongcare.domain.member.domain.entity.QMember.member;
 
 
@@ -39,6 +42,15 @@ public class MemberQueryRepository {
                 .fetchOne());
 
     }
+    public List<Member> findAllByDog(Long dogId) {
+        return queryFactory
+                .select(member)
+                .from(memberDog)
+                .innerJoin(memberDog.member, member).fetchJoin()
+                .where(dogIdEq(dogId), memberIsNotDeleted())
+                .fetch();
+    }
+
 
     private Predicate memberIsNotDeleted() {
         return member.deleted.isFalse();

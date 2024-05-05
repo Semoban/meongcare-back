@@ -14,7 +14,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static com.meongcare.domain.dog.domain.entity.QDog.*;
-import static com.meongcare.domain.member.domain.entity.QMember.*;
 import static com.meongcare.domain.supplements.domain.entity.QSupplements.*;
 import static com.meongcare.domain.supplements.domain.entity.QSupplementsRecord.*;
 
@@ -62,16 +61,14 @@ public class SupplementsRecordQueryRepository {
     public List<GetAlarmSupplementsVO> findAllAlarmSupplementsByTime(LocalTime time, LocalTime fiftyNineSecondsLater) {
         return queryFactory
                 .select(new QGetAlarmSupplementsVO(
-                        member.fcmToken,
+                        dog.id,
                         dog.name,
-                        supplements.name,
-                        member.id,
-                        dog.id)
+                        supplements.name
+                        )
                 )
                 .from(supplementsRecord)
                 .innerJoin(supplementsRecord.supplements, supplements)
                 .innerJoin(supplements.dog, dog)
-                .innerJoin(dog.member, member)
                 .where(isActive(), isNotDeleted(), isNotIntakeStatus(), isTimeEQ(time, fiftyNineSecondsLater))
                 .fetch();
     }

@@ -15,12 +15,6 @@ import static com.meongcare.domain.dog.domain.entity.QMemberDog.memberDog;
 public class MemberDogQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-    public List<MemberDog> findAllByMember(Long memberId) {
-        return jpaQueryFactory
-                .selectFrom(memberDog)
-                .where(memberIdEq(memberId), isNotDeleted())
-                .fetch();
-    }
 
     public List<Long> findDogIdsByMember(Long memberId) {
         return jpaQueryFactory
@@ -46,7 +40,7 @@ public class MemberDogQueryRepository {
                 .execute();
     }
 
-    private static BooleanExpression dogIdEq(Long dogId) {
+    public static BooleanExpression dogIdEq(Long dogId) {
         return memberDog.dog.id.eq(dogId);
     }
 
