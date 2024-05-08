@@ -1,7 +1,6 @@
 package com.meongcare.domain.dog.domain.entity;
 
 import com.meongcare.common.BaseEntity;
-import com.meongcare.domain.member.domain.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,11 +18,6 @@ public class Dog extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
-
-    @JoinColumn(name = "member_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    private Member member;
 
     @NotNull
     private String name;
@@ -55,9 +49,8 @@ public class Dog extends BaseEntity {
     private double weight;
 
     @Builder
-    public Dog(Member member, String name, String type, String imageUrl, Sex sex,
+    public Dog(String name, String type, String imageUrl, Sex sex,
                boolean castrate, LocalDate birthDate, double backRound, double neckRound, double chestRound, double weight) {
-        this.member = member;
         this.name = name;
         this.type = type;
         this.imageUrl = imageUrl;

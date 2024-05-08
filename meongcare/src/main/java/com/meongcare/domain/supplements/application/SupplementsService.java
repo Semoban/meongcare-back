@@ -1,8 +1,10 @@
 package com.meongcare.domain.supplements.application;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.member.domain.entity.Member;
+import com.meongcare.domain.member.domain.repository.MemberQueryRepository;
 import com.meongcare.domain.notifciation.domain.dto.FcmNotificationDTO;
 import com.meongcare.domain.notifciation.domain.entity.NotificationType;
 import com.meongcare.domain.supplements.domain.entity.Supplements;
@@ -19,13 +21,10 @@ import com.meongcare.domain.supplements.presentation.dto.response.GetSupplements
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRateResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsResponse;
 import com.meongcare.domain.supplements.presentation.dto.response.GetSupplementsRoutineResponse;
-import com.meongcare.infra.image.ImageDirectory;
-import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -46,7 +45,7 @@ public class SupplementsService {
     private final SupplementsRecordRepository supplementsRecordRepository;
     private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final DogRepository dogRepository;
-    private final ImageHandler imageHandler;
+    private final MemberQueryRepository memberQueryRepository;
     private final SupplementsRecordJdbcRepository supplementsRecordJdbcRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -210,12 +209,15 @@ public class SupplementsService {
         List<GetAlarmSupplementsVO> alarmSupplementsVOS = supplementsRecordQueryRepository.findAllAlarmSupplementsByTime(now, fiftyNineSecondsLater);
 
         for (GetAlarmSupplementsVO alarmSupplementsVO : alarmSupplementsVOS) {
-            String title = createPushAlarmTitle(now, alarmSupplementsVO.getSupplementsName());
-            String body = createPushAlarmBody(alarmSupplementsVO.getDogName());
-            String fcmToken = alarmSupplementsVO.getFcmToken();
-            eventPublisher.publishEvent(FcmNotificationDTO.of(title, body, fcmToken,
-                    NotificationType.SUPPLEMENTS, alarmSupplementsVO.getMemberId(), alarmSupplementsVO.getDogId()
-            ));
+            List<Member> members = memberQueryRepository.findAllByDog(alarmSupplementsVO.getDogId());
+            for (Member member : members) {
+                String title = createPushAlarmTitle(now, alarmSupplementsVO.getSupplementsName());
+                String body = createPushAlarmBody(alarmSupplementsVO.getDogName());
+                String fcmToken = member.getFcmToken();
+                eventPublisher.publishEvent(FcmNotificationDTO.of(title, body, fcmToken,
+                        NotificationType.SUPPLEMENTS, member.getId(), alarmSupplementsVO.getDogId()
+                ));
+            }
         }
     }
 

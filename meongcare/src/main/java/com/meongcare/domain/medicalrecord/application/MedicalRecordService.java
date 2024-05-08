@@ -1,7 +1,7 @@
 package com.meongcare.domain.medicalrecord.application;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.medicalrecord.domain.entity.MedicalRecord;
 import com.meongcare.domain.medicalrecord.domain.repository.MedicalRecordQueryRepository;
@@ -11,12 +11,10 @@ import com.meongcare.domain.medicalrecord.presentation.dto.request.PutMedicalRec
 import com.meongcare.domain.medicalrecord.presentation.dto.request.SaveMedicalRecordRequest;
 import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordResponse;
 import com.meongcare.domain.medicalrecord.presentation.dto.response.GetMedicalRecordsResponse;
-import com.meongcare.infra.image.ImageDirectory;
 import com.meongcare.infra.image.ImageHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;

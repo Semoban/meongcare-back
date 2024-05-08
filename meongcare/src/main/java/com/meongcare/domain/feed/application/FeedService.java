@@ -1,8 +1,6 @@
 package com.meongcare.domain.feed.application;
 
-import com.meongcare.common.error.ErrorCode;
-import com.meongcare.common.error.exception.clientError.EntityNotFoundException;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.feed.domain.entity.Feed;
 import com.meongcare.domain.feed.domain.entity.FeedRecord;
@@ -22,13 +20,9 @@ import com.meongcare.domain.feed.presentation.dto.response.GetFeedsResponse;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsPartVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedRecordsVO;
 import com.meongcare.domain.feed.domain.repository.vo.GetFeedsVO;
-import com.meongcare.infra.image.ImageDirectory;
-import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -45,8 +39,6 @@ public class FeedService {
     private final FeedQueryRepository feedQueryRepository;
     private final FeedRecordRepository feedRecordRepository;
     private final FeedRecordQueryRepository feedRecordQueryRepository;
-    private final ImageHandler imageHandler;
-    private final ApplicationEventPublisher eventPublisher;
 
     private static final Integer DEFAULT_RECOMMEND_INTAKE = 0;
     private static final Integer REST_FEED_RECORD = 1;
