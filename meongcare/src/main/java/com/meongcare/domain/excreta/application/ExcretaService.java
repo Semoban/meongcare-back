@@ -1,7 +1,7 @@
 package com.meongcare.domain.excreta.application;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
-import com.meongcare.domain.dog.domain.DogRepository;
+import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
 import com.meongcare.domain.excreta.domain.entity.Excreta;
 import com.meongcare.domain.excreta.domain.repository.vo.GetExcretaVO;
@@ -13,7 +13,6 @@ import com.meongcare.domain.excreta.presentation.dto.response.GetExcretaResponse
 import com.meongcare.domain.excreta.domain.entity.ExcretaType;
 import com.meongcare.domain.excreta.domain.repository.ExcretaQueryRepository;
 import com.meongcare.domain.excreta.domain.repository.ExcretaRepository;
-import com.meongcare.infra.image.ImageHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,6 @@ public class ExcretaService {
     private final ExcretaRepository excretaRepository;
     private final ExcretaQueryRepository excretaQueryRepository;
     private final DogRepository dogRepository;
-    private final ImageHandler imageHandler;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional

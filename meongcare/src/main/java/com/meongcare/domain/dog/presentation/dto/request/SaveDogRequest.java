@@ -54,9 +54,8 @@ public class SaveDogRequest {
     @Schema(description = "S3 이미지 URL")
     private String imageURL;
 
-    public Dog toEntity(Member member) {
+    public Dog toEntity() {
         return Dog.builder()
-                .member(member)
                 .name(name)
                 .type(type)
                 .sex(Sex.of(sex))

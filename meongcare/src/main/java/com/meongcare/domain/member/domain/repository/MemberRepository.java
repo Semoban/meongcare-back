@@ -14,9 +14,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     default Member getMember(Long id) {
         return this.findByIdAndDeleted(id, false)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_ENTITY_NOT_FOUND));
     }
 
     Optional<Member> findByIdAndDeleted(Long id, boolean deleted);
+
+
 
 }

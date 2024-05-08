@@ -54,4 +54,12 @@ public class MemberController {
         memberService.deleteMember(memberId);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(description = "계정 존재 확인")
+    @Parameter(name = "email", in = ParameterIn.PATH, required = true)
+    @GetMapping("/exist/{email}")
+    public ResponseEntity<Void> checkExistMember(@PathVariable String email){
+        memberService.checkExistMember(email);
+        return ResponseEntity.ok().build();
+    }
 }
