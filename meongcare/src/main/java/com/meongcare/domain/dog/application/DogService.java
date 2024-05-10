@@ -93,7 +93,7 @@ public class DogService {
     public void deleteOwnerLessDogs() {
         List<Dog> dogs = dogRepository.findAll();
         for (Dog dog : dogs) {
-            List<MemberDog> dogOwner = memberDogQueryRepository.findByDogId(dog.getId());
+            List<MemberDog> dogOwner = memberDogQueryRepository.findAllByDogId(dog.getId());
             if (dogOwner.isEmpty()) {
                 deleteDog(dog.getId());
             }
