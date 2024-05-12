@@ -56,7 +56,7 @@ public class MemberController {
     }
 
     @Operation(description = "계정 존재 확인")
-    @Parameter(name = "email", in = ParameterIn.PATH, required = true)
+    @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @GetMapping("/exist/{email}")
     public ResponseEntity<Void> checkExistMember(@PathVariable String email){
         memberService.checkExistMember(email);
