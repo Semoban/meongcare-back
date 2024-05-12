@@ -1,8 +1,10 @@
 package com.meongcare.domain.supplements.application;
 
 import com.meongcare.common.util.LocalDateTimeUtils;
+import com.meongcare.domain.dog.domain.entity.MemberDog;
 import com.meongcare.domain.dog.domain.repository.DogRepository;
 import com.meongcare.domain.dog.domain.entity.Dog;
+import com.meongcare.domain.dog.domain.repository.MemberDogQueryRepository;
 import com.meongcare.domain.member.domain.entity.Member;
 import com.meongcare.domain.member.domain.repository.MemberQueryRepository;
 import com.meongcare.domain.notifciation.domain.dto.FcmNotificationDTO;
@@ -45,7 +47,7 @@ public class SupplementsService {
     private final SupplementsRecordRepository supplementsRecordRepository;
     private final SupplementsRecordQueryRepository supplementsRecordQueryRepository;
     private final DogRepository dogRepository;
-    private final MemberQueryRepository memberQueryRepository;
+    private final MemberDogQueryRepository memberDogQueryRepository;
     private final SupplementsRecordJdbcRepository supplementsRecordJdbcRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -209,8 +211,9 @@ public class SupplementsService {
         List<GetAlarmSupplementsVO> alarmSupplementsVOS = supplementsRecordQueryRepository.findAllAlarmSupplementsByTime(now, fiftyNineSecondsLater);
 
         for (GetAlarmSupplementsVO alarmSupplementsVO : alarmSupplementsVOS) {
-            List<Member> members = memberQueryRepository.findAllByDog(alarmSupplementsVO.getDogId());
-            for (Member member : members) {
+            List<MemberDog> memberDogs = memberDogQueryRepository.findAllByDogId(alarmSupplementsVO.getDogId());
+            for (MemberDog memberDog : memberDogs) {
+                Member member = memberDog.getMember();
                 String title = createPushAlarmTitle(now, alarmSupplementsVO.getSupplementsName());
                 String body = createPushAlarmBody(alarmSupplementsVO.getDogName());
                 String fcmToken = member.getFcmToken();

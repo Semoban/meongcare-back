@@ -42,14 +42,6 @@ public class MemberQueryRepository {
                 .fetchOne());
 
     }
-    public List<Member> findAllByDog(Long dogId) {
-        return queryFactory
-                .select(member)
-                .from(memberDog)
-                .innerJoin(memberDog.member, member).fetchJoin()
-                .where(dogIdEq(dogId), memberIsNotDeleted())
-                .fetch();
-    }
 
 
     private Predicate memberIsNotDeleted() {
