@@ -25,7 +25,6 @@ public class Dog extends BaseEntity {
     @NotNull
     private String type;
 
-    @NotNull
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
