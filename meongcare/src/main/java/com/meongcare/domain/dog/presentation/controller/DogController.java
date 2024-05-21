@@ -30,7 +30,6 @@ public class DogController {
     @Operation(description = "강아지 저장")
     @Parameter(name = "AccessToken", in = ParameterIn.HEADER, required = true)
     @PostMapping
-    @Valid
     public ResponseEntity<Void> saveDog(
             @Valid @RequestBody SaveDogRequest request,
             @JwtValidation Long memberId
